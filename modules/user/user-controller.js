@@ -12,13 +12,13 @@ const UserController = {
             const user = await UserService.getUserByEmail(req.body.email);
             
             if(!user) {
-                res.status(401).send('Unauthorized');
+                res.status(401).send('Email Salah');
             }
 
             const match = await bcrypt.compare(req.body.password, user.password);
 
             if (!match) {
-                res.status(401).send('Unauthorized');
+                res.status(401).send('Password Salah');
             }
 
             const tokenJWT = jwt.sign({

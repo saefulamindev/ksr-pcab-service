@@ -6,7 +6,7 @@ const UserService = {
         return user;
     },
     getUserById: (id) => {
-        const user = db(tb_users).where('id', id).first();
+        const user = db('tb_users').where('id', id).first();
         return user;
     }
 };

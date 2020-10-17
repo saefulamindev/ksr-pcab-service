@@ -6,6 +6,7 @@ const UserController = {
     getUser: (req, res, next) => {
         res.json(req.user);
     },
+    
     login: async (req, res, next) => {
         try {
             console.log('req.body: ', req.body);

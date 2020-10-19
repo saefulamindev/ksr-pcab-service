@@ -1,5 +1,5 @@
 const passport = require("passport");
-const UserService = require("../../modules/user/user-services");
+const UserService = require("../../modules/user/userServices");
 const JwtStrategy = require("passport-jwt").Strategy,
   ExtractJwt = require("passport-jwt").ExtractJwt;
 

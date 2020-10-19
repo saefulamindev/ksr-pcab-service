@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const UserController = require("./user-controller");
+const UserController = require("./userController");
 const passport = require("passport");
 
 /* GET users listing. */

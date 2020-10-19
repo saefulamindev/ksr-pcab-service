@@ -4,7 +4,7 @@ const biodataController = require('../controller/biodataController');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('Halaman Biodata 2');
+  res.send('Halaman Biodata');
 });
 
 module.exports = router;

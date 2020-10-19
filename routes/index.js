@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var userRouter = require("../modules/user/user-routes");
-var adminRouter = require("../modules/admin/routes/dashboard-routes");
+var adminRouter = require("../modules/admin/routes/dashboardRoutes");
 var pesertaRouter = require("../modules/peserta/peserta-routes");
 
 router.use("/users", userRouter);

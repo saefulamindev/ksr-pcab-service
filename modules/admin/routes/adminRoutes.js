@@ -3,7 +3,7 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('Dashboard Admin');
+  res.send('Menampilkan Jumlah Pendaftar');
 });
 
 module.exports = router;

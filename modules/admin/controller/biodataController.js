@@ -1,3 +1,2 @@
-const biodataService = require('../services/biodataServices');
+const biodataServices = require('../services/biodataServices');
 
-module.exports = biodataController;

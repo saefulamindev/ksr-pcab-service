@@ -3,7 +3,11 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('Menampilkan Jumlah Pendaftar');
+  res.send('Dashboard');
+});
+
+router.get('/countUser', function(req, res, next) {
+  res.send();
 });
 
 module.exports = router;

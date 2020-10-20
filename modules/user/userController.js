@@ -1,6 +1,8 @@
 const UserService = require('../user/userServices');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const saltRounds = bcrypt.genSaltSync(10);
+const myPlaintextPassword = 's0/\/\P4$$w0rD';
 
 const UserController = {
     getUser: (req, res, next) => {
@@ -39,6 +41,24 @@ const UserController = {
             res.status(500).send(error.message);
         }
     },
+
+    daftar: async (req, res, next) => {
+        try {
+            console.log('req.body: ', req.body);
+            req.body.password = bcrypt.hashSync(req.body.password, saltRounds);
+            
+            // res.send(req.body);
+            const user = await UserService.createUser(req.body);
+            if(user) {
+                res.status(201).send('berhasil membuat akun');
+            }
+
+        }
+        catch {
+            res.status(500).send(error.message);
+
+        }
+    }
 };
 
 module.exports = UserController;

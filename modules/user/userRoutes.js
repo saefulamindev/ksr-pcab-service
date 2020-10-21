@@ -14,7 +14,8 @@ router.get(
   UserController.getUser
 );
 
-router.post('/login', UserController.login);
-router.post('/daftar', UserController.daftar);
+router.post("/login", UserController.login);
+router.get("/daftar", UserController.token_daftar);
+router.post("/daftar", UserController.daftar);
 
 module.exports = router;

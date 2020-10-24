@@ -1,12 +1,13 @@
-const db = require('../../../config/database');
+const db = require("../../../config/database");
 
-const adminService = {
-    countUserById: (id) => {
-        const user = db('tb_users').where('', id).first();
-        return user;
-    }
-    
+const adminServices = {
+  countUserByTahap: async (req) => {
+    const hasil = await db("tb_users").count({ jumlah: "id" }).where({
+      tahap: "0",
+      role: "user",
+    });
+    return hasil;
+  },
 };
-
 
 module.exports = adminServices;

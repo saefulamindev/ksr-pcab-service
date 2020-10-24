@@ -1,16 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const biodataController = require('../controller/biodataController');
+const biodataController = require("../controller/biodataController");
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('Halaman Biodata');
+router.get("/", function (req, res, next) {
+  res.send("Halaman Biodata");
 });
-router.get('/tahap/:id', function(req, res, next) {
-  res.send('');
-});
-
-
+router.get("/all", biodataController.get);
 
 module.exports = router;
-

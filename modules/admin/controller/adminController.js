@@ -3,7 +3,8 @@ const adminServices = require("../services/adminServices");
 const adminController = {
   countUser: async (req, res, next) => {
     try {
-      const jumlah = await adminServices.countUserByTahap();
+      const jumlah = await adminServices.countUserByTahap(req.params.tahap);
+      console.log(req.params, jumlah);
 
       if (jumlah) {
         return res.status(200).send(jumlah);

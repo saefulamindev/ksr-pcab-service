@@ -7,6 +7,6 @@ router.get("/", function (req, res, next) {
   res.send("Dashboard");
 });
 
-router.get("/jumlah", adminController.countUser);
+router.get("/tahap/:tahap", adminController.countUser);
 
 module.exports = router;

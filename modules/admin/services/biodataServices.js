@@ -3,13 +3,13 @@ const db = require("../../../config/database");
 const biodataServices = {
   get: async (req, res, next) => {
     const hasil = await db("tb_users")
-      .select
+      .select()
       // tb_peserta.nama_lengkap,
       // tb_peserta.fakultas,
       // tb_peserta.prodi,
       // tb_peserta.angkatan
-      ()
-      //   .join("tb_users", "tb_peserta.user_id", "=", "users.id")
+
+      // .join("tb_users", "tb_peserta.user_id", "=", "users.id")
       .where({
         role: "user",
       });

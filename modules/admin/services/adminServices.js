@@ -1,11 +1,10 @@
 const db = require("../../../config/database");
 
 const adminServices = {
-  countUserByTahap: async (req) => {
-    const hasil = await db("tb_users").count({ jumlah: "id" }).where({
-      tahap: "0",
-      role: "user",
-    });
+  countUserByTahap: async (tahap) => {
+    const hasil = await db("tb_users")
+      .count({ jumlah: "id" })
+      .where("tahap", tahap);
     return hasil;
   },
 };

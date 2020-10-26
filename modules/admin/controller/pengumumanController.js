@@ -1,4 +1,3 @@
-const { all } = require("../routes/pengumumanRoutes");
 const pengumumanServices = require("../services/pengumumanServices");
 
 const pengumumanController = {

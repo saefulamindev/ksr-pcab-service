@@ -13,14 +13,12 @@ const biodataController = {
     }
   },
 
-  detailById: async (req, res, next) => {
+  getById: async (req, res, next) => {
+    console.log(req.params);
     try {
-      const result = await biodataServices.detailById(req.params.data);
-      console.log(req.params);
-      // console.log("cobaaa");
-      if (result) {
-        // console.log("cobaaa");
+      const result = await biodataServices.detail(req.body.params);
 
+      if (result) {
         return res.status(200).send(result);
       }
     } catch (error) {

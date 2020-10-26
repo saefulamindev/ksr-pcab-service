@@ -7,6 +7,6 @@ router.get("/", function (req, res, next) {
   res.send("Halaman Biodata");
 });
 router.get("/all", biodataController.get);
-router.get("/:id_user", biodataController.detailById);
+router.get("/:id_user", biodataController.getById);
 
 module.exports = router;

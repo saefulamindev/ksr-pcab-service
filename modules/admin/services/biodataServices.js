@@ -16,10 +16,11 @@ const biodataServices = {
     return hasil;
   },
 
-  detailById: async (data) => {
+  detail: async (data) => {
     const hasil = await db("tb_users")
       .select(
         "tb_peserta.id_user",
+        "tb_peserta.file_foto",
         "tb_peserta.nama_lengkap",
         "tb_peserta.noreg",
         "tb_peserta.fakultas",

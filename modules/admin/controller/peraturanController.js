@@ -31,5 +31,37 @@ const peraturanController = {
       return res.status(500).send(resGagal);
     }
   },
+  update: async (req, res, next) => {
+    try {
+      const result = await peraturanServices.updateData(req);
+
+      const newUpdate = await peraturanServices.getPeraturanById(result);
+
+      const resBerhasil = {
+        message: "berhasil mengubah peraturan",
+        id: newUpdate.id,
+        judul: newUpdate.judul,
+        deskripsi: newUpdate.deskripsi,
+      };
+      if (result) {
+        return res.status(200).json(resBerhasil);
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+  delete: async (req, res, next) => {
+    try {
+      const result = await peraturanServices.deleteData(req);
+
+      if (result) {
+        return res.status(200).json({
+          message: "berhasil menghapus data",
+        });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
 };
 module.exports = peraturanController;

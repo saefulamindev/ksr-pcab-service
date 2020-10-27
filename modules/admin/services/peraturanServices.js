@@ -16,6 +16,24 @@ const peraturanServices = {
 
     return data;
   },
+  updateData: async (req) => {
+    const id = req.params.id;
+    const judul = req.body.judul;
+    const deskripsi = req.body.deskripsi;
+
+    const hasil = await db("tb_peraturan")
+      .update({
+        judul: judul,
+        deskripsi: deskripsi,
+      })
+      .where("id", id);
+    return hasil;
+  },
+  deleteData: async (req) => {
+    const id = req.params.id;
+    const hasil = await db("tb_peraturan").delete().where("id", id);
+    return hasil;
+  },
 };
 
 module.exports = peraturanServices;

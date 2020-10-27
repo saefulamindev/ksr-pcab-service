@@ -9,6 +9,7 @@ router.get("/", function (req, res, next) {
 
 router.get("/all", pengumumanController.get);
 router.post("/tambah", pengumumanController.create);
-router.put("/edit/:id", pengumumanController.update);
+router.post("/edit/:id", pengumumanController.update);
+router.post("/hapus/:id", pengumumanController.delete);
 
 module.exports = router;

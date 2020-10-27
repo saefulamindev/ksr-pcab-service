@@ -9,5 +9,7 @@ router.get("/", function (req, res, next) {
 
 router.get("/all", peraturanController.get);
 router.post("/tambah", peraturanController.create);
+router.post("/edit/:id", peraturanController.update);
+router.post("/hapus/:id", peraturanController.delete);
 
 module.exports = router;

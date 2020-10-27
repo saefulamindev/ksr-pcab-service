@@ -16,14 +16,22 @@ const pengumumanServices = {
     console.log("cobaa servicess");
     return data;
   },
-  update: async (req) => {
-    const data = {
-      judul: req.body.judul,
-      deskripsi: req.body.deskripsi,
-    };
+  updateData: async (req) => {
+    const id = req.params.id;
+    const judul = req.body.judul;
+    const deskripsi = req.body.deskripsi;
+
     const hasil = await db("tb_pengumuman")
-      .update({ data }, [id, judul, deskripsi])
+      .update({
+        judul: judul,
+        deskripsi: deskripsi,
+      })
       .where("id", id);
+    return hasil;
+  },
+  deleteData: async (req) => {
+    const id = req.params.id;
+    const hasil = await db("tb_pengumuman").delete().where("id", id);
     return hasil;
   },
 };

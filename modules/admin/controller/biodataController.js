@@ -16,8 +16,8 @@ const biodataController = {
   getById: async (req, res, next) => {
     console.log(req.params);
     try {
-      const result = await biodataServices.detail(req.body.params);
-
+      const id_user = req.params.id_user;
+      const result = await biodataServices.detail(id_user);
       if (result) {
         return res.status(200).send(result);
       }

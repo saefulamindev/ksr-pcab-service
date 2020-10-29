@@ -34,6 +34,7 @@ const biodataServices = {
         "tb_peserta.alamat_sekarang",
         "tb_peserta.agama",
         "tb_peserta.golongan_darah",
+        "tb_peserta.riwayat_penyakit",
         "tb_peserta.nomor_hp",
         "tb_peserta.nohp_orangdekat",
         "tb_peserta.nama_orangtua",

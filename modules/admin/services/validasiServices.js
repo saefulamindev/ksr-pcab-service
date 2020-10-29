@@ -1,4 +1,3 @@
-const { rightJoin } = require("../../../config/database");
 const db = require("../../../config/database");
 const validasiController = require("../controller/validasiController");
 
@@ -14,8 +13,31 @@ const validasiServices = {
     );
     return data;
   },
+  updateDataDok: async (req) => {
+    const id_user = req.params.id_user;
+    const validasi_dokumen = req.body.validasi_dokumen;
+
+    const hasil = await db("tb_peserta")
+      .update({
+        validasi_dokumen: validasi_dokumen,
+      })
+      .where("id", id_user);
+    return hasil;
+  },
+  updateDataBayar: async (req) => {
+    const id = req.params.id;
+    const status_lunas = req.body.status_lunas;
+    const validasi_admin = req.body.validasi_admin;
+
+    const hasil = await db("tb_pembayaran")
+      .update({
+        status_lunas: status_lunas,
+        validasi_admin: validasi_admin,
+      })
+      .where("id", id);
+    return hasil;
+  },
   getBayar: async (all) => {
-    console.log("cobbaa");
     const data = await db
       .select(
         "tb_pembayaran.id_user",

@@ -8,6 +8,8 @@ router.get("/", function (req, res, next) {
 });
 
 router.get("/dokumen/all", validasiController.getDok);
+router.post("/dokumen/edit/:id_user", validasiController.updateDok);
 router.get("/bayar/all", validasiController.get);
+router.post("/bayar/edit/:id", validasiController.updateBayar);
 
 module.exports = router;

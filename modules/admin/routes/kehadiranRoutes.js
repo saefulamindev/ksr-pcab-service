@@ -1,10 +1,12 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const kehadiranController = require('../controller/kehadiranController');
+const kehadiranController = require("../controller/kehadiranController");
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('Halaman Kehadiran');
+router.get("/", function (req, res, next) {
+  res.send("Halaman Kehadiran");
 });
+
+router.get("/materi/all", kehadiranController.getAll);
 
 module.exports = router;

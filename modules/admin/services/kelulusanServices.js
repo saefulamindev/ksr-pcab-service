@@ -10,7 +10,10 @@ const kelulusanServices = {
         "tb_peserta.status_kelulusan"
       )
       .join("tb_peserta", "tb_users.id", "=", "tb_peserta.id_user")
-      .where("role", "user");
+      .where({
+        role: "user",
+        tahap: "4",
+      });
 
     return hasil;
   },

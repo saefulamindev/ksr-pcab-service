@@ -1,22 +1,59 @@
 const express = require("express");
 const router = express.Router();
 const soalController = require("../controller/soalController");
+const passport = require("passport");
 
 /* GET users listing. */
-router.get("/", function (req, res, next) {
+router.get("/", passport.authenticate("jwt", { session: false }), function (
+  req,
+  res,
+  next
+) {
   res.send("Halaman soal");
 });
 
 // soal PG
-router.get("/pg/all", soalController.getPG);
-router.post("/pg/tambah", soalController.createPG);
-router.post("/pg/edit/:id", soalController.updatePG);
-router.post("/pg/hapus/:id", soalController.deletePG);
+router.get(
+  "/pg/all",
+  passport.authenticate("jwt", { session: false }),
+  soalController.getPG
+);
+router.post(
+  "/pg/tambah",
+  passport.authenticate("jwt", { session: false }),
+  soalController.createPG
+);
+router.post(
+  "/pg/edit/:id",
+  passport.authenticate("jwt", { session: false }),
+  soalController.updatePG
+);
+router.post(
+  "/pg/hapus/:id",
+  passport.authenticate("jwt", { session: false }),
+  soalController.deletePG
+);
 
 // soal essay
-router.get("/essay/all", soalController.getEssay);
-router.post("/essay/tambah", soalController.createEssay);
-router.post("/essay/edit/:id", soalController.updateEssay);
-router.post("/essay/hapus/:id", soalController.deleteEssay);
+router.get(
+  "/essay/all",
+  passport.authenticate("jwt", { session: false }),
+  soalController.getEssay
+);
+router.post(
+  "/essay/tambah",
+  passport.authenticate("jwt", { session: false }),
+  soalController.createEssay
+);
+router.post(
+  "/essay/edit/:id",
+  passport.authenticate("jwt", { session: false }),
+  soalController.updateEssay
+);
+router.post(
+  "/essay/hapus/:id",
+  passport.authenticate("jwt", { session: false }),
+  soalController.deleteEssay
+);
 
 module.exports = router;

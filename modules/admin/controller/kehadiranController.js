@@ -4,7 +4,6 @@ const kehadiranController = {
   getAll: async (req, res, next) => {
     try {
       const result = await kehadiranServices.getAllData(req);
-      console.log(result);
       const mapKehadiran = result.map(async (materi) => {
         const countKehadiran = await kehadiranServices.getCountById(materi.id);
 
@@ -21,7 +20,57 @@ const kehadiranController = {
         return res.status(200).send(resultWithCount);
       }
     } catch (error) {
-      console.log(error);
+      return res.status(500).send(error);
+    }
+  },
+  getDetail: async (req, res, next) => {
+    try {
+      const result = await kehadiranServices.getDetailMateri(
+        req.params.id_materi
+      );
+
+      return res.status(200).send(result);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+  Update: async (req, res, next) => {
+    try {
+      const result = await kehadiranServices.updateHadir(req);
+      if (result) {
+        const data = await kehadiranServices.getHadirByMateriUser(req);
+
+        return res.status(200).send({
+          message: "berhasil update data",
+          ...data,
+        });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+  getUser: async (req, res, next) => {
+    try {
+      const result = await kehadiranServices.getUserAll(req);
+
+      const mapKehadiran = result.map(async (hadir) => {
+        const countKehadiran = await kehadiranServices.getCountByUser(
+          hadir.id_user
+        );
+
+        return {
+          ...hadir,
+          jumlah: countKehadiran.jumlah,
+        };
+      });
+
+      const resultWithCount = await Promise.all(mapKehadiran);
+      console.log(resultWithCount);
+
+      if (resultWithCount) {
+        return res.status(200).send(resultWithCount);
+      }
+    } catch (error) {
       return res.status(500).send(error);
     }
   },

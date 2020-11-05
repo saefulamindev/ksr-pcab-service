@@ -32,5 +32,15 @@ router.get(
   // passport.authenticate("jwt", { session: false }),
   kehadiranController.getUser
 );
+router.get(
+  "/peserta/:id_user",
+  // passport.authenticate("jwt", { session: false }),
+  kehadiranController.getDetailUser
+);
+router.post(
+  "/peserta/:id_materi",
+  // passport.authenticate("jwt", { session: false }),
+  kehadiranController.updateHadir
+);
 
 module.exports = router;

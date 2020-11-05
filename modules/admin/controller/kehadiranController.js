@@ -38,7 +38,7 @@ const kehadiranController = {
     try {
       const result = await kehadiranServices.updateHadir(req);
       if (result) {
-        const data = await kehadiranServices.getHadirByMateriUser(req);
+        const data = await kehadiranServices.getHadirByMateri(req);
 
         return res.status(200).send({
           message: "berhasil update data",
@@ -69,6 +69,33 @@ const kehadiranController = {
 
       if (resultWithCount) {
         return res.status(200).send(resultWithCount);
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+
+  getDetailUser: async (req, res, next) => {
+    try {
+      const result = await kehadiranServices.getDetailUserById(
+        req.params.id_user
+      );
+
+      return res.status(200).send(result);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+  updateHadir: async (req, res, next) => {
+    try {
+      const result = await kehadiranServices.updateHadirByMateri(req);
+      if (result) {
+        const data = await kehadiranServices.getHadirByUser(req);
+
+        return res.status(200).send({
+          message: "berhasil update data",
+          ...data,
+        });
       }
     } catch (error) {
       return res.status(500).send(error);

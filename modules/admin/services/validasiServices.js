@@ -26,13 +26,11 @@ const validasiServices = {
   },
   updateDataBayar: async (req) => {
     const id = req.params.id;
-    const status_lunas = req.body.status_lunas;
-    const validasi_admin = req.body.validasi_admin;
+    const validasi = req.body.validasi;
 
-    const hasil = await db("tb_pembayaran")
+    const hasil = await db("tb_pembayaran_log")
       .update({
-        status_lunas: status_lunas,
-        validasi_admin: validasi_admin,
+        validasi: validasi,
       })
       .where("id", id);
     return hasil;
@@ -40,16 +38,19 @@ const validasiServices = {
   getBayar: async (all) => {
     const data = await db
       .select(
-        "tb_pembayaran.id_user",
+        "tb_pembayaran_log.id_user",
         "tb_peserta.nama_lengkap",
-        "tb_pembayaran.nominal",
-        "tb_pembayaran.jenis_bayar",
-        "tb_pembayaran.bukti_bayar",
-        "tb_pembayaran.status_lunas",
-        "tb_pembayaran.validasi_admin"
+        "tb_pembayaran_log.nominal",
+        "tb_pembayaran_log.jenis_bayar",
+        "tb_pembayaran_log.bukti_bayar",
+        "tb_pembayaran_log.validasi"
       )
-      .from("tb_pembayaran")
-      .leftJoin("tb_peserta", "tb_pembayaran.id_user", "tb_peserta.id_user");
+      .from("tb_pembayaran_log")
+      .leftJoin(
+        "tb_peserta",
+        "tb_pembayaran_log.id_user",
+        "tb_peserta.id_user"
+      );
     return data;
   },
 };

@@ -13,7 +13,6 @@ const pengumumanServices = {
       judul: input.judul,
       deskripsi: input.deskripsi,
     });
-    console.log("cobaa servicess");
     return data;
   },
   updateData: async (req) => {

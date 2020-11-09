@@ -1,6 +1,30 @@
 const nilaiServices = require("./../services/nilaiServices");
 
 const nilaiController = {
+  getFisik: async (req, res, next) => {
+    try {
+      const data = await nilaiServices.getFisikNilai(req);
+      // console.log(data);
+      return res.status(200).send(data);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+  updateFisik: async (req, res, next) => {
+    try {
+      const result = await nilaiServices.updateFisikNilai(req);
+
+      if (result) {
+        return res.status(200).json({
+          message: "berhasil mengubah data",
+          id_user: req.params.id_user,
+          nilai_fisik: req.body.nilai_fisik,
+        });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
   getAfektif: async (req, res, next) => {
     try {
       const data = await nilaiServices.getAfektifNilai(req);

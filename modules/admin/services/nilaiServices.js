@@ -1,6 +1,33 @@
 const db = require("../../../config/database");
 
 const nilaiServices = {
+  // Nilai Fisik
+  getFisikNilai: async (all) => {
+    const hasil = await db("tb_users")
+      .select(
+        "tb_peserta.id_user",
+        "tb_peserta.nama_lengkap",
+        "tb_peserta.nilai_fisik"
+      )
+      .join("tb_peserta", "tb_users.id", "=", "tb_peserta.id_user")
+      .where({
+        role: "user",
+        tahap: "4",
+      });
+
+    return hasil;
+  },
+  updateFisikNilai: async (req) => {
+    const id_user = req.params.id_user;
+    const nilai_fisik = req.body.nilai_fisik;
+
+    const hasil = await db("tb_peserta")
+      .update({
+        nilai_fisik: nilai_fisik,
+      })
+      .where("id", id_user);
+    return hasil;
+  },
   // Nilai Afektif
   getAfektifNilai: async (all) => {
     const data = await db

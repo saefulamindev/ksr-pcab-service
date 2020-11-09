@@ -11,6 +11,17 @@ router.get("/", passport.authenticate("jwt", { session: false }), function (
 ) {
   res.send("Halaman penilaian");
 });
+// Nilai Fisik
+router.get(
+  "/fisik/all",
+  passport.authenticate("jwt", { session: false }),
+  nilaiController.getFisik
+);
+router.post(
+  "/fisik/edit/:id_user",
+  passport.authenticate("jwt", { session: false }),
+  nilaiController.updateFisik
+);
 
 // Nilai Afektif
 router.get(

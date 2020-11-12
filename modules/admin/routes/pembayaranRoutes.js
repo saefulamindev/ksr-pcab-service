@@ -8,6 +8,8 @@ router.get("/", function (req, res, next) {
 });
 
 router.get("/all", pembayaranController.get);
-router.post("/upload", pembayaranController.upload);
+router.post("/upload", pembayaranController.uploadLog);
+router.post("/tambah", pembayaranController.create);
+router.post("/status/:id_user", pembayaranController.updateBayar);
 
 module.exports = router;

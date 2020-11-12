@@ -38,6 +38,7 @@ const validasiServices = {
   getBayar: async (all) => {
     const data = await db
       .select(
+        "tb_pembayaran_log.id",
         "tb_pembayaran_log.id_user",
         "tb_peserta.nama_lengkap",
         "tb_pembayaran_log.nominal",

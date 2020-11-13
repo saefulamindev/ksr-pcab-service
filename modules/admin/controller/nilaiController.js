@@ -1,6 +1,7 @@
 const nilaiServices = require("./../services/nilaiServices");
 
 const nilaiController = {
+  // ===============================Nilai Fisik =========================
   getFisik: async (req, res, next) => {
     try {
       const data = await nilaiServices.getFisikNilai(req);
@@ -25,6 +26,8 @@ const nilaiController = {
       return res.status(500).send(error);
     }
   },
+
+  //================================= Nilai Afektif ============================
   getAfektif: async (req, res, next) => {
     try {
       const data = await nilaiServices.getAfektifNilai(req);
@@ -95,6 +98,7 @@ const nilaiController = {
       return res.status(500).send(error);
     }
   },
+  // ==========================Nilai Essay================================
   getEssay: async (req, res, next) => {
     console.log(req.params);
     try {
@@ -106,6 +110,20 @@ const nilaiController = {
       return res.status(200).send(id_essay);
     } catch (error) {
       return res.status(500).send(error);
+    }
+  },
+  updateEssay: async (req, res, next) => {
+    try {
+      const result = await nilaiServices.updateEssayNilai(req);
+
+      if (result) {
+        return res.status(200).json({
+          message: "berhasil mengubah data",
+          nilai_essay: req.body.nilai_essay,
+        });
+      }
+    } catch (error) {
+      return res.status(500).send(error.message);
     }
   },
 };

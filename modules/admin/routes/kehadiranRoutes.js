@@ -22,25 +22,25 @@ router.get(
   kehadiranController.getDetail
 );
 router.post(
-  "/materi/:id_user",
+  "/materi/:id_materi/:id_user",
   passport.authenticate("jwt", { session: false }),
-  kehadiranController.Update
+  kehadiranController.UpdateByM
 );
 
 router.get(
   "/peserta/all",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   kehadiranController.getUser
 );
 router.get(
   "/peserta/:id_user",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   kehadiranController.getDetailUser
 );
 router.post(
-  "/peserta/:id_materi",
-  // passport.authenticate("jwt", { session: false }),
-  kehadiranController.updateHadir
+  "/peserta/:id_user/:id_materi",
+  passport.authenticate("jwt", { session: false }),
+  kehadiranController.updateHadirByUser
 );
 
 module.exports = router;

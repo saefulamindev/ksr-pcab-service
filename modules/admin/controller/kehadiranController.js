@@ -34,9 +34,10 @@ const kehadiranController = {
       return res.status(500).send(error);
     }
   },
-  Update: async (req, res, next) => {
+  UpdateByM: async (req, res, next) => {
     try {
-      const result = await kehadiranServices.updateHadir(req);
+      const result = await kehadiranServices.updateHadirByMatUser(req);
+
       if (result) {
         const data = await kehadiranServices.getHadirByMateri(req);
 
@@ -46,7 +47,7 @@ const kehadiranController = {
         });
       }
     } catch (error) {
-      return res.status(500).send(error);
+      return res.status(500).send(error.message);
     }
   },
   getUser: async (req, res, next) => {
@@ -86,9 +87,10 @@ const kehadiranController = {
       return res.status(500).send(error);
     }
   },
-  updateHadir: async (req, res, next) => {
+  updateHadirByUser: async (req, res, next) => {
+    console.log(req.params);
     try {
-      const result = await kehadiranServices.updateHadirByMateri(req);
+      const result = await kehadiranServices.updateHadirByUserMateri(req);
       if (result) {
         const data = await kehadiranServices.getHadirByUser(req);
 

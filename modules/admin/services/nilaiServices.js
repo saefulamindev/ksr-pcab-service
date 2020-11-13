@@ -1,7 +1,7 @@
 const db = require("../../../config/database");
 
 const nilaiServices = {
-  // Nilai Fisik
+  // ===============================Nilai Fisik =========================
   getFisikNilai: async (all) => {
     const hasil = await db("tb_users")
       .select(
@@ -28,7 +28,7 @@ const nilaiServices = {
       .where("id", id_user);
     return hasil;
   },
-  // Nilai Afektif
+  //================================= Nilai Afektif ============================
   getAfektifNilai: async (all) => {
     const data = await db
       .select(
@@ -86,6 +86,22 @@ const nilaiServices = {
       .where("jenis_test", jenis_test)
       .where("id_user", id_user);
     return result;
+  },
+  // ==========================Nilai Essay================================
+
+  updateEssayNilai: async (req) => {
+    const { jenis_test, id_user } = req.params;
+    const nilai_essay = req.body.nilai_essay;
+
+    const hasil = await db("tb_nilai_total")
+      .update({
+        nilai_essay: nilai_essay,
+      })
+      .where({
+        jenis_test,
+        id_user,
+      });
+    return hasil;
   },
 };
 

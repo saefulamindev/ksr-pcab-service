@@ -34,14 +34,14 @@ const kehadiranServices = {
       });
     return data;
   },
-  updateHadir: async (req) => {
-    const { id_user } = req.params;
-    const { id_materi, presensi } = req.body;
+  updateHadirByMatUser: async (req) => {
+    const { id_user, id_materi } = req.params;
+    const { presensi } = req.body;
     console.log(id_user, id_materi, presensi);
 
     const hasil = await db("tb_kehadiran")
       .update({
-        presensi: presensi,
+        presensi,
       })
       .where({
         id_materi: id_materi,
@@ -49,9 +49,8 @@ const kehadiranServices = {
       });
     return hasil;
   },
-  getHadirByMateri: async (data) => {
-    const { id_user } = data.params;
-    const { id_materi } = data.body;
+  getHadirByMateri: async (req) => {
+    const { id_user, id_materi } = req.params;
 
     const hasil = await db
       .select(
@@ -113,9 +112,9 @@ const kehadiranServices = {
       .where("tb_kehadiran.id_user", id_user);
     return data;
   },
-  updateHadirByMateri: async (req) => {
-    const { id_materi } = req.params;
-    const { id_user, presensi } = req.body;
+  updateHadirByUserMateri: async (req) => {
+    const { id_user, id_materi } = req.params;
+    const { presensi } = req.body;
     console.log(id_user, id_materi, presensi);
 
     const hasil = await db("tb_kehadiran")
@@ -123,15 +122,13 @@ const kehadiranServices = {
         presensi: presensi,
       })
       .where({
-        id_user: id_user,
-        id_materi: id_materi,
+        id_user,
+        id_materi,
       });
     return hasil;
   },
   getHadirByUser: async (data) => {
-    const { id_materi } = data.params;
-    const { id_user } = data.body;
-
+    const { id_user, id_materi } = data.params;
     const hasil = await db
       .select(
         "tb_peserta.id_user",

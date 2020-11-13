@@ -44,5 +44,10 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   nilaiController.deleteAfektif
 );
+router.get(
+  "/essay/:jenis_test/:id_user",
+  // passport.authenticate("jwt", { session: false }),
+  nilaiController.getEssay
+);
 
 module.exports = router;

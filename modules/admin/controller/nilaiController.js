@@ -95,6 +95,19 @@ const nilaiController = {
       return res.status(500).send(error);
     }
   },
+  getEssay: async (req, res, next) => {
+    console.log(req.params);
+    try {
+      const id_essay = await nilaiServices.getEssayByJenis(
+        req.params.jenis_test,
+        req.params.id_user
+      );
+
+      return res.status(200).send(id_essay);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
 };
 
 module.exports = nilaiController;

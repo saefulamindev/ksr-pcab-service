@@ -80,6 +80,13 @@ const nilaiServices = {
     const hasil = await db("tb_afektif").delete().where("id_user", id_user);
     return hasil;
   },
+  getEssayByJenis: async (jenis_test, id_user) => {
+    const result = await db("tb_jawaban_essay")
+      .select("id", "jenis_test", "id_user", "jawaban_essay", "skor")
+      .where("jenis_test", jenis_test)
+      .where("id_user", id_user);
+    return result;
+  },
 };
 
 module.exports = nilaiServices;

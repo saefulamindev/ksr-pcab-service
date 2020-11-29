@@ -17,5 +17,6 @@ router.get(
 router.post("/login", UserController.login);
 router.get("/daftar", UserController.token_daftar);
 router.post("/daftar", UserController.daftar);
+// router.post("/confirmation", UserController.confirmation);
 
 module.exports = router;

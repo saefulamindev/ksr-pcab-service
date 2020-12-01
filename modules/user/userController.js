@@ -1,7 +1,7 @@
 const UserService = require("../user/userServices");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { json } = require("express");
+const { json, query } = require("express");
 const saltRounds = bcrypt.genSaltSync(10);
 const myPlaintextPassword = "s0//P4$$w0rD";
 const refCaptchaServices = require("../referensi/refCaptchaServices");
@@ -24,7 +24,7 @@ const UserController = {
       }
       const user = await UserService.getUserByEmail(req.body.email);
       const resEmailSalah = {
-        message: "email salah",
+        message: "email tidak terdaftar",
       };
 
       if (!user) {
@@ -32,12 +32,16 @@ const UserController = {
       }
 
       const match = await bcrypt.compare(req.body.password, user.password);
-      const resPasswdSalah = {
-        message: "password salah",
-      };
 
       if (!match) {
-        res.status(404).send(resPasswdSalah);
+        res.status(404).send({
+          message: "password salah",
+        });
+      }
+      if (!user.isVerified) {
+        res.status(404).send({
+          message: "email belum di verifikasi. silakan cek email anda",
+        });
       }
 
       const tokenJWT = jwt.sign(
@@ -55,8 +59,7 @@ const UserController = {
         tahap: user.tahap,
         token: tokenJWT,
       };
-
-      res.json(data);
+      return res.json(data);
     } catch (error) {
       res.status(500).send(error.message);
     }
@@ -69,26 +72,24 @@ const UserController = {
         process.env.SECRET_DAFTAR,
         function (err, decoded) {
           if (err) {
-            return res.status(400).send("token tidak valid");
+            return res.status(400).send({
+              message: "token tidak valid",
+            });
           }
         }
       );
-
       req.body.password = bcrypt.hashSync(req.body.password, saltRounds);
-
       const cekUser = await UserService.getUserByEmail(req.body.email);
       const resEmailAda = {
         message: "email sudah ada",
       };
       if (cekUser) {
-        return res.status(200).send(resEmailAda);
+        return res.status(409).send(resEmailAda);
       }
       const input = await UserService.createUser(req.body);
 
       const newUser = await UserService.getUserById(input[0]);
       const resBerhasil = {
-        message:
-          "berhasil membuat akun dan mengirimkan email verikasi. harap verikasi email segera.",
         id: newUser.id,
         email: newUser.email,
         password: newUser.password,
@@ -109,12 +110,7 @@ const UserController = {
         },
       });
       // const token = tokenJWT_email;
-      const url =
-        req.headers.host +
-        "/confirmation/" +
-        newUser.id +
-        "?token=" +
-        token_email;
+      const url = req.headers.host + "/users/verify?token_email=" + token_email;
 
       const mailOptions = {
         from: "no-reply.pcab@ksrpmiunitunj.org", // Sender address
@@ -123,11 +119,11 @@ const UserController = {
         html:
           "Hello " +
           req.body.email +
-          "\n\n" +
+          "\n\n, " +
           "Please verify your account by clicking the link: \nhttp://" +
           `<a href="${url}">` +
           url +
-          "</a>" +
+          `</a>` +
           "\n\nThank You!\n", // Plain text body
       };
       transport.sendMail(mailOptions, function (err, info) {
@@ -138,6 +134,8 @@ const UserController = {
         }
       });
       return res.status(201).send({
+        message:
+          "berhasil membuat akun dan mengirimkan email verikasi. harap verikasi email segera.",
         ...resBerhasil,
         mailOptions,
       });
@@ -149,6 +147,39 @@ const UserController = {
 
       console.log(error.message);
       return res.status(500).send(resGagal);
+    }
+  },
+  verify: async (req, res, next) => {
+    try {
+      let id;
+      jwt.verify(
+        req.query.token_email,
+        process.env.SECRET_VERIFIKASI,
+        function (err, decoded) {
+          if (err) {
+            return res.status(400).send("token email tidak valid");
+          }
+          id = decoded.data;
+        }
+      );
+      const newUser = await UserService.getUserById(id);
+      if (!newUser) {
+        return res.status(400).send({
+          message: "email tidak ada.",
+        });
+      }
+      if (newUser.isVerified) {
+        return res.status(409).send({
+          message: "email sudah di verifikasi. silakan login.",
+        });
+      }
+      const updateUserVerified = await UserService.updateVerified(id);
+      const resBerhasil = {
+        message: "email berhasil di verifikasi",
+      };
+      return res.status(200).send(resBerhasil);
+    } catch (error) {
+      return res.status(500).send(error.message);
     }
   },
   token_daftar: async (req, res, next) => {

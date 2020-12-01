@@ -49,6 +49,22 @@ const pembayaranServices = {
       .leftJoin("tb_peserta", "tb_pembayaran.id_user", "tb_peserta.id_user");
     return data;
   },
+  getByJenisBayar: async (jenis_bayar) => {
+    const result = await db
+      .select(
+        "tb_pembayaran.id_user",
+        "tb_peserta.nama_lengkap",
+        "tb_pembayaran.nominal",
+        "tb_pembayaran.jenis_bayar",
+        "tb_pembayaran.status_lunas"
+      )
+      .from("tb_pembayaran")
+      .leftJoin("tb_peserta", "tb_pembayaran.id_user", "tb_peserta.id_user")
+      .where({
+        jenis_bayar: jenis_bayar,
+      });
+    return result;
+  },
   createBayar: async (input) => {
     const data = db("tb_pembayaran").insert({
       id_user: input.id_user,

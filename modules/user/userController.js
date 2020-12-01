@@ -32,12 +32,11 @@ const UserController = {
       }
 
       const match = await bcrypt.compare(req.body.password, user.password);
-      const resPasswdSalah = {
-        message: "password salah",
-      };
 
       if (!match) {
-        res.status(404).send(resPasswdSalah);
+        res.status(404).send({
+          message: "password salah",
+        });
       }
       if (!user.isVerified) {
         res.status(404).send({
@@ -73,26 +72,24 @@ const UserController = {
         process.env.SECRET_DAFTAR,
         function (err, decoded) {
           if (err) {
-            return res.status(400).send("token tidak valid");
+            return res.status(400).send({
+              message: "token tidak valid",
+            });
           }
         }
       );
-
       req.body.password = bcrypt.hashSync(req.body.password, saltRounds);
-
       const cekUser = await UserService.getUserByEmail(req.body.email);
       const resEmailAda = {
         message: "email sudah ada",
       };
       if (cekUser) {
-        return res.status(200).send(resEmailAda);
+        return res.status(409).send(resEmailAda);
       }
       const input = await UserService.createUser(req.body);
 
       const newUser = await UserService.getUserById(input[0]);
       const resBerhasil = {
-        message:
-          "berhasil membuat akun dan mengirimkan email verikasi. harap verikasi email segera.",
         id: newUser.id,
         email: newUser.email,
         password: newUser.password,
@@ -126,7 +123,7 @@ const UserController = {
           "Please verify your account by clicking the link: \nhttp://" +
           `<a href="${url}">` +
           url +
-          "</a>" +
+          `</a>` +
           "\n\nThank You!\n", // Plain text body
       };
       transport.sendMail(mailOptions, function (err, info) {
@@ -137,6 +134,8 @@ const UserController = {
         }
       });
       return res.status(201).send({
+        message:
+          "berhasil membuat akun dan mengirimkan email verikasi. harap verikasi email segera.",
         ...resBerhasil,
         mailOptions,
       });
@@ -176,7 +175,7 @@ const UserController = {
       }
       const updateUserVerified = await UserService.updateVerified(id);
       const resBerhasil = {
-        message: "berhasil di verifikasi",
+        message: "email berhasil di verifikasi",
       };
       return res.status(200).send(resBerhasil);
     } catch (error) {

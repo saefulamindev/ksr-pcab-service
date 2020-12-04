@@ -49,6 +49,7 @@ const pembayaranServices = {
       .leftJoin("tb_peserta", "tb_pembayaran.id_user", "tb_peserta.id_user");
     return data;
   },
+
   getByJenisBayar: async (jenis_bayar) => {
     const result = await db
       .select(
@@ -62,6 +63,15 @@ const pembayaranServices = {
       .leftJoin("tb_peserta", "tb_pembayaran.id_user", "tb_peserta.id_user")
       .where({
         jenis_bayar: jenis_bayar,
+      });
+    return result;
+  },
+  getSaldoByJenisBayar: async (data) => {
+    const result = await db("tb_pembayaran_log")
+      .sum({ saldo: "nominal" })
+      .where({
+        jenis_bayar: data,
+        validasi: "sudah",
       });
     return result;
   },

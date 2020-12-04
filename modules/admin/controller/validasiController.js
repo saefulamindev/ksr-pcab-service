@@ -41,6 +41,39 @@ const validasiController = {
       return res.status(500).send(error);
     }
   },
+  ubahValidasi: async (req, res, next) => {
+    try {
+      const { jenis_bayar, id_user } = req.params;
+      const cekNominal = await validasiServices.cekNominalByJenisBayar(
+        jenis_bayar,
+        id_user
+      );
+      // return res.send(cekNominal);
+      const bayarDiklat = 100000;
+      if (cekNominal == bayarDiklat) {
+        try {
+          res.send("Lunas");
+        } catch (error) {
+          res.send(error);
+        }
+      }
+      // res.send("Lanjut upload");
+      res.send("coba");
+      return console.log(cekNominal);
+
+      const result = await pembayaranServices.updatePembayaran(req);
+
+      if (result) {
+        return res.status(200).json({
+          message: "berhasil mengubah data",
+          id_user: req.params.id_user,
+          status_lunas: req.body.status_lunas,
+        });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
   get: async (req, res, next) => {
     try {
       const data = await validasiServices.getBayar(req);

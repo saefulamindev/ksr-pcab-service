@@ -4,13 +4,13 @@ const validasiController = require("../controller/validasiController");
 const passport = require("passport");
 
 /* GET users listing. */
-router.get("/", passport.authenticate("jwt", { session: false }), function (
-  req,
-  res,
-  next
-) {
-  res.send("Halaman validasi");
-});
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  function (req, res, next) {
+    res.send("Halaman validasi");
+  }
+);
 
 router.get(
   "/dokumen/all",
@@ -32,5 +32,6 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   validasiController.updateBayar
 );
+router.post("/:jenis_bayar/:id_user", validasiController.ubahValidasi);
 
 module.exports = router;

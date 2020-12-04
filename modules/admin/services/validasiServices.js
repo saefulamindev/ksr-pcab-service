@@ -35,6 +35,15 @@ const validasiServices = {
       .where("id", id);
     return hasil;
   },
+  cekNominalByJenisBayar: async (jenis_bayar, id_user) => {
+    const result = await db("tb_pembayaran_log")
+      .sum({ cekNominal: "nominal" })
+      .where({
+        jenis_bayar: jenis_bayar,
+        "tb_pembayaran_log.id_user": id_user,
+      });
+    return result;
+  },
   getBayar: async (all) => {
     const data = await db
       .select(

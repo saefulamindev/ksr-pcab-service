@@ -19,6 +19,16 @@ const pembayaranController = {
       return res.status(500).send(error);
     }
   },
+  getSaldo: async (req, res, next) => {
+    try {
+      const data = await pembayaranServices.getSaldoByJenisBayar(
+        req.params.jenis_bayar
+      );
+      return res.status(200).send(data);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
   uploadLog: async (req, res, next) => {
     // console.log("cobaa");
     try {

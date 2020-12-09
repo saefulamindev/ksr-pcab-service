@@ -24,7 +24,7 @@ router.post(
 );
 router.get(
   "/bayar/all",
-  passport.authenticate("jwt", { session: false }),
+  // passport.authenticate("jwt", { session: false }),
   validasiController.get
 );
 router.post(
@@ -32,6 +32,6 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   validasiController.updateBayar
 );
-router.post("/:jenis_bayar/:id_user", validasiController.ubahValidasi);
+router.get("/:id", validasiController.valid);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const pembayaranServices = require("../services/pembayaranServices");
+const { cekNominalByJenisBayar } = require("../services/validasiServices");
 
 const pembayaranController = {
   get: async (req, res, next) => {
@@ -29,9 +30,37 @@ const pembayaranController = {
       return res.status(500).send(error);
     }
   },
-  uploadLog: async (req, res, next) => {
-    // console.log("cobaa");
+  getTagihan: async (req, res, next) => {
     try {
+      const { jenis_bayar, id_user } = req.params;
+
+      const cekNominal = await pembayaranServices.cekNominalByJenisBayar(
+        jenis_bayar,
+        id_user
+      );
+      const cekTagihan = await pembayaranServices.cekTagihan(jenis_bayar);
+      const Tagihan = cekTagihan.nominal - cekNominal.nominal;
+
+      return res.status(200).send({ Tagihan });
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+  tambahPembayaran: async (req, res, next) => {
+    try {
+      const { jenis_bayar, id_user } = req.body;
+      const cekNominal = await pembayaranServices.cekNominalByJenisBayar(
+        jenis_bayar,
+        id_user
+      );
+      const Tagihan = await pembayaranServices.cekTagihan(jenis_bayar);
+      console.log(cekNominal.nominal, Tagihan.nominal);
+      if (cekNominal.nominal >= Tagihan.nominal) {
+        return res.send({
+          message: "Tagihan Lunas",
+        });
+      }
+
       const input = await pembayaranServices.uploadLogBayar(req.body);
       const newInput = await pembayaranServices.getLogBayarById(input[0]);
 

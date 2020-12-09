@@ -35,13 +35,33 @@ const validasiServices = {
       .where("id", id);
     return hasil;
   },
-  cekNominalByJenisBayar: async (jenis_bayar, id_user) => {
+  getLogTransaksi: async (id) => {
+    const result = await db("log_transaksi")
+      .select("*")
+      .where(("id", id));
+    return result;
+  },
+  cekNominalPembayaranByJenisBayar: async (jenis_bayar, id_user) => {
     const result = await db("tb_pembayaran_log")
-      .sum({ cekNominal: "nominal" })
+      .sum({ nominal: "nominal" })
       .where({
         jenis_bayar: jenis_bayar,
         "tb_pembayaran_log.id_user": id_user,
       });
+    return result;
+  },
+  tambahPembayaran: async (tambah) => {
+    const data = db("tb_pembayaran").insert({
+      id_user: tambah.id_user,
+      nominal: tambah.nominal,
+      jenis_bayar: tambah.jenis_bayar,
+    });
+    return data;
+  },
+  cekTagihanByJenisBayar: async (jenis_bayar) => {
+    const result = await db.select("nominal").from("reff_tagihan").where({
+      jenis_bayar: jenis_bayar,
+    });
     return result;
   },
   getBayar: async (all) => {

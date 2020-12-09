@@ -1,3 +1,4 @@
+const { response } = require("express");
 const db = require("../../../config/database");
 const pembayaranController = require("../controller/pembayaranController");
 
@@ -43,13 +44,32 @@ const pembayaranServices = {
         "tb_peserta.nama_lengkap",
         "tb_pembayaran.nominal",
         "tb_pembayaran.jenis_bayar",
-        "tb_pembayaran.status_lunas"
+        "tb_pembayaran.status"
       )
       .from("tb_pembayaran")
       .leftJoin("tb_peserta", "tb_pembayaran.id_user", "tb_peserta.id_user");
     return data;
   },
-
+  cekNominalByJenisBayar: async (jenis_bayar, id_user) => {
+    const result = await db("log_transaksi")
+      .sum({ nominal: "nominal" })
+      .where({
+        jenis_bayar: jenis_bayar,
+        "log_transaksi.id_user": id_user,
+      })
+      .first();
+    return result;
+  },
+  cekTagihan: async (jenis_bayar, id_user) => {
+    const result = await db
+      .select("nominal")
+      .from("reff_tagihan")
+      .where({
+        jenis_bayar: jenis_bayar,
+      })
+      .first();
+    return result;
+  },
   getByJenisBayar: async (jenis_bayar) => {
     const result = await db
       .select(
@@ -67,22 +87,11 @@ const pembayaranServices = {
     return result;
   },
   getSaldoByJenisBayar: async (data) => {
-    const result = await db("tb_pembayaran_log")
-      .sum({ saldo: "nominal" })
-      .where({
-        jenis_bayar: data,
-        validasi: "sudah",
-      });
-    return result;
-  },
-  createBayar: async (input) => {
-    const data = db("tb_pembayaran").insert({
-      id_user: input.id_user,
-      nominal: input.nominal,
-      jenis_bayar: input.jenis_bayar,
-      status_lunas: input.status_lunas,
+    const result = await db("log_transaksi").sum({ saldo: "nominal" }).where({
+      jenis_bayar: data,
+      validasi: "sudah",
     });
-    return data;
+    return result;
   },
   getLogBayarById: (id) => {
     const data = db("tb_pembayaran_log").where("id", id).first();

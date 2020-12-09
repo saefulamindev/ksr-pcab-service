@@ -45,7 +45,7 @@ const pembayaranController = {
       return res.status(500).send(error);
     }
   },
-  tambahPembayaran: async (req, res, next) => {
+  tambahTransaksi: async (req, res, next) => {
     try {
       const { jenis_bayar, id_user } = req.body;
       const cekNominal = await pembayaranServices.cekNominalByJenisBayar(
@@ -59,9 +59,8 @@ const pembayaranController = {
           message: "Tagihan Lunas",
         });
       }
-
-      const input = await pembayaranServices.uploadLogBayar(req.body);
-      const newInput = await pembayaranServices.getLogBayarById(input[0]);
+      const input = await pembayaranServices.tambahTransaksiBayar(req.body);
+      const newInput = await pembayaranServices.getTransaksiBayarById(input[0]);
 
       const resBerhasil = {
         message: "berhasil mengupload pembayaran",

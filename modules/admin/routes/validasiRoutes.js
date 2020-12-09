@@ -24,14 +24,13 @@ router.post(
 );
 router.get(
   "/bayar/all",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   validasiController.get
 );
 router.post(
   "/bayar/edit/:id",
-  passport.authenticate("jwt", { session: false }),
-  validasiController.updateBayar
+  // passport.authenticate("jwt", { session: false }),
+  validasiController.updateTransaksi
 );
-router.get("/:id", validasiController.valid);
 
 module.exports = router;

@@ -12,9 +12,6 @@ router.get("/:jenis_bayar/all", pembayaranController.getByJenisBayar);
 router.get("/saldo/:jenis_bayar", pembayaranController.getSaldo);
 
 router.get("/tagihan/:id_user/:jenis_bayar", pembayaranController.getTagihan);
-router.post("/upload", pembayaranController.tambahPembayaran);
-
-router.post("/tambah", pembayaranController.create);
-router.post("/status/:id_user", pembayaranController.updateBayar);
+router.post("/upload", pembayaranController.tambahTransaksi);
 
 module.exports = router;

@@ -24,16 +24,16 @@ const validasiController = {
       return res.status(500).send(error);
     }
   },
-  updateBayar: async (req, res, next) => {
+  updateTransaksi: async (req, res, next) => {
     try {
-      const result = await validasiServices.updateDataBayar(req);
-
+      const { id } = req.params;
+      const { valid } = req.body;
+      const result = await validasiServices.updateDataTransaksi(id, valid);
+      const data = await validasiServices.getDataTransaksi(id);
       if (result) {
         return res.status(200).json({
           message: "berhasil update data",
-          id: req.params.id,
-          status_lunas: req.body.status_lunas,
-          validasi_admin: req.body.validasi_admin,
+          data,
         });
       }
     } catch (error) {

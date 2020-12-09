@@ -3,12 +3,12 @@ const db = require("../../../config/database");
 const pembayaranController = require("../controller/pembayaranController");
 
 const pembayaranServices = {
-  getLogBayarById: (id) => {
+  getTransaksiBayarById: (id) => {
     const data = db("log_transaksi").where("id", id).first();
     return data;
   },
 
-  uploadLogBayar: (input) => {
+  tambahTransaksiBayar: (input) => {
     const data = db("log_transaksi").insert({
       id_user: input.id_user,
       nominal: input.nominal,
@@ -85,13 +85,9 @@ const pembayaranServices = {
   getSaldoByJenisBayar: async (data) => {
     const result = await db("log_transaksi").sum({ saldo: "nominal" }).where({
       jenis_bayar: data,
-      validasi: "sudah",
+      valid: true,
     });
     return result;
-  },
-  getLogBayarById: (id) => {
-    const data = db("log_transaksi").where("id", id).first();
-    return data;
   },
   updateLogBayar: async (req) => {
     const id_user = req.params.id_user;

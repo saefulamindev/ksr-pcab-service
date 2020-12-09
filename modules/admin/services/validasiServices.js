@@ -24,23 +24,30 @@ const validasiServices = {
       .where("id", id_user);
     return hasil;
   },
-  updateDataBayar: async (req) => {
-    const id = req.params.id;
-    const validasi = req.body.validasi;
-
-    const hasil = await db("tb_pembayaran_log")
+  updateDataTransaksi: async (id, valid) => {
+    const hasil = await db("log_transaksi")
       .update({
-        validasi: validasi,
+        valid: valid,
       })
-      .where("id", id);
+      .where({
+        id,
+      });
     return hasil;
   },
-  getLogTransaksi: async (id) => {
+  getDataTransaksi: async (id) => {
     const result = await db("log_transaksi")
-      .select("*")
-      .where(("id", id));
+      .select("id_user", "jenis_bayar", "valid")
+      .where("id", id);
     return result;
   },
+  cekPembayaranByJenisBayar: async (jenis_bayar, id_user) => {
+    const result = await db("tb_pembayaran").select("*").where({
+      jenis_bayar: jenis_bayar,
+      "tb_pembayaran.id_user": id_user,
+    });
+    return result;
+  },
+
   cekNominalPembayaranByJenisBayar: async (jenis_bayar, id_user) => {
     const result = await db("log_transaksi").sum({ nominal: "nominal" }).where({
       jenis_bayar: jenis_bayar,

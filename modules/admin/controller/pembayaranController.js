@@ -1,5 +1,4 @@
 const pembayaranServices = require("../services/pembayaranServices");
-const { cekNominalByJenisBayar } = require("../services/validasiServices");
 
 const pembayaranController = {
   get: async (req, res, next) => {

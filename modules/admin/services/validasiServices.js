@@ -42,12 +42,10 @@ const validasiServices = {
     return result;
   },
   cekNominalPembayaranByJenisBayar: async (jenis_bayar, id_user) => {
-    const result = await db("tb_pembayaran_log")
-      .sum({ nominal: "nominal" })
-      .where({
-        jenis_bayar: jenis_bayar,
-        "tb_pembayaran_log.id_user": id_user,
-      });
+    const result = await db("log_transaksi").sum({ nominal: "nominal" }).where({
+      jenis_bayar: jenis_bayar,
+      "log_transaksi.id_user": id_user,
+    });
     return result;
   },
   tambahPembayaran: async (tambah) => {
@@ -67,20 +65,16 @@ const validasiServices = {
   getBayar: async (all) => {
     const data = await db
       .select(
-        "tb_pembayaran_log.id",
-        "tb_pembayaran_log.id_user",
+        "log_transaksi.id",
+        "log_transaksi.id_user",
         "tb_peserta.nama_lengkap",
-        "tb_pembayaran_log.nominal",
-        "tb_pembayaran_log.jenis_bayar",
-        "tb_pembayaran_log.bukti_bayar",
-        "tb_pembayaran_log.validasi"
+        "log_transaksi.nominal",
+        "log_transaksi.jenis_bayar",
+        "log_transaksi.bukti_bayar",
+        "log_transaksi.valid"
       )
-      .from("tb_pembayaran_log")
-      .leftJoin(
-        "tb_peserta",
-        "tb_pembayaran_log.id_user",
-        "tb_peserta.id_user"
-      );
+      .from("log_transaksi")
+      .leftJoin("tb_peserta", "log_transaksi.id_user", "tb_peserta.id_user");
     return data;
   },
 };

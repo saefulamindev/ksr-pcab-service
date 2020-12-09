@@ -40,7 +40,7 @@ const validasiServices = {
       .where("id", id);
     return result;
   },
-  cekPembayaranByJenisBayar: async (jenis_bayar, id_user) => {
+  cek: async (jenis_bayar, id_user) => {
     const result = await db("tb_pembayaran").select("*").where({
       jenis_bayar: jenis_bayar,
       "tb_pembayaran.id_user": id_user,

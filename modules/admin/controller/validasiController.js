@@ -25,19 +25,27 @@ const validasiController = {
     }
   },
   updateTransaksi: async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const { valid } = req.body;
+    const { id } = req.params;
+    const { valid } = req.body;
+    const data = await validasiServices.getDataTransaksi(id);
+    const id_user = data[0].id_user;
+    const jenis_bayar = data[0].jenis_bayar;
+    console.log(data[0].id_user, data[0].jenis_bayar, valid);
+    if (!valid == 1) {
+      const cek = await validasiServices.cek(id_user, jenis_bayar);
+      console.log(cek);
+
+      if (!cek) {
+        return res.send("buat row baru");
+      }
+    } else {
       const result = await validasiServices.updateDataTransaksi(id, valid);
-      const data = await validasiServices.getDataTransaksi(id);
       if (result) {
         return res.status(200).json({
           message: "berhasil update data",
           data,
         });
       }
-    } catch (error) {
-      return res.status(500).send(error);
     }
   },
   valid: async (req, res, next) => {

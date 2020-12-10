@@ -13,6 +13,7 @@ const validasiServices = {
     );
     return data;
   },
+
   updateDataDok: async (req) => {
     const id_user = req.params.id_user;
     const validasi_dokumen = req.body.validasi_dokumen;
@@ -24,7 +25,19 @@ const validasiServices = {
       .where("id", id_user);
     return hasil;
   },
-  updateDataTransaksi: async (id, valid) => {
+  updateDataBayar: async (id_user, jenis_bayar, nominal, status) => {
+    const hasil = await db("tb_pembayaran")
+      .update({
+        nominal,
+        status,
+      })
+      .where({
+        id_user,
+        jenis_bayar,
+      });
+    return hasil;
+  },
+  update_valid: async (id, valid) => {
     const hasil = await db("log_transaksi")
       .update({
         valid: valid,
@@ -36,18 +49,31 @@ const validasiServices = {
   },
   getDataTransaksi: async (id) => {
     const result = await db("log_transaksi")
-      .select("id_user", "jenis_bayar", "valid")
-      .where("id", id);
+      .select("*")
+      .where("id", id)
+      .first();
     return result;
   },
-  cek: async (jenis_bayar, id_user) => {
-    const result = await db("tb_pembayaran").select("*").where({
-      jenis_bayar: jenis_bayar,
-      "tb_pembayaran.id_user": id_user,
-    });
+  cek: async (id_user, jenis_bayar) => {
+    const result = await db("tb_pembayaran")
+      .select("*")
+      .where({
+        jenis_bayar: jenis_bayar,
+        id_user: id_user,
+      })
+      .first();
     return result;
   },
-
+  ceklog_transaksi: async (id_user, jenis_bayar) => {
+    const result = await db("log_transaksi")
+      .select("*")
+      .where({
+        jenis_bayar: jenis_bayar,
+        id_user: id_user,
+      })
+      .first();
+    return result;
+  },
   cekNominalPembayaranByJenisBayar: async (jenis_bayar, id_user) => {
     const result = await db("log_transaksi").sum({ nominal: "nominal" }).where({
       jenis_bayar: jenis_bayar,
@@ -55,11 +81,30 @@ const validasiServices = {
     });
     return result;
   },
+  cek_tagihan: async (jenis_bayar) => {
+    const data = await db
+      .select("nominal")
+      .from("reff_tagihan")
+      .where({
+        jenis_bayar,
+      })
+      .first();
+    return data;
+  },
   tambahPembayaran: async (tambah) => {
     const data = db("tb_pembayaran").insert({
       id_user: tambah.id_user,
       nominal: tambah.nominal,
       jenis_bayar: tambah.jenis_bayar,
+    });
+    return data;
+  },
+  tambahNewBayar: async (id_user, jenis_bayar, nominal) => {
+    const data = db("tb_pembayaran").insert({
+      id_user: id_user,
+      jenis_bayar: jenis_bayar,
+      nominal,
+      status: "belum_lunas",
     });
     return data;
   },

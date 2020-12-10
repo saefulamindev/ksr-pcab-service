@@ -28,33 +28,56 @@ const validasiController = {
     const { id } = req.params;
     const { valid } = req.body;
     const data = await validasiServices.getDataTransaksi(id);
-    const id_user = data[0].id_user;
-    const jenis_bayar = data[0].jenis_bayar;
-    console.log(data[0].id_user, data[0].jenis_bayar, valid);
-    if (!valid == 1) {
+    const id_user = data.id_user;
+    const jenis_bayar = data.jenis_bayar;
+    if (parseInt(valid) === 1) {
+      const update_valid = await validasiServices.update_valid(id, valid);
       const cek = await validasiServices.cek(id_user, jenis_bayar);
-      console.log(cek);
+      // console.log({ data });
 
       if (!cek) {
-        return res.send("buat row baru");
-      }
-    } else {
-      const result = await validasiServices.updateDataTransaksi(id, valid);
-      if (result) {
-        return res.status(200).json({
-          message: "berhasil update data",
-          data,
+        const input = await validasiServices.tambahNewBayar(
+          id_user,
+          jenis_bayar,
+          data.nominal
+        );
+        return res.status(200).send({
+          message: "berhasil menambah data pembayaran baru",
+          id_user,
+          jenis_bayar,
+          nominal,
+        });
+      } else {
+        const cek_tagihan = await validasiServices.cek_tagihan(jenis_bayar);
+        const nominal_now = cek.nominal + data.nominal;
+
+        console.log(data.nominal);
+        console.log(nominal_now);
+        // res.send("lanjut ubah status");
+
+        const status =
+          nominal_now >= cek_tagihan.nominal ? "lunas" : "belum_lunas";
+        const update = await validasiServices.updateDataBayar(
+          id_user,
+          jenis_bayar,
+          nominal_now,
+          status
+        );
+        return res.status(200).send({
+          message: "berhasil menambah data pembayaran baru",
+          id_user,
+          jenis_bayar,
+          nominal,
+          status,
         });
       }
-    }
-  },
-  valid: async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const transaksi = await validasiServices.getLogTransaksi(id);
-      return console.log(transaksi);
-    } catch (error) {
-      res.status(500).send(error.message);
+    } else {
+      const update_valid = await validasiServices.update_valid(id, valid);
+      const cek = await validasiServices.cek(id_user, jenis_bayar);
+
+      return res.send({
+        message: "transaksi tidak valid",
+      });
     }
   },
   get: async (req, res, next) => {

@@ -57,6 +57,7 @@ const UserController = {
         email: user.email,
         role: user.role,
         tahap: user.tahap,
+        verify: user.isVerified,
         token: tokenJWT,
       };
       return res.json(data);

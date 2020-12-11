@@ -16,8 +16,7 @@ const biodataServices = {
     return hasil;
   },
 
-  detail: async (data) => {
-    // console.log(data);
+  detail: async (id_user) => {
     const hasil = await db("tb_users")
       .select(
         "tb_peserta.id_user",
@@ -44,7 +43,7 @@ const biodataServices = {
       .join("tb_peserta", "tb_users.id", "=", "tb_peserta.id_user")
       .where({
         role: "user",
-        id_user: data,
+        id_user,
       });
 
     return hasil;

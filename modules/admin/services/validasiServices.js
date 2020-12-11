@@ -114,7 +114,7 @@ const validasiServices = {
     });
     return result;
   },
-  getBayar: async (all) => {
+  getTransaksi: async (all) => {
     const data = await db
       .select(
         "log_transaksi.id",
@@ -127,6 +127,24 @@ const validasiServices = {
       )
       .from("log_transaksi")
       .leftJoin("tb_peserta", "log_transaksi.id_user", "tb_peserta.id_user");
+    return data;
+  },
+  getTransaksiById: async (id_user) => {
+    const data = await db
+      .select(
+        "log_transaksi.id",
+        "log_transaksi.id_user",
+        "tb_peserta.nama_lengkap",
+        "log_transaksi.nominal",
+        "log_transaksi.jenis_bayar",
+        "log_transaksi.bukti_bayar",
+        "log_transaksi.valid"
+      )
+      .from("log_transaksi")
+      .leftJoin("tb_peserta", "log_transaksi.id_user", "tb_peserta.id_user")
+      .where({
+        "log_transaksi.id_user": id_user,
+      });
     return data;
   },
 };

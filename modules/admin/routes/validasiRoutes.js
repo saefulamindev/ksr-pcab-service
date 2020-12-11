@@ -23,12 +23,17 @@ router.post(
   validasiController.updateDok
 );
 router.get(
-  "/bayar/all",
+  "/transaksi/all",
   passport.authenticate("jwt", { session: false }),
   validasiController.get
 );
+router.get(
+  "/transaksi/:id_user",
+  passport.authenticate("jwt", { session: false }),
+  validasiController.getById
+);
 router.post(
-  "/bayar/edit/:id",
+  "/transaksi/edit/:id",
   // passport.authenticate("jwt", { session: false }),
   validasiController.updateTransaksi
 );

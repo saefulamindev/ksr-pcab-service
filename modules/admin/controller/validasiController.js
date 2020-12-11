@@ -41,11 +41,12 @@ const validasiController = {
           jenis_bayar,
           data.nominal
         );
+
         return res.status(200).send({
           message: "berhasil menambah data pembayaran baru",
           id_user,
           jenis_bayar,
-          nominal,
+          // nominal,
         });
       } else {
         const cek_tagihan = await validasiServices.cek_tagihan(jenis_bayar);
@@ -67,7 +68,7 @@ const validasiController = {
           message: "berhasil menambah data pembayaran baru",
           id_user,
           jenis_bayar,
-          nominal,
+          // nominal,
           status,
         });
       }
@@ -82,7 +83,16 @@ const validasiController = {
   },
   get: async (req, res, next) => {
     try {
-      const data = await validasiServices.getBayar(req);
+      const data = await validasiServices.getTransaksi(req);
+      return res.status(200).send(data);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+  getById: async (req, res, next) => {
+    try {
+      const { id_user } = req.params;
+      const data = await validasiServices.getTransaksiById(id_user);
       return res.status(200).send(data);
     } catch (error) {
       return res.status(500).send(error);

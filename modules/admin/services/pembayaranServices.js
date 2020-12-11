@@ -73,7 +73,7 @@ const pembayaranServices = {
         "tb_peserta.nama_lengkap",
         "tb_pembayaran.nominal",
         "tb_pembayaran.jenis_bayar",
-        "tb_pembayaran.status_lunas"
+        "tb_pembayaran.status"
       )
       .from("tb_pembayaran")
       .leftJoin("tb_peserta", "tb_pembayaran.id_user", "tb_peserta.id_user")
@@ -88,28 +88,6 @@ const pembayaranServices = {
       valid: true,
     });
     return result;
-  },
-  updateLogBayar: async (req) => {
-    const id_user = req.params.id_user;
-    const validasi = req.body.validasi;
-
-    const hasil = await db("log_transaksi")
-      .update({
-        validasi: validasi,
-      })
-      .where("id_user", id_user);
-    return hasil;
-  },
-  updatePembayaran: async (req) => {
-    const id_user = req.params.id_user;
-    const status_lunas = req.body.status_lunas;
-
-    const hasil = await db("tb_pembayaran")
-      .update({
-        status_lunas: status_lunas,
-      })
-      .where("id_user", id_user);
-    return hasil;
   },
 };
 

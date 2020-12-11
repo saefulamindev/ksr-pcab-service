@@ -10,7 +10,7 @@ opts.secretOrKey = process.env.SECRET;
 passport.use(
   new JwtStrategy(opts, async (jwt_payload, done) => {
     try {
-      console.log(jwt_payload)
+      console.log(jwt_payload);
       const user = await UserService.getUserById(jwt_payload.data.id);
       console.log(jwt_payload);
 

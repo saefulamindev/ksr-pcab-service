@@ -36,10 +36,15 @@ const validasiController = {
       // console.log({ data });
 
       if (!cek) {
+        const cek_tagihan = await validasiServices.cek_tagihan(jenis_bayar);
+        const status =
+          data.nominal >= cek_tagihan.nominal ? "lunas" : "belum_lunas";
+
         const input = await validasiServices.tambahNewBayar(
           id_user,
           jenis_bayar,
-          data.nominal
+          data.nominal,
+          status
         );
 
         return res.status(200).send({

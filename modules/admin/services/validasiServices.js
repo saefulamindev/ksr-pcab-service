@@ -99,12 +99,12 @@ const validasiServices = {
     });
     return data;
   },
-  tambahNewBayar: async (id_user, jenis_bayar, nominal) => {
+  tambahNewBayar: async (id_user, jenis_bayar, nominal, status) => {
     const data = db("tb_pembayaran").insert({
       id_user: id_user,
       jenis_bayar: jenis_bayar,
       nominal,
-      status: "belum_lunas",
+      status,
     });
     return data;
   },

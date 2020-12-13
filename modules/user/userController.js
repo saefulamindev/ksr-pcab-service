@@ -14,7 +14,6 @@ const UserController = {
 
   login: async (req, res, next) => {
     try {
-      // console.log("req.body: ", req.body);
       const captcha = await refCaptchaServices.get(req.body.kode);
       const resCaptcha = {
         message: "captcha salah",
@@ -60,7 +59,7 @@ const UserController = {
         verify: user.isVerified,
         token: tokenJWT,
       };
-      return res.json(data);
+      return res.status(200).json(data);
     } catch (error) {
       res.status(500).send(error.message);
     }

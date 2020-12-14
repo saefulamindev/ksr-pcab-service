@@ -38,24 +38,19 @@ const materiController = {
     try {
       const result = await materiServices.updateMateri(req);
 
-      const newUpdate = await materiServices.getMateriById(result);
-      console.log(req.params.id);
-
-      const resBerhasil = {
-        message: "berhasil mengubah materi diklat",
-        id: newUpdate.id,
-        judul_materi: newUpdate.judul_materi,
-        deskripsi: newUpdate.deskripsi,
-        diklat: newUpdate.diklat,
-        tanggal: newUpdate.tanggal,
-        link_file: newUpdate.link_file,
-      };
       if (result) {
-        // console.log(req.params.id);
-        return res.status(200).json(resBerhasil);
+        return res.status(200).json({
+          message: "berhasil mengubah materi diklat",
+          id: req.params.id,
+          judul_materi: req.body.judul_materi,
+          deskripsi: req.body.deskripsi,
+          diklat: req.body.diklat,
+          tanggal: req.body.tanggal,
+          link_file: req.body.link_file,
+        });
       }
     } catch (error) {
-      return res.status(500).send(error);
+      return res.status(500).send(error.message);
     }
   },
   delete: async (req, res, next) => {

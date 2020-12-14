@@ -17,6 +17,7 @@ const pengumumanController = {
 
       const resBerhasil = {
         message: "berhasil menambah pengumuman",
+        id: newInput.id,
         judul: newInput.judul,
         deskripsi: newInput.deskripsi,
       };

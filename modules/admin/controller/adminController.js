@@ -5,7 +5,6 @@ const adminController = {
     try {
       const { tahap } = req.params;
       const jumlah = await adminServices.countUserByTahap(tahap);
-      console.log(req.params, jumlah);
 
       if (jumlah) {
         return res.status(200).send(jumlah);

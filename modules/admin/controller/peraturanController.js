@@ -18,6 +18,7 @@ const peraturanController = {
 
       const resBerhasil = {
         message: "berhasil menambah peraturan",
+        id: newInput.id,
         judul: newInput.judul,
         deskripsi: newInput.deskripsi,
       };

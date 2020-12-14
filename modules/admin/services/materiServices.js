@@ -43,9 +43,10 @@ const materiServices = {
         tanggal: tanggal,
         link_file: link_file,
       })
-      .where("id", id);
+      .where({ id });
     return hasil;
   },
+
   deleteMateri: async (req) => {
     const id = req.params.id;
     const hasil = await db("tb_materi").delete().where("id", id);

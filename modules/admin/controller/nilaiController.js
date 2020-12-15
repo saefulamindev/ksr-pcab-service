@@ -126,6 +126,51 @@ const nilaiController = {
       return res.status(500).send(error.message);
     }
   },
+  // =================== Nilai =======================
+  getNilai: async (req, res, next) => {
+    try {
+      const result = await nilaiServices.getNilai(req);
+
+      return res.status(200).send(result);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+  getNilaiById: async (req, res, next) => {
+    try {
+      const result = await nilaiServices.getEssayByJenis();
+
+      return res.status(200).send(result);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+  getNilaiByTes: async (req, res, next) => {
+    try {
+      const result = await nilaiServices.getEssayByJenis();
+
+      return res.status(200).send(result);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+  inputNilai: async (req, res, next) => {
+    try {
+      const { id_user } = req.params;
+      const getuser = await nilaiServices.getuser(id_user);
+      console.log(getuser);
+      return res.send(getuser);
+      const result = await nilaiServices.inputNilai(req);
+
+      if (result) {
+        return res.status(200).json({
+          message: "berhasil menambahkan nilai",
+        });
+      }
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  },
 };
 
 module.exports = nilaiController;

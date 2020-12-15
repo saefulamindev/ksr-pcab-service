@@ -103,6 +103,33 @@ const nilaiServices = {
       });
     return hasil;
   },
+  // ==============================Nilai =============================
+  getuser: (id_user) => {
+    const data = db
+      .select("id_user", "nama_lengkap")
+      .from("tb_peserta")
+      .where("id_user", id_user);
+    return data;
+  },
+  getNilai: (req) => {
+    const data = db.select("*").from("tb_penilaian");
+    return data;
+  },
+  getNilaiById: (id) => {
+    const data = db("tb_penilaian").where("id", id).first();
+    return data;
+  },
+  getNilaiByTes: (jenis_tes) => {
+    const data = db("tb_penilaian").where("jenis_tes", jenis_tes).first();
+    return data;
+  },
+  inputNilai: (input) => {
+    const data = db("tb_penilaian").insert({
+      id_user: input.id_user,
+    });
+
+    return data;
+  },
 };
 
 module.exports = nilaiServices;

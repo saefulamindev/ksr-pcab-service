@@ -4,13 +4,13 @@ const nilaiController = require("../controller/nilaiController");
 const passport = require("passport");
 
 /* GET users listing. */
-router.get("/", passport.authenticate("jwt", { session: false }), function (
-  req,
-  res,
-  next
-) {
-  res.send("Halaman penilaian");
-});
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  function (req, res, next) {
+    res.send("Halaman penilaian");
+  }
+);
 // Nilai Fisik
 router.get(
   "/fisik/all",
@@ -54,6 +54,28 @@ router.post(
   "/essay/:jenis_test/:id_user",
   passport.authenticate("jwt", { session: false }),
   nilaiController.updateEssay
+);
+
+//Nilai
+router.get(
+  "/all",
+  // passport.authenticate("jwt", { session: false }),
+  nilaiController.getNilai
+);
+router.get(
+  "/:id_user/all",
+  // passport.authenticate("jwt", { session: false }),
+  nilaiController.getNilaiById
+);
+router.get(
+  "/:jenis_tes/all",
+  // passport.authenticate("jwt", { session: false }),
+  nilaiController.getNilaiByTes
+);
+router.post(
+  "/tambah/:id_user",
+  // passport.authenticate("jwt", { session: false }),
+  nilaiController.inputNilai
 );
 
 module.exports = router;

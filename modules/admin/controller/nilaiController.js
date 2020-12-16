@@ -156,17 +156,16 @@ const nilaiController = {
   },
   inputNilai: async (req, res, next) => {
     try {
-      const { id_user } = req.params;
-      const getuser = await nilaiServices.getuser(id_user);
-      console.log(getuser);
-      return res.send(getuser);
-      const result = await nilaiServices.inputNilai(req);
+      const input = await nilaiServices.inputNilai(req.body);
+      const newNilai = await nilaiServices.getNilaiById(input[0]);
 
-      if (result) {
-        return res.status(200).json({
-          message: "berhasil menambahkan nilai",
-        });
-      }
+      return res.status(201).send({
+        message: "berhasil menambah nilai",
+        id: newNilai.id,
+        id_user: newNilai.id_user,
+        jenis_tes: newNilai.jenis_tes,
+        nilai: newNilai.nilai,
+      });
     } catch (error) {
       return res.status(500).send(error.message);
     }

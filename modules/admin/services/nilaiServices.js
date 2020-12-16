@@ -126,8 +126,16 @@ const nilaiServices = {
   inputNilai: (input) => {
     const data = db("tb_penilaian").insert({
       id_user: input.id_user,
+      nilai: input.nilai,
+      jenis_tes: input.jenis_tes,
     });
 
+    return data;
+  },
+  getNilaiByUser: async (id_user) => {
+    const data = await db("tb_penilaian").select("*").where({
+      id_user,
+    });
     return data;
   },
 };

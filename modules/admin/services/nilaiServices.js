@@ -140,6 +140,24 @@ const nilaiServices = {
     });
     return data;
   },
+  getNilaiAkhirById: async (id_user) => {
+    const data = await db("tb_penilaian")
+      .sum({ nilai_total: "nilai" })
+      .where({
+        id_user,
+      })
+      .first();
+    return data;
+  },
+  getPembagi: async (id_user) => {
+    const data = await db("tb_penilaian")
+      .count({ pembagi: "id" })
+      .where({
+        id_user,
+      })
+      .first();
+    return data;
+  },
 };
 
 module.exports = nilaiServices;

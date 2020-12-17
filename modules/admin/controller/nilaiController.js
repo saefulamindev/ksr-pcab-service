@@ -154,6 +154,21 @@ const nilaiController = {
       return res.status(500).send(error);
     }
   },
+  getNilaiAkhirById: async (req, res, next) => {
+    try {
+      const { id_user } = req.params;
+      const nilai_total = await nilaiServices.getNilaiAkhirById(id_user);
+      const pembagi = await nilaiServices.getPembagi(id_user);
+      const nilai_akhir = parseInt(nilai_total.nilai_total) / pembagi.pembagi;
+
+      return res.status(200).json({
+        nilai_akhir,
+      });
+    } catch (error) {
+      console.log(error.message);
+      return res.status(500).send(error.message);
+    }
+  },
   inputNilai: async (req, res, next) => {
     try {
       const input = await nilaiServices.inputNilai(req.body);

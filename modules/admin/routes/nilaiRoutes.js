@@ -77,5 +77,10 @@ router.post(
   // passport.authenticate("jwt", { session: false }),
   nilaiController.inputNilai
 );
+router.get(
+  "/nilai_akhir/:id_user",
+  // passport.authenticate("jwt", { session: false }),
+  nilaiController.getNilaiAkhirById
+);
 
 module.exports = router;

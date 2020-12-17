@@ -68,7 +68,7 @@ router.get(
   nilaiController.getNilaiById
 );
 router.get(
-  "/:jenis_tes/all",
+  "/jenis_tes/:jenis_tes",
   // passport.authenticate("jwt", { session: false }),
   nilaiController.getNilaiByTes
 );

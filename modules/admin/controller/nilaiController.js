@@ -138,7 +138,8 @@ const nilaiController = {
   },
   getNilaiById: async (req, res, next) => {
     try {
-      const result = await nilaiServices.getEssayByJenis();
+      const { id_user } = req.params;
+      const result = await nilaiServices.getNilaiById(id_user);
 
       return res.status(200).send(result);
     } catch (error) {
@@ -147,7 +148,8 @@ const nilaiController = {
   },
   getNilaiByTes: async (req, res, next) => {
     try {
-      const result = await nilaiServices.getEssayByJenis();
+      const { jenis_tes } = req.params;
+      const result = await nilaiServices.getNilaiByTes(jenis_tes);
 
       return res.status(200).send(result);
     } catch (error) {

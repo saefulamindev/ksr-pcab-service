@@ -115,12 +115,16 @@ const nilaiServices = {
     const data = db.select("*").from("tb_penilaian");
     return data;
   },
-  getNilaiById: (id) => {
-    const data = db("tb_penilaian").where("id", id).first();
+  getNilaiById: (id_user) => {
+    const data = db("tb_penilaian")
+      .select("id", "id_user", "jenis_tes", "nilai")
+      .where("id_user", id_user);
     return data;
   },
   getNilaiByTes: (jenis_tes) => {
-    const data = db("tb_penilaian").where("jenis_tes", jenis_tes).first();
+    const data = db("tb_penilaian")
+      .select("id", "id_user", "jenis_tes", "nilai")
+      .where("jenis_tes", jenis_tes);
     return data;
   },
   inputNilai: (id_user, input) => {

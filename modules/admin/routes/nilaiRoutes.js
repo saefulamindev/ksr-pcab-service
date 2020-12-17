@@ -73,7 +73,7 @@ router.get(
   nilaiController.getNilaiByTes
 );
 router.post(
-  "/tambah",
+  "/tambah/:id_user",
   // passport.authenticate("jwt", { session: false }),
   nilaiController.inputNilai
 );

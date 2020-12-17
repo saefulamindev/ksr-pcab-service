@@ -158,9 +158,16 @@ const nilaiController = {
     try {
       const { id_user } = req.params;
       const nilai_total = await nilaiServices.getNilaiAkhirById(id_user);
-      const pembagi = await nilaiServices.getPembagi(id_user);
-      const nilai_akhir = parseInt(nilai_total.nilai_total) / pembagi.pembagi;
+      // const pembagi = await nilaiServices.getPembagi(id_user);
+      // const nilai_akhir = parseInt(nilai_total.nilai_total) / pembagi.pembagi;
+      const nilai_akhir = parseInt(nilai_total.nilai_total) / 8;
+      const status = nilai_akhir > 75 ? "lulus" : "tidak_lulus";
 
+      const updateNA = await nilaiServices.updateNA(
+        id_user,
+        nilai_akhir,
+        status
+      );
       return res.status(200).json({
         nilai_akhir,
       });
@@ -171,7 +178,17 @@ const nilaiController = {
   },
   inputNilai: async (req, res, next) => {
     try {
-      const input = await nilaiServices.inputNilai(req.body);
+      const { id_user } = req.params;
+      const cek_nilai = await nilaiServices.cekNilai(
+        id_user,
+        req.body.jenis_tes
+      );
+      if (cek_nilai) {
+        return res.send({
+          message: "nilai sudah ada",
+        });
+      }
+      const input = await nilaiServices.inputNilai(id_user, req.body);
       const newNilai = await nilaiServices.getNilaiById(input[0]);
 
       return res.status(201).send({

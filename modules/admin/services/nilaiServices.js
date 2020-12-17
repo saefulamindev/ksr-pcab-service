@@ -123,15 +123,20 @@ const nilaiServices = {
     const data = db("tb_penilaian").where("jenis_tes", jenis_tes).first();
     return data;
   },
-  inputNilai: (input) => {
+  inputNilai: (id_user, input) => {
     const data = db("tb_penilaian").insert({
-      id_user: input.id_user,
+      id_user: id_user,
       jenis_tes: input.jenis_tes,
       nilai: input.nilai,
     });
-    // .onConflict("id_user")
-    // .merge();
 
+    return data;
+  },
+  cekNilai: async (id_user, jenis_tes) => {
+    const data = await db("tb_penilaian").select("*").where({
+      id_user,
+      jenis_tes,
+    });
     return data;
   },
   getNilaiByUser: async (id_user) => {
@@ -148,6 +153,17 @@ const nilaiServices = {
       })
       .first();
     return data;
+  },
+  updateNA: async (id_user, nilai_akhir, status) => {
+    const hasil = await db("tb_peserta")
+      .update({
+        nilai_akhir: nilai_akhir,
+        status_kelulusan: status,
+      })
+      .where({
+        id_user,
+      });
+    return hasil;
   },
   getPembagi: async (id_user) => {
     const data = await db("tb_penilaian")

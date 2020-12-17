@@ -124,11 +124,14 @@ const nilaiServices = {
     return data;
   },
   inputNilai: (input) => {
-    const data = db("tb_penilaian").insert({
-      id_user: input.id_user,
-      nilai: input.nilai,
-      jenis_tes: input.jenis_tes,
-    });
+    const data = db("tb_penilaian")
+      .insert({
+        id_user: input.id_user,
+        jenis_tes: input.jenis_tes,
+        nilai: input.nilai,
+      })
+      .onConflict("id_user")
+      .merge();
 
     return data;
   },

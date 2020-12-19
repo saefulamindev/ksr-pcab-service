@@ -123,7 +123,14 @@ const nilaiServices = {
   },
   getNilaiByTes: (jenis_tes) => {
     const data = db("tb_penilaian")
-      .select("id", "id_user", "jenis_tes", "nilai")
+      .select(
+        "tb_penilaian.id",
+        "tb_penilaian.id_user",
+        "tb_peserta.nama_lengkap",
+        "tb_penilaian.jenis_tes",
+        "tb_penilaian.nilai"
+      )
+      .rightJoin("tb_peserta", "tb_penilaian.id_user", "tb_peserta.id_user")
       .where("jenis_tes", jenis_tes);
     return data;
   },

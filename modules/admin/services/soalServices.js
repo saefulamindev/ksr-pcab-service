@@ -95,6 +95,36 @@ const soalServices = {
     const hasil = await db("tb_soal_essay").delete().where("id", id);
     return hasil;
   },
+  // kirim jawaban pg
+  kirimJawabanEssay: (id_user, jenis_tes, id_soal_essay, jawaban_essay) => {
+    const data = db("tb_jawaban_essay")
+      .insert({
+        id_user: id_user,
+        jenis_tes: jenis_tes,
+        id_soal_essay: id_soal_essay,
+        jawaban_essay: jawaban_essay,
+      })
+      .where({ id_user });
+
+    return data;
+  },
+  getJawabanPGById: (id) => {
+    const data = db("tb_jawaban_pg").where("id", id).first();
+    return data;
+  },
+  getJawabanEssayById: (id) => {
+    const data = db("tb_jawaban_essay").where("id", id).first();
+    return data;
+  },
+  getKunci: (id_soal_pg) => {
+    const data = db("tb_soal_pg")
+      .select("kunci")
+      .where({
+        id: id_soal_pg,
+      })
+      .first();
+    return data;
+  },
 };
 
 module.exports = soalServices;

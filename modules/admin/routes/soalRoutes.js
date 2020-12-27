@@ -55,5 +55,17 @@ router.post(
   // passport.authenticate("jwt", { session: false }),
   soalController.deleteEssay
 );
+// kirim jawaban pg
+router.post(
+  "/kirim-pg/:id_user",
+  // passport.authenticate("jwt", { session: false }),
+  soalController.kirimJawaban
+);
+// kirim jawaban essay
+router.post(
+  "/kirim-essay/:id_user",
+  // passport.authenticate("jwt", { session: false }),
+  soalController.kirimEssay
+);
 
 module.exports = router;

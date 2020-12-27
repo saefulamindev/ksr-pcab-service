@@ -16,7 +16,7 @@ const soalController = {
 
       const newInput = await soalServices.getPGsoalById(input[0]);
 
-      const resBerhasil = {
+      return res.status(201).send({
         message: "berhasil menambah soal pg",
         id: newInput.id,
         text_soal: newInput.text_soal,
@@ -26,15 +26,11 @@ const soalController = {
         opsi_4: newInput.opsi_4,
         kunci: newInput.kunci,
         skor: newInput.skor,
-      };
-
-      return res.status(201).send(resBerhasil);
+      });
     } catch (error) {
-      const resGagal = {
+      return res.status(500).send({
         message: "gagal menambah soal PG",
-      };
-
-      return res.status(500).send(resGagal);
+      });
     }
   },
   updatePG: async (req, res, next) => {
@@ -43,22 +39,21 @@ const soalController = {
 
       const newUpdate = await soalServices.getPGsoalById(result);
 
-      const resBerhasil = {
-        message: "berhasil mengubah soal pg",
-        id: newUpdate.id,
-        text_soal: newUpdate.text_soal,
-        opsi_1: newUpdate.opsi_1,
-        opsi_2: newUpdate.opsi_2,
-        opsi_3: newUpdate.opsi_3,
-        opsi_4: newUpdate.opsi_4,
-        kunci: newUpdate.kunci,
-        skor: newUpdate.skor,
-      };
       if (result) {
-        return res.status(200).json(resBerhasil);
+        return res.status(200).json({
+          message: "berhasil mengubah soal pg",
+          id: newUpdate.id,
+          text_soal: newUpdate.text_soal,
+          opsi_1: newUpdate.opsi_1,
+          opsi_2: newUpdate.opsi_2,
+          opsi_3: newUpdate.opsi_3,
+          opsi_4: newUpdate.opsi_4,
+          kunci: newUpdate.kunci,
+          skor: newUpdate.skor,
+        });
       }
     } catch (error) {
-      return res.status(500).send(error);
+      return res.status(500).send(error.message);
     }
   },
   deletePG: async (req, res, next) => {
@@ -81,7 +76,7 @@ const soalController = {
       const data = await soalServices.getEssaySoal(req);
       return res.status(200).send(data);
     } catch (error) {
-      return res.status(500).send(error);
+      return res.status(500).send(error.message);
     }
   },
   createEssay: async (req, res, next) => {
@@ -90,20 +85,16 @@ const soalController = {
 
       const newInput = await soalServices.getEssaySoalById(input[0]);
 
-      const resBerhasil = {
+      return res.status(201).send({
         message: "berhasil menambah soal essay",
         id: newInput.id,
         text_soal: newInput.text_soal,
         skor: newInput.skor,
-      };
-
-      return res.status(201).send(resBerhasil);
+      });
     } catch (error) {
-      const resGagal = {
+      return res.status(500).send({
         message: "gagal menambah soal essay",
-      };
-
-      return res.status(500).send(resGagal);
+      });
     }
   },
   updateEssay: async (req, res, next) => {
@@ -112,17 +103,16 @@ const soalController = {
 
       const newUpdate = await soalServices.getEssaySoalById(result);
 
-      const resBerhasil = {
-        message: "berhasil mengubah soal essay",
-        id: newUpdate.id,
-        text_soal: newUpdate.text_soal,
-        skor: newUpdate.skor,
-      };
       if (result) {
-        return res.status(200).json(resBerhasil);
+        return res.status(200).json({
+          message: "berhasil mengubah soal essay",
+          id: newUpdate.id,
+          text_soal: newUpdate.text_soal,
+          skor: newUpdate.skor,
+        });
       }
     } catch (error) {
-      return res.status(500).send(error);
+      return res.status(500).send(error.message);
     }
   },
   deleteEssay: async (req, res, next) => {
@@ -135,7 +125,7 @@ const soalController = {
         });
       }
     } catch (error) {
-      return res.status(500).send(error);
+      return res.status(500).send(error.message);
     }
   },
 };

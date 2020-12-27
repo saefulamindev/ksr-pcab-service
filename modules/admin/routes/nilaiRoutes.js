@@ -45,6 +45,21 @@ router.post(
   nilaiController.deleteAfektif
 );
 // Nilai Essay
+router.get(
+  "/essay/:jenis_tes/:id_user",
+  // passport.authenticate("jwt", { session: false }),
+  nilaiController.getEssay
+);
+router.get(
+  "/essay/:id",
+  // passport.authenticate("jwt", { session: false }),
+  nilaiController.getEssayById
+);
+router.post(
+  "/essay/edit/:id",
+  // passport.authenticate("jwt", { session: false }),
+  nilaiController.updateEssay
+);
 
 //Nilai
 router.get(

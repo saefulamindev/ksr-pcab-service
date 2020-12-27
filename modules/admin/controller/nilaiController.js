@@ -100,26 +100,35 @@ const nilaiController = {
   },
   // ==========================Nilai Essay================================
   getEssay: async (req, res, next) => {
-    console.log(req.params);
     try {
-      const id_essay = await nilaiServices.getEssayByJenis(
-        req.params.jenis_test,
-        req.params.id_user
-      );
+      const { jenis_tes, id_user } = req.params;
+      const data = await nilaiServices.getEssayByTes(jenis_tes, id_user);
 
-      return res.status(200).send(id_essay);
+      return res.status(200).send(data);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+  getEssayById: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const data = await nilaiServices.getEssayById(id);
+
+      return res.status(200).send(data);
     } catch (error) {
       return res.status(500).send(error);
     }
   },
   updateEssay: async (req, res, next) => {
     try {
-      const result = await nilaiServices.updateEssayNilai(req);
+      const { id } = req.params;
+      const { skor } = req.body;
+      const result = await nilaiServices.updateEssaySkorById(id, skor);
 
       if (result) {
         return res.status(200).json({
           message: "berhasil mengubah data",
-          nilai_essay: req.body.nilai_essay,
+          skor: req.body.skor,
         });
       }
     } catch (error) {

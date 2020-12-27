@@ -88,18 +88,39 @@ const nilaiServices = {
     return result;
   },
   // ==========================Nilai Essay================================
-
-  updateEssayNilai: async (req) => {
-    const { jenis_test, id_user } = req.params;
-    const nilai_essay = req.body.nilai_essay;
-
-    const hasil = await db("tb_nilai_total")
+  getEssayByTes: (jenis_tes, id_user) => {
+    const data = db("tb_jawaban_essay")
+      .select(
+        "tb_peserta.nama_lengkap",
+        // "tb_jawaban_essay.id_user",
+        "tb_jawaban_essay.id",
+        "tb_jawaban_essay.jenis_tes",
+        "tb_jawaban_essay.id_soal_essay",
+        "tb_jawaban_essay.jawaban_essay",
+        "tb_jawaban_essay.skor"
+      )
+      .rightJoin("tb_peserta", "tb_jawaban_essay.id_user", "tb_peserta.id_user")
+      .where({
+        jenis_tes,
+        "tb_peserta.id_user": id_user,
+      });
+    return data;
+  },
+  getEssayById: (id) => {
+    const data = db("tb_jawaban_essay")
+      .select("id", "jenis_tes", "id_soal_essay", "jawaban_essay", "skor")
+      .where({
+        id,
+      });
+    return data;
+  },
+  updateEssaySkorById: async (id, skor) => {
+    const hasil = await db("tb_jawaban_essay")
       .update({
-        nilai_essay: nilai_essay,
+        skor: skor,
       })
       .where({
-        jenis_test,
-        id_user,
+        id,
       });
     return hasil;
   },

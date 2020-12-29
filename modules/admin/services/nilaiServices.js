@@ -124,7 +124,28 @@ const nilaiServices = {
       });
     return hasil;
   },
-  // ==============================Nilai =============================
+  // ==============================Nilai Total =========================
+  jmlNilaiPG: (id_user, jenis_tes) => {
+    const data = db("tb_jawaban_pg")
+      .sum({ pg: "skor" })
+      .where({
+        id_user,
+        jenis_tes,
+      })
+      .first();
+    return data;
+  },
+  jmlNilaiEssay: (id_user, jenis_tes) => {
+    const data = db("tb_jawaban_essay")
+      .sum({ essay: "skor" })
+      .where({
+        id_user,
+        jenis_tes,
+      })
+      .first();
+    return data;
+  },
+  // ==============================Nilai Akhir=============================
   getuser: (id_user) => {
     const data = db
       .select("id_user", "nama_lengkap")

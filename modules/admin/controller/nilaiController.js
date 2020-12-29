@@ -128,6 +128,7 @@ const nilaiController = {
       if (result) {
         return res.status(200).json({
           message: "berhasil mengubah data",
+          id: req.params.id,
           skor: req.body.skor,
         });
       }
@@ -135,7 +136,24 @@ const nilaiController = {
       return res.status(500).send(error.message);
     }
   },
-  // =================== Nilai =======================
+  // ===================Nilai Total =======================
+  getNilaiTotal: async (req, res, next) => {
+    try {
+      const { id_user } = req.params;
+      const { jenis_tes } = req.body;
+      const nilai_pg = await nilaiServices.jmlNilaiPG(id_user, jenis_tes);
+      const nilai_essay = await nilaiServices.jmlNilaiEssay(id_user, jenis_tes);
+      console.log(nilai_pg);
+      console.log(nilai_essay);
+      const nilai_total = parseInt(nilai_pg.pg) + parseInt(nilai_essay.essay);
+      console.log(nilai_total);
+      return res.status(200).send({ nilai_total });
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  },
+
+  // =================== Nilai Akhir =======================
   getNilai: async (req, res, next) => {
     try {
       const result = await nilaiServices.getNilai(req);

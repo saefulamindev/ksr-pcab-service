@@ -136,7 +136,7 @@ const soalController = {
       console.log(cekKunci.kunci);
       const cocok = jawaban_pg == parseInt(cekKunci.kunci);
       console.log(cocok);
-      const skor = cocok ? 10 : 0;
+      const skor = cocok ? 8 : 0;
       // return res.send(cekKunci);
       const input = await soalServices.kirimJawabanPG(
         id_user,

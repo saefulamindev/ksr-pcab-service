@@ -60,8 +60,14 @@ router.post(
   // passport.authenticate("jwt", { session: false }),
   nilaiController.updateEssay
 );
+// Nilai Total
+router.get(
+  "/total/:id_user",
+  // passport.authenticate("jwt", { session: false }),
+  nilaiController.getNilaiTotal
+);
 
-//Nilai
+//Nilai Akhir
 router.get(
   "/all",
   // passport.authenticate("jwt", { session: false }),

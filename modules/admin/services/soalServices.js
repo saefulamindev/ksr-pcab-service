@@ -96,6 +96,20 @@ const soalServices = {
     return hasil;
   },
   // kirim jawaban pg
+  kirimJawabanPG: (id_user, jenis_tes, id_soal_pg, jawaban_pg, skor) => {
+    const data = db("tb_jawaban_pg")
+      .insert({
+        id_user: id_user,
+        jenis_tes: jenis_tes,
+        id_soal_pg: id_soal_pg,
+        jawaban_pg: jawaban_pg,
+        skor: skor,
+      })
+      .where({ id_user });
+
+    return data;
+  },
+  // kirim jawaban essay
   kirimJawabanEssay: (id_user, jenis_tes, id_soal_essay, jawaban_essay) => {
     const data = db("tb_jawaban_essay")
       .insert({

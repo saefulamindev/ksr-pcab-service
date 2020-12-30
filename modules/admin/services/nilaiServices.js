@@ -154,13 +154,27 @@ const nilaiServices = {
     return data;
   },
   getNilai: (req) => {
-    const data = db.select("*").from("tb_penilaian");
+    const data = db
+      .select("id", "id_user", "jenis_tes", "nilai")
+      .from("tb_penilaian");
     return data;
   },
-  getNilaiById: (id_user) => {
+  getNilaiById: (id) => {
     const data = db("tb_penilaian")
       .select("id", "id_user", "jenis_tes", "nilai")
-      .where("id_user", id_user);
+      .where({
+        id,
+      })
+      .first();
+    return data;
+  },
+  getNilaiAllById: (id) => {
+    const data = db("tb_penilaian")
+      .select("id", "id_user", "jenis_tes", "nilai")
+      .where({
+        id,
+      })
+      .first();
     return data;
   },
   getNilaiByTes: (jenis_tes) => {
@@ -176,26 +190,31 @@ const nilaiServices = {
       .where("jenis_tes", jenis_tes);
     return data;
   },
-  inputNilai: (id_user, input) => {
+  inputNilai: (id_user, jenis_tes, nilai) => {
     const data = db("tb_penilaian").insert({
       id_user: id_user,
-      jenis_tes: input.jenis_tes,
-      nilai: input.nilai,
+      jenis_tes: jenis_tes,
+      nilai: nilai,
     });
 
     return data;
   },
   cekNilai: async (id_user, jenis_tes) => {
-    const data = await db("tb_penilaian").select("*").where({
-      id_user,
-      jenis_tes,
-    });
+    const data = await db("tb_penilaian")
+      .select("*")
+      .where({
+        id_user,
+        jenis_tes,
+      })
+      .first();
     return data;
   },
   getNilaiByUser: async (id_user) => {
-    const data = await db("tb_penilaian").select("*").where({
-      id_user,
-    });
+    const data = await db("tb_penilaian")
+      .select("id", "id_user", "jenis_tes", "nilai")
+      .where({
+        id_user,
+      });
     return data;
   },
   getNilaiAkhirById: async (id_user) => {

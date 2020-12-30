@@ -1,3 +1,4 @@
+const { text } = require("express");
 const soalServices = require("./../services/soalServices");
 
 const soalController = {
@@ -10,7 +11,6 @@ const soalController = {
     }
   },
   createPG: async (req, res, next) => {
-    console.log("cobaa");
     try {
       const input = await soalServices.createPGsoal(req.body);
 
@@ -24,8 +24,8 @@ const soalController = {
         opsi_2: newInput.opsi_2,
         opsi_3: newInput.opsi_3,
         opsi_4: newInput.opsi_4,
-        kunci: newInput.kunci,
-        skor: newInput.skor,
+        // kunci: newInput.kunci,
+        // skor: newInput.skor,
       });
     } catch (error) {
       return res.status(500).send({
@@ -35,21 +35,39 @@ const soalController = {
   },
   updatePG: async (req, res, next) => {
     try {
-      const result = await soalServices.updatePGsoal(req);
+      const { id } = req.params;
+      const {
+        text_soal,
+        opsi_1,
+        opsi_2,
+        opsi_3,
+        opsi_4,
+        kunci,
+        skor,
+      } = req.body;
 
-      const newUpdate = await soalServices.getPGsoalById(result);
+      const result = await soalServices.updatePGsoal(
+        id,
+        text_soal,
+        opsi_1,
+        opsi_2,
+        opsi_3,
+        opsi_4,
+        kunci,
+        skor
+      );
 
       if (result) {
         return res.status(200).json({
           message: "berhasil mengubah soal pg",
-          id: newUpdate.id,
-          text_soal: newUpdate.text_soal,
-          opsi_1: newUpdate.opsi_1,
-          opsi_2: newUpdate.opsi_2,
-          opsi_3: newUpdate.opsi_3,
-          opsi_4: newUpdate.opsi_4,
-          kunci: newUpdate.kunci,
-          skor: newUpdate.skor,
+          id: req.params.id,
+          text_soal: req.body.text_soal,
+          opsi_1: req.body.opsi_1,
+          opsi_2: req.body.opsi_2,
+          opsi_3: req.body.opsi_3,
+          opsi_4: req.body.opsi_4,
+          kunci: req.body.kunci,
+          skor: req.body.skor,
         });
       }
     } catch (error) {
@@ -58,11 +76,13 @@ const soalController = {
   },
   deletePG: async (req, res, next) => {
     try {
-      const result = await soalServices.deletePGsoal(req);
+      const { id } = req.params;
+      const result = await soalServices.deletePGsoal(id);
 
       if (result) {
         return res.status(200).json({
           message: "berhasil menghapus data",
+          id,
         });
       }
     } catch (error) {
@@ -99,16 +119,15 @@ const soalController = {
   },
   updateEssay: async (req, res, next) => {
     try {
-      const result = await soalServices.updateEssaySoal(req);
-
-      const newUpdate = await soalServices.getEssaySoalById(result);
-
+      const { id } = req.params;
+      const { text_soal, skor } = req.body;
+      const result = await soalServices.updateEssaySoal(id, text_soal, skor);
       if (result) {
         return res.status(200).json({
           message: "berhasil mengubah soal essay",
-          id: newUpdate.id,
-          text_soal: newUpdate.text_soal,
-          skor: newUpdate.skor,
+          id,
+          text_soal: text_soal,
+          skor: skor,
         });
       }
     } catch (error) {
@@ -117,11 +136,13 @@ const soalController = {
   },
   deleteEssay: async (req, res, next) => {
     try {
-      const result = await soalServices.deleteEssaySoal(req);
+      const { id } = req.params;
+      const result = await soalServices.deleteEssaySoal(id);
 
       if (result) {
         return res.status(200).json({
           message: "berhasil menghapus data",
+          id,
         });
       }
     } catch (error) {

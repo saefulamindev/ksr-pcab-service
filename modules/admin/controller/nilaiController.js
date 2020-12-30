@@ -1,4 +1,5 @@
 const nilaiServices = require("./../services/nilaiServices");
+// const biodataServices = require("./../services/biodataServices");
 
 const nilaiController = {
   // ===============================Nilai Fisik =========================
@@ -147,6 +148,7 @@ const nilaiController = {
       console.log(nilai_essay);
       const nilai_total = parseInt(nilai_pg.pg) + parseInt(nilai_essay.essay);
       console.log(nilai_total);
+      // const nama = await biodataServices.detail(id_user);
       return res.status(200).send({ nilai_total });
     } catch (error) {
       return res.status(500).send(error.message);
@@ -166,7 +168,7 @@ const nilaiController = {
   getNilaiById: async (req, res, next) => {
     try {
       const { id_user } = req.params;
-      const result = await nilaiServices.getNilaiById(id_user);
+      const result = await nilaiServices.getNilaiByUser(id_user);
 
       return res.status(200).send(result);
     } catch (error) {
@@ -198,6 +200,7 @@ const nilaiController = {
         status
       );
       return res.status(200).json({
+        id_user,
         nilai_akhir,
       });
     } catch (error) {
@@ -208,16 +211,15 @@ const nilaiController = {
   inputNilai: async (req, res, next) => {
     try {
       const { id_user } = req.params;
-      const cek_nilai = await nilaiServices.cekNilai(
-        id_user,
-        req.body.jenis_tes
-      );
+      const { jenis_tes, nilai } = req.body;
+      const cek_nilai = await nilaiServices.cekNilai(id_user, jenis_tes);
+      // console.log(cek_nilai);
       if (cek_nilai) {
         return res.send({
           message: "nilai sudah ada",
         });
       }
-      const input = await nilaiServices.inputNilai(id_user, req.body);
+      const input = await nilaiServices.inputNilai(id_user, jenis_tes, nilai);
       const newNilai = await nilaiServices.getNilaiById(input[0]);
 
       return res.status(201).send({

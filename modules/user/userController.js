@@ -15,19 +15,17 @@ const UserController = {
   login: async (req, res, next) => {
     try {
       const captcha = await refCaptchaServices.get(req.body.kode);
-      const resCaptcha = {
-        message: "captcha salah",
-      };
       if (!captcha || captcha.jawaban !== req.body.jawaban) {
-        return res.status(401).send(resCaptcha);
+        return res.status(401).send({
+          message: "captcha salah",
+        });
       }
       const user = await UserService.getUserByEmail(req.body.email);
-      const resEmailSalah = {
-        message: "email tidak terdaftar",
-      };
 
       if (!user) {
-        res.status(404).send(resEmailSalah);
+        res.status(404).send({
+          message: "email tidak terdaftar",
+        });
       }
 
       const match = await bcrypt.compare(req.body.password, user.password);
@@ -80,11 +78,10 @@ const UserController = {
       );
       req.body.password = bcrypt.hashSync(req.body.password, saltRounds);
       const cekUser = await UserService.getUserByEmail(req.body.email);
-      const resEmailAda = {
-        message: "email sudah ada",
-      };
       if (cekUser) {
-        return res.status(409).send(resEmailAda);
+        return res.status(409).send({
+          message: "email sudah ada",
+        });
       }
       const input = await UserService.createUser(req.body);
 
@@ -193,6 +190,37 @@ const UserController = {
     return res.status(200).send({
       tokenJWT_daftar,
     });
+  },
+  ubahPw: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const user = await UserService.cekPwLamaById(id);
+      // console.log(user);
+      // return res.send(user);
+      const match = await bcrypt.compare(req.body.password_lama, user.password);
+      console.log(match);
+      req.body.password_baru = bcrypt.hashSync(
+        req.body.password_baru,
+        saltRounds
+      );
+
+      // return res.send(match);
+      if (match) {
+        const password_baru = await bcrypt.hashSync(req.body.password_baru);
+        const ubahPw = await UserService.ubahPwLama(id, password_baru);
+
+        res.status(200).send({
+          message: "berhasil mengubah password",
+          password_baru: req.password_baru,
+        });
+      } else {
+        res.status(400).send({
+          message: "password anda salah",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 

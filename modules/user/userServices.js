@@ -20,6 +20,14 @@ const UserService = {
     const user = db("tb_users").update("isVerified", true).where({ id });
     return user;
   },
+  ubahPwLama: (id, password_baru) => {
+    const user = db("tb_users").update("password", password_baru).where({ id });
+    return user;
+  },
+  cekPwLamaById: (id) => {
+    const user = db("tb_users").where("id", id).first();
+    return user;
+  },
 };
 
 module.exports = UserService;

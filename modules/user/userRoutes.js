@@ -18,5 +18,6 @@ router.post("/login", UserController.login);
 router.get("/daftar", UserController.token_daftar);
 router.post("/daftar", UserController.daftar);
 router.get("/verify?:token_email", UserController.verify);
+router.post("/ubah-password/:id", UserController.ubahPw);
 
 module.exports = router;

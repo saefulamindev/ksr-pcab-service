@@ -20,7 +20,7 @@ const UserService = {
     const user = db("tb_users").update("isVerified", true).where({ id });
     return user;
   },
-  ubahPwLama: (id, password_baru) => {
+  updatePw: (id, password_baru) => {
     const user = db("tb_users").update("password", password_baru).where({ id });
     return user;
   },

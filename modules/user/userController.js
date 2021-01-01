@@ -199,23 +199,27 @@ const UserController = {
       // return res.send(user);
       const match = await bcrypt.compare(req.body.password_lama, user.password);
       console.log(match);
-      req.body.password_baru = bcrypt.hashSync(
-        req.body.password_baru,
-        saltRounds
-      );
 
       // return res.send(match);
-      if (match) {
-        const password_baru = await bcrypt.hashSync(req.body.password_baru);
-        const ubahPw = await UserService.ubahPwLama(id, password_baru);
+      if (req.body.password_baru == req.body.confirm_password) {
+        if (match) {
+          const password_baru = await bcrypt.hashSync(
+            req.body.password_baru,
+            saltRounds
+          );
+          const updatePw = await UserService.updatePw(id, password_baru);
 
-        res.status(200).send({
-          message: "berhasil mengubah password",
-          password_baru: req.password_baru,
-        });
+          res.status(200).send({
+            message: "berhasil mengubah password",
+          });
+        } else {
+          res.status(400).send({
+            message: "password anda salah",
+          });
+        }
       } else {
         res.status(400).send({
-          message: "password anda salah",
+          message: "confirm password tidak sama dengan password baru",
         });
       }
     } catch (error) {

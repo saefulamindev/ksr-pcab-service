@@ -47,7 +47,13 @@ const pembayaranController = {
   },
   tambahTransaksi: async (req, res, next) => {
     try {
+      if (!req.file) {
+        res.send({
+          message: "harus upload file bukti bayar",
+        });
+      }
       const { jenis_bayar, id_user } = req.body;
+      const bukti_bayar = req.file.path;
       const cekNominal = await pembayaranServices.cekNominalByJenisBayar(
         jenis_bayar,
         id_user
@@ -59,26 +65,27 @@ const pembayaranController = {
           message: "Tagihan Lunas",
         });
       }
-      const input = await pembayaranServices.tambahTransaksiBayar(req.body);
+      const input = await pembayaranServices.tambahTransaksiBayar(
+        jenis_bayar,
+        id_user,
+        bukti_bayar
+      );
       const newInput = await pembayaranServices.getTransaksiBayarById(input[0]);
 
-      const resBerhasil = {
+      return res.status(201).send({
         message: "berhasil mengupload pembayaran",
         id: newInput.id,
         id_user: req.body.id_user,
         nominal: newInput.nominal,
         jenis_bayar: newInput.jenis_bayar,
         bukti_bayar: newInput.bukti_bayar,
-      };
-
-      return res.status(201).send(resBerhasil);
+      });
     } catch (error) {
       console.log(error);
-      const resGagal = {
-        message: "gagal menambah pembayaran",
-      };
 
-      return res.status(500).send(resGagal);
+      return res.status(500).send({
+        message: "gagal menambah pembayaran",
+      });
     }
   },
 };

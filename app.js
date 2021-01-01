@@ -6,6 +6,48 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const passport = require("./config/passport");
+const multer = require("multer");
+
+const file_form_pendaftaran = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "src/images/file_form_pendaftaran");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().getTime + "-" + file.originalname);
+  },
+});
+
+const file_bukti_bayar = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "src/images/file_bukti_bayar");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().getTime + "-" + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "file_form_pendaftaran/png" ||
+    file.mimetype === "file_form_pendaftaran/jpg" ||
+    file.mimetype === "file_form_pendaftaran/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+const filterBuktiBayar = (req, file, cb) => {
+  if (
+    file.mimetype === "bukti_bayar/png" ||
+    file.mimetype === "bukti_bayar/jpg" ||
+    file.mimetype === "bukti_bayar/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
 
 var routers = require("./routes");
 
@@ -21,6 +63,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(passport);
+
+app.use(
+  multer({
+    storage: file_form_pendaftaran,
+    fileFilter: fileFilter,
+  }).single("file_form_pendaftaran")
+);
+app.use(
+  multer({
+    storage: file_bukti_bayar,
+    fileFilter: filterBuktiBayar,
+  }).single("bukti_bayar")
+);
 
 app.use(routers);
 

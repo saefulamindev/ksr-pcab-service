@@ -2,6 +2,11 @@ const pesertaServices = require("../services/pesertaServices");
 
 const pesertaController = {
   isiForm: async (req, res, next) => {
+    if (!req.file) {
+      res.send({
+        message: "file harus ada",
+      });
+    }
     try {
       const {
         id_user,

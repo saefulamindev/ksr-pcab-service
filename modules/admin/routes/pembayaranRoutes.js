@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pembayaranController = require("../controller/pembayaranController");
 const passport = require("passport");
+const multer = require("multer");
 
 /* GET users listing. */
 passport.authenticate("jwt", { session: false }),
@@ -36,7 +37,7 @@ router.get(
 );
 router.post(
   "/upload",
-  passport.authenticate("jwt", { session: false }),
+  // passport.authenticate("jwt", { session: false }),
   pembayaranController.tambahTransaksi
 );
 

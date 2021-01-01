@@ -13,7 +13,7 @@ const pembayaranServices = {
       id_user: input.id_user,
       nominal: input.nominal,
       jenis_bayar: input.jenis_bayar,
-      bukti_bayar: input.bukti_bayar,
+      bukti_bayar: req.file.path,
     });
 
     return data;

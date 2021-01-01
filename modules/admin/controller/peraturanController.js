@@ -16,20 +16,16 @@ const peraturanController = {
 
       const newInput = await peraturanServices.getPeraturanById(input[0]);
 
-      const resBerhasil = {
+      return res.status(201).send({
         message: "berhasil menambah peraturan",
         id: newInput.id,
         judul: newInput.judul,
         deskripsi: newInput.deskripsi,
-      };
-
-      return res.status(201).send(resBerhasil);
+      });
     } catch (error) {
-      const resGagal = {
+      return res.status(500).send({
         message: "gagal menambah peraturan",
-      };
-
-      return res.status(500).send(resGagal);
+      });
     }
   },
   update: async (req, res, next) => {
@@ -38,14 +34,13 @@ const peraturanController = {
 
       const newUpdate = await peraturanServices.getPeraturanById(result);
 
-      const resBerhasil = {
-        message: "berhasil mengubah peraturan",
-        id: newUpdate.id,
-        judul: newUpdate.judul,
-        deskripsi: newUpdate.deskripsi,
-      };
       if (result) {
-        return res.status(200).json(resBerhasil);
+        return res.status(200).json({
+          message: "berhasil mengubah peraturan",
+          id: newUpdate.id,
+          judul: newUpdate.judul,
+          deskripsi: newUpdate.deskripsi,
+        });
       }
     } catch (error) {
       return res.status(500).send(error);

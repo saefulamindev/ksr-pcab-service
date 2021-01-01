@@ -7,5 +7,10 @@ const passport = require("passport");
 router.get("/", function (req, res, next) {
   res.send("Dashboard Peserta");
 });
+router.post(
+  "/isi-form/",
+  // passport.authenticate("jwt", { session: false }),
+  pesertaController.isiForm
+);
 
 module.exports = router;

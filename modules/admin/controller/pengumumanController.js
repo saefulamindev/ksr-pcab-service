@@ -15,20 +15,16 @@ const pengumumanController = {
 
       const newInput = await pengumumanServices.getPengumumanById(input[0]);
 
-      const resBerhasil = {
+      return res.status(201).send({
         message: "berhasil menambah pengumuman",
         id: newInput.id,
         judul: newInput.judul,
         deskripsi: newInput.deskripsi,
-      };
-
-      return res.status(201).send(resBerhasil);
+      });
     } catch (error) {
-      const resGagal = {
+      return res.status(500).send({
         message: "gagal menambah pengumuman",
-      };
-
-      return res.status(500).send(resGagal);
+      });
     }
   },
 
@@ -38,17 +34,16 @@ const pengumumanController = {
 
       const newUpdate = await pengumumanServices.getPengumumanById(result);
 
-      const resBerhasil = {
-        message: "berhasil mengubah pengumuman",
-        id: newUpdate.id,
-        judul: newUpdate.judul,
-        deskripsi: newUpdate.deskripsi,
-      };
       if (result) {
-        return res.status(200).json(resBerhasil);
+        return res.status(200).json({
+          message: "berhasil mengubah pengumuman",
+          id: newUpdate.id,
+          judul: newUpdate.judul,
+          deskripsi: newUpdate.deskripsi,
+        });
       }
     } catch (error) {
-      return res.status(500).send(error);
+      return res.status(500).send(error.message);
     }
   },
   delete: async (req, res, next) => {

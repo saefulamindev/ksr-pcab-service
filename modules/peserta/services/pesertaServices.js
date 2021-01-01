@@ -55,17 +55,18 @@ const pesertaServices = {
         file_foto: file_foto,
       })
       .where({
-        id_user,
+        "tb_peserta.id_user": id_user,
       });
     return data;
   },
-  getPesertaById: (id_user) => {
-    const data = db("tb_peserta")
+  getPesertaById: (id) => {
+    const hasil = db("tb_peserta")
+      .select("*")
       .where({
-        id_user,
+        id,
       })
       .first();
-    return data;
+    return hasil;
   },
 };
 

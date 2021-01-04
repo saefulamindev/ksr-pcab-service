@@ -5,7 +5,7 @@ const pengumumanServices = {
     return data;
   },
   getPengumumanById: (id) => {
-    const data = db("tb_pengumuman").where("id", id).first();
+    const data = db("tb_pengumuman").select("*").where({ id }).first();
     return data;
   },
   inputPengumuman: (input) => {
@@ -15,22 +15,21 @@ const pengumumanServices = {
     });
     return data;
   },
-  updateData: async (req) => {
-    const id = req.params.id;
-    const judul = req.body.judul;
-    const deskripsi = req.body.deskripsi;
-
+  updateData: async (id, judul, deskripsi) => {
     const hasil = await db("tb_pengumuman")
       .update({
         judul: judul,
         deskripsi: deskripsi,
       })
-      .where("id", id);
+      .where({
+        id,
+      });
     return hasil;
   },
-  deleteData: async (req) => {
-    const id = req.params.id;
-    const hasil = await db("tb_pengumuman").delete().where("id", id);
+  deleteData: async (id) => {
+    const hasil = await db("tb_pengumuman").delete().where({
+      id,
+    });
     return hasil;
   },
 };

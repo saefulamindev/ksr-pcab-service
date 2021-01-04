@@ -55,11 +55,13 @@ const materiController = {
   },
   delete: async (req, res, next) => {
     try {
-      const result = await materiServices.deleteMateri(req);
+      const { id } = req.params;
+      const result = await materiServices.deleteMateri(id);
 
       if (result) {
         return res.status(200).json({
           message: "berhasil menghapus materi diklat",
+          id,
         });
       }
     } catch (error) {

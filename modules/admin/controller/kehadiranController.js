@@ -52,27 +52,13 @@ const kehadiranController = {
   },
   getUser: async (req, res, next) => {
     try {
-      const result = await kehadiranServices.getUserAll(req);
-
-      const mapKehadiran = result.map(async (hadir) => {
-        const countKehadiran = await kehadiranServices.getCountByUser(
-          hadir.id_user
-        );
-
-        return {
-          ...hadir,
-          jumlah: countKehadiran.jumlah,
-        };
-      });
-
-      const resultWithCount = await Promise.all(mapKehadiran);
-      console.log(resultWithCount);
-
-      if (resultWithCount) {
-        return res.status(200).send(resultWithCount);
+      const countKehadiran = await kehadiranServices.getCountByUser();
+      // console.log(countKehadiran);
+      if (countKehadiran) {
+        return res.status(200).send(countKehadiran);
       }
     } catch (error) {
-      return res.status(500).send(error);
+      return res.status(500).send(error.message);
     }
   },
 

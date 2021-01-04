@@ -12,7 +12,8 @@ const peraturanController = {
   create: async (req, res, next) => {
     // console.log("cobaa");
     try {
-      const input = await peraturanServices.inputPeraturan(req.body);
+      const { judul, deskripsi } = req.body;
+      const input = await peraturanServices.inputPeraturan(judul, deskripsi);
 
       const newInput = await peraturanServices.getPeraturanById(input[0]);
 
@@ -30,9 +31,10 @@ const peraturanController = {
   },
   update: async (req, res, next) => {
     try {
-      const result = await peraturanServices.updateData(req);
-
-      const newUpdate = await peraturanServices.getPeraturanById(result);
+      const { id } = req.params;
+      const { judul, deskripsi } = req.body;
+      const result = await peraturanServices.updateData(id, judul, deskripsi);
+      const newUpdate = await peraturanServices.getPeraturanById(id);
 
       if (result) {
         return res.status(200).json({
@@ -43,16 +45,18 @@ const peraturanController = {
         });
       }
     } catch (error) {
-      return res.status(500).send(error);
+      return res.status(500).send(error.message);
     }
   },
   delete: async (req, res, next) => {
     try {
-      const result = await peraturanServices.deleteData(req);
+      const { id } = req.params;
+      const result = await peraturanServices.deleteData(id);
 
       if (result) {
         return res.status(200).json({
-          message: "berhasil menghapus data",
+          message: "berhasil menghapus peraturan",
+          id,
         });
       }
     } catch (error) {

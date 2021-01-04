@@ -47,8 +47,7 @@ const materiServices = {
     return hasil;
   },
 
-  deleteMateri: async (req) => {
-    const id = req.params.id;
+  deleteMateri: async (id) => {
     const hasil = await db("tb_materi").delete().where("id", id);
     return hasil;
   },

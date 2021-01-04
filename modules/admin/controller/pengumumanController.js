@@ -30,12 +30,13 @@ const pengumumanController = {
 
   update: async (req, res, next) => {
     try {
-      const result = await pengumumanServices.updateData(req);
+      const { id } = req.params;
+      const { judul, deskripsi } = req.body;
+      const result = await pengumumanServices.updateData(id, judul, deskripsi);
 
-      const newUpdate = await pengumumanServices.getPengumumanById(result);
-
+      const newUpdate = await pengumumanServices.getPengumumanById(id);
       if (result) {
-        return res.status(200).json({
+        return res.status(200).send({
           message: "berhasil mengubah pengumuman",
           id: newUpdate.id,
           judul: newUpdate.judul,
@@ -48,11 +49,13 @@ const pengumumanController = {
   },
   delete: async (req, res, next) => {
     try {
-      const result = await pengumumanServices.deleteData(req);
+      const { id } = req.params;
+      const result = await pengumumanServices.deleteData(id);
 
       if (result) {
         return res.status(200).json({
           message: "berhasil menghapus data",
+          id,
         });
       }
     } catch (error) {

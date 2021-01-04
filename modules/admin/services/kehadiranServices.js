@@ -81,17 +81,17 @@ const kehadiranServices = {
 
     return hasil;
   },
-  getCountByUser: async (id_user) => {
+  getCountByUser: async () => {
     const data = await db("tb_kehadiran")
-      .count({ jumlah: "id" })
+      .select("tb_kehadiran.id_user", "tb_peserta.nama_lengkap")
+      .count({ jumlah: "tb_kehadiran.id_user" })
       .where({
         presensi: "hadir",
       })
-      .groupBy("id_user");
-    return {
-      id_user: id_user,
-      jumlah: data[0].jumlah,
-    };
+      .join("tb_peserta", "tb_peserta.id_user", "tb_kehadiran.id_user")
+      .groupBy("tb_kehadiran.id_user");
+    // .debug();
+    return data;
   },
 
   getDetailUserById: async (id_user) => {

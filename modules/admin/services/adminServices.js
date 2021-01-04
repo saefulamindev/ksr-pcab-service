@@ -7,6 +7,16 @@ const adminServices = {
       .where("tahap", tahap);
     return hasil;
   },
+  updateTahap: async (id, tahap) => {
+    const hasil = await db("tb_users")
+      .update({
+        tahap: tahap,
+      })
+      .where({
+        id,
+      });
+    return hasil;
+  },
 };
 
 module.exports = adminServices;

@@ -34,7 +34,7 @@ router.get(
 );
 router.post(
   "/transaksi/edit/:id",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   validasiController.updateTransaksi
 );
 

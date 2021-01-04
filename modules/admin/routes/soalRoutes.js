@@ -15,56 +15,56 @@ router.get(
 // soal PG
 router.get(
   "/pg/all",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   soalController.getPG
 );
 router.post(
   "/pg/tambah",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   soalController.createPG
 );
 router.post(
   "/pg/edit/:id",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   soalController.updatePG
 );
 router.post(
   "/pg/hapus/:id",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   soalController.deletePG
 );
 
 // soal essay
 router.get(
   "/essay/all",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   soalController.getEssay
 );
 router.post(
   "/essay/tambah",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   soalController.createEssay
 );
 router.post(
   "/essay/edit/:id",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   soalController.updateEssay
 );
 router.post(
   "/essay/hapus/:id",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   soalController.deleteEssay
 );
 // kirim jawaban pg
 router.post(
   "/kirim-pg/:id_user",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   soalController.kirimJawaban
 );
 // kirim jawaban essay
 router.post(
   "/kirim-essay/:id_user",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   soalController.kirimEssay
 );
 

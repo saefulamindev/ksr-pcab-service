@@ -57,7 +57,7 @@ const UserController = {
       };
       return responseFormatter.success(res, data, "berhasil login");
     } catch (error) {
-      return responseFormatter.error(res, null, "internal server error");
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
 
@@ -217,7 +217,7 @@ const UserController = {
         );
       }
     } catch (error) {
-      return responseFormatter.error(res, null, "internal server error");
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
 };

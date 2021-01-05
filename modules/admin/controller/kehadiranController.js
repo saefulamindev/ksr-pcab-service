@@ -99,7 +99,7 @@ const kehadiranController = {
         return responseFormatter.success(res, data, "berhasil update data");
       }
     } catch (error) {
-      return res.status(500).send(error);
+      return responseFormatter.error(res, null, "internal server error");
     }
   },
 };

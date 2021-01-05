@@ -9,6 +9,7 @@ const nodemailer = require("nodemailer");
 
 const UserController = {
   getUser: (req, res, next) => {
+    console.log(req.user);
     res.json(req.user);
   },
 

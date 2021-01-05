@@ -32,6 +32,12 @@ const pengumumanController = {
     try {
       const { id } = req.params;
       const { judul, deskripsi } = req.body;
+      const cek = await pengumumanServices.cek(id);
+      if (!cek) {
+        res.status(404).send({
+          message: "data tidak ditemukan",
+        });
+      }
       const result = await pengumumanServices.updateData(id, judul, deskripsi);
 
       const newUpdate = await pengumumanServices.getPengumumanById(id);
@@ -50,6 +56,12 @@ const pengumumanController = {
   delete: async (req, res, next) => {
     try {
       const { id } = req.params;
+      const cek = await pengumumanServices.cek(id);
+      if (!cek) {
+        res.status(404).send({
+          message: "data tidak ditemukan",
+        });
+      }
       const result = await pengumumanServices.deleteData(id);
 
       if (result) {

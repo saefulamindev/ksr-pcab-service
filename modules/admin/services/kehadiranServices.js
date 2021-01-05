@@ -34,9 +34,7 @@ const kehadiranServices = {
       });
     return data;
   },
-  updateHadirByMatUser: async (req) => {
-    const { id_user, id_materi } = req.params;
-    const { presensi } = req.body;
+  updateHadirByMatUser: async (id_user, id_materi, presensi) => {
     console.log(id_user, id_materi, presensi);
 
     const hasil = await db("tb_kehadiran")
@@ -44,14 +42,12 @@ const kehadiranServices = {
         presensi,
       })
       .where({
-        id_materi: id_materi,
-        id_user: id_user,
+        id_materi,
+        id_user,
       });
     return hasil;
   },
-  getHadirByMateri: async (req) => {
-    const { id_user, id_materi } = req.params;
-
+  getHadirByMateri: async (id_user, id_materi) => {
     const hasil = await db
       .select(
         "tb_peserta.id_user",
@@ -63,9 +59,10 @@ const kehadiranServices = {
       .leftJoin("tb_peserta", "tb_kehadiran.id_user", "tb_peserta.id_user")
       .leftJoin("tb_materi", "tb_materi.id", "tb_kehadiran.id_materi")
       .where({
-        id_materi: id_materi,
+        id_materi,
         "tb_peserta.id_user": id_user,
-      });
+      })
+      .first();
 
     return hasil;
   },

@@ -1,4 +1,5 @@
 const kehadiranServices = require("../services/kehadiranServices");
+const responseFormatter = require("../../../responses/responses");
 
 const kehadiranController = {
   getAll: async (req, res, next) => {
@@ -36,10 +37,21 @@ const kehadiranController = {
   },
   UpdateByM: async (req, res, next) => {
     try {
-      const result = await kehadiranServices.updateHadirByMatUser(req);
+      const { id_user, id_materi } = req.params;
+      const { presensi } = req.body;
+
+      const result = await kehadiranServices.updateHadirByMatUser(
+        id_user,
+        id_materi,
+        presensi
+      );
 
       if (result) {
-        const data = await kehadiranServices.getHadirByMateri(req);
+        const { id_user, id_materi } = req.params;
+        const data = await kehadiranServices.getHadirByMateri(
+          id_user,
+          id_materi
+        );
 
         return res.status(200).send({
           message: "berhasil update data",

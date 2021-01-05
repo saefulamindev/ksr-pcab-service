@@ -1,4 +1,5 @@
 const kelulusanServices = require("../services/kelulusanServices");
+const responseFormatter = require("../../../responses/responses");
 
 const kelulusanController = {
   get: async (req, res, next) => {

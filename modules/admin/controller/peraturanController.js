@@ -1,4 +1,5 @@
 const peraturanServices = require("../services/peraturanServices");
+const responseFormatter = require("../../../responses/responses");
 
 const peraturanController = {
   get: async (req, res, next) => {

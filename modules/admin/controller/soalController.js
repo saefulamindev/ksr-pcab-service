@@ -1,5 +1,5 @@
-const { text } = require("express");
 const soalServices = require("./../services/soalServices");
+const responseFormatter = require("../../../responses/responses");
 
 const soalController = {
   getPG: async (req, res, next) => {

@@ -1,46 +1,67 @@
 const pengumumanServices = require("../services/pengumumanServices");
+const responseFormatter = require("../../../responses/responses");
 
 const pengumumanController = {
   get: async (req, res, next) => {
     try {
       const data = await pengumumanServices.get(req);
-      return res.status(200).send(data);
+      return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
-      return res.status(500).send(error);
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
   create: async (req, res, next) => {
     try {
-      const input = await pengumumanServices.inputPengumuman(req.body);
+      const { judul, deskripsi } = req.body;
+      const input = await pengumumanServices.inputPengumuman(judul, deskripsi);
 
       const newInput = await pengumumanServices.getPengumumanById(input[0]);
-
-      return res.status(201).send({
-        message: "berhasil menambah pengumuman",
+      data = {
         id: newInput.id,
         judul: newInput.judul,
         deskripsi: newInput.deskripsi,
-      });
+      };
+
+      return responseFormatter.success(
+        res,
+        data,
+        "berhasil menambahkan pengumuman",
+        200
+      );
     } catch (error) {
-      return res.status(500).send({
-        message: "gagal menambah pengumuman",
-      });
+      return responseFormatter.error(
+        res,
+        null,
+        "gagal menambah pengumuman",
+        500
+      );
     }
   },
 
   update: async (req, res, next) => {
     try {
-      const result = await pengumumanServices.updateData(req);
+      const { id } = req.params;
+      const { judul, deskripsi } = req.body;
+      const cek = await pengumumanServices.cek(id);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
+      const result = await pengumumanServices.updateData(id, judul, deskripsi);
 
-      const newUpdate = await pengumumanServices.getPengumumanById(result);
+      const newUpdate = await pengumumanServices.getPengumumanById(id);
 
       if (result) {
-        return res.status(200).json({
-          message: "berhasil mengubah pengumuman",
-          id: newUpdate.id,
-          judul: newUpdate.judul,
-          deskripsi: newUpdate.deskripsi,
-        });
+        return responseFormatter.success(
+          res,
+          (data = { id, judul, deskripsi }),
+          "berhasil mengubah pengumuman",
+          200
+        );
       }
     } catch (error) {
       return res.status(500).send(error.message);
@@ -48,12 +69,25 @@ const pengumumanController = {
   },
   delete: async (req, res, next) => {
     try {
-      const result = await pengumumanServices.deleteData(req);
+      const { id } = req.params;
+      const cek = await pengumumanServices.cek(id);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
+      const result = await pengumumanServices.deleteData(id);
 
       if (result) {
-        return res.status(200).json({
-          message: "berhasil menghapus data",
-        });
+        return responseFormatter.success(
+          res,
+          (data = { id }),
+          "berhasil menghapus pengumuman",
+          200
+        );
       }
     } catch (error) {
       return res.status(500).send(error);

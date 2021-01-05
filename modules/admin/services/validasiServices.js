@@ -14,15 +14,14 @@ const validasiServices = {
     return data;
   },
 
-  updateDataDok: async (req) => {
-    const id_user = req.params.id_user;
-    const validasi_dokumen = req.body.validasi_dokumen;
-
+  updateDataDok: async (id_user, validasi_dokumen) => {
     const hasil = await db("tb_peserta")
       .update({
         validasi_dokumen: validasi_dokumen,
       })
-      .where("id", id_user);
+      .where({
+        id_user,
+      });
     return hasil;
   },
   updateDataBayar: async (id_user, jenis_bayar, nominal, status) => {
@@ -91,6 +90,10 @@ const validasiServices = {
       .first();
     return data;
   },
+  ceklog: (id) => {
+    const data = db("log_transaksi").select("*").where({ id }).first();
+    return data;
+  },
   tambahPembayaran: async (tambah) => {
     const data = db("tb_pembayaran").insert({
       id_user: tambah.id_user,
@@ -106,6 +109,10 @@ const validasiServices = {
       nominal,
       status,
     });
+    return data;
+  },
+  getBayarById: (id) => {
+    const data = db("tb_pembayaran").select("*").where({ id }).first();
     return data;
   },
   cekTagihanByJenisBayar: async (jenis_bayar) => {

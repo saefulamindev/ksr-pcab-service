@@ -1,32 +1,65 @@
 const validasiServices = require("./../services/validasiServices");
+const responseFormatter = require("../../../responses/responses");
 
 const validasiController = {
   getDok: async (req, res, next) => {
     try {
       const data = await validasiServices.getDok(req);
-      return res.status(200).send(data);
+      return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
-      return res.status(500).send(error);
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
   updateDok: async (req, res, next) => {
     try {
-      const result = await validasiServices.updateDataDok(req);
+      const { id_user } = req.params;
+      const { validasi_dokumen } = req.body;
+      const result = await validasiServices.updateDataDok(
+        id_user,
+        validasi_dokumen
+      );
 
       if (result) {
-        return res.status(200).json({
-          message: "berhasil update data",
-          id_user: req.params.id_user,
-          validasi_dokumen: req.body.validasi_dokumen,
-        });
+        return responseFormatter.success(
+          res,
+          (data = { validasi_dokumen }),
+          "berhasil update validasi dokumen",
+          200
+        );
       }
     } catch (error) {
-      return res.status(500).send(error);
+      return responseFormatter.error(res, null, "internal server error", 500);
+    }
+  },
+  get: async (req, res, next) => {
+    try {
+      const data = await validasiServices.getTransaksi(req);
+      return responseFormatter.success(res, data, "data ditemukan", 200);
+    } catch (error) {
+      return responseFormatter.error(res, null, "internal server error", 500);
+    }
+  },
+  getById: async (req, res, next) => {
+    try {
+      const { id_user } = req.params;
+      const data = await validasiServices.getTransaksiById(id_user);
+      return responseFormatter.success(res, data, "data ditemukan", 200);
+    } catch (error) {
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
   updateTransaksi: async (req, res, next) => {
     const { id } = req.params;
     const { valid } = req.body;
+    const ceklog = await validasiServices.ceklog(id);
+    if (!ceklog) {
+      return responseFormatter.badRequest(
+        res,
+        null,
+        "data tidak ditemukan",
+        404
+      );
+    }
     const data = await validasiServices.getDataTransaksi(id);
     const id_user = data.id_user;
     const jenis_bayar = data.jenis_bayar;
@@ -46,13 +79,19 @@ const validasiController = {
           data.nominal,
           status
         );
+        const newBayar = await validasiServices.getBayarById(input[0]);
 
-        return res.status(200).send({
-          message: "berhasil menambah data pembayaran baru",
-          id_user,
-          jenis_bayar,
-          // nominal,
-        });
+        const result = {
+          valid,
+          id_user: newBayar.id_user,
+          jenis_bayar: newBayar.jenis_bayar,
+        };
+        return responseFormatter.success(
+          res,
+          result,
+          "berhasil menambahkan data pembayaran baru",
+          200
+        );
       } else {
         const cek_tagihan = await validasiServices.cek_tagihan(jenis_bayar);
         const nominal_now = cek.nominal + data.nominal;
@@ -69,38 +108,18 @@ const validasiController = {
           nominal_now,
           status
         );
-        return res.status(200).send({
-          message: "berhasil menambah data pembayaran baru",
-          id_user,
-          jenis_bayar,
-          // nominal,
-          status,
-        });
+        return responseFormatter.success(
+          res,
+          null,
+          "berhasil update pembayaran",
+          200
+        );
       }
     } else {
       const update_valid = await validasiServices.update_valid(id, valid);
       const cek = await validasiServices.cek(id_user, jenis_bayar);
 
-      return res.send({
-        message: "transaksi tidak valid",
-      });
-    }
-  },
-  get: async (req, res, next) => {
-    try {
-      const data = await validasiServices.getTransaksi(req);
-      return res.status(200).send(data);
-    } catch (error) {
-      return res.status(500).send(error);
-    }
-  },
-  getById: async (req, res, next) => {
-    try {
-      const { id_user } = req.params;
-      const data = await validasiServices.getTransaksiById(id_user);
-      return res.status(200).send(data);
-    } catch (error) {
-      return res.status(500).send(error);
+      return responseFormatter.success(res, null, "transaksi tidak valid");
     }
   },
 };

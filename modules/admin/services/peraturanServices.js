@@ -4,33 +4,34 @@ const peraturanServices = {
     const data = await db("tb_peraturan").select("id", "judul", "deskripsi");
     return data;
   },
-  getPeraturanById: (id) => {
-    const data = db("tb_peraturan").where("id", id).first();
+  cek: (id) => {
+    const data = db("tb_peraturan").select("*").where({ id }).first();
     return data;
   },
-  inputPeraturan: (input) => {
+  getPeraturanById: (id) => {
+    const data = db("tb_peraturan").select("*").where("id", id).first();
+    return data;
+  },
+  inputPeraturan: (judul, deskripsi) => {
     const data = db("tb_peraturan").insert({
-      judul: input.judul,
-      deskripsi: input.deskripsi,
+      judul: judul,
+      deskripsi: deskripsi,
     });
 
     return data;
   },
-  updateData: async (req) => {
-    const id = req.params.id;
-    const judul = req.body.judul;
-    const deskripsi = req.body.deskripsi;
-
+  updateData: async (id, judul, deskripsi) => {
     const hasil = await db("tb_peraturan")
       .update({
         judul: judul,
         deskripsi: deskripsi,
       })
-      .where("id", id);
+      .where({
+        id,
+      });
     return hasil;
   },
-  deleteData: async (req) => {
-    const id = req.params.id;
+  deleteData: async (id) => {
     const hasil = await db("tb_peraturan").delete().where("id", id);
     return hasil;
   },

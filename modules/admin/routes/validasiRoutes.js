@@ -2,40 +2,21 @@ const express = require("express");
 const router = express.Router();
 const validasiController = require("../controller/validasiController");
 const passport = require("passport");
+const { reqAuth } = require("../../../middleware/reqAuth");
 
 /* GET users listing. */
-router.get(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  function (req, res, next) {
-    res.send("Halaman validasi");
-  }
-);
+router.get("/", reqAuth, function (req, res, next) {
+  res.send("Halaman validasi");
+});
 
-router.get(
-  "/dokumen/all",
-  passport.authenticate("jwt", { session: false }),
-  validasiController.getDok
-);
-router.post(
-  "/dokumen/edit/:id_user",
-  passport.authenticate("jwt", { session: false }),
-  validasiController.updateDok
-);
-router.get(
-  "/transaksi/all",
-  passport.authenticate("jwt", { session: false }),
-  validasiController.get
-);
-router.get(
-  "/transaksi/:id_user",
-  passport.authenticate("jwt", { session: false }),
-  validasiController.getById
-);
-router.post(
-  "/transaksi/edit/:id",
-  passport.authenticate("jwt", { session: false }),
-  validasiController.updateTransaksi
-);
+router.get("/dokumen/all", reqAuth, validasiController.getDok);
+
+router.post("/dokumen/edit/:id_user", reqAuth, validasiController.updateDok);
+
+router.get("/transaksi/all", reqAuth, validasiController.get);
+
+router.get("/transaksi/:id_user", reqAuth, validasiController.getById);
+
+router.post("/transaksi/edit/:id", reqAuth, validasiController.updateTransaksi);
 
 module.exports = router;

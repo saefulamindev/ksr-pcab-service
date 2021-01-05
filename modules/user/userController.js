@@ -6,9 +6,11 @@ const saltRounds = bcrypt.genSaltSync(10);
 const myPlaintextPassword = "s0//P4$$w0rD";
 const refCaptchaServices = require("../referensi/refCaptchaServices");
 const nodemailer = require("nodemailer");
+const responseFormatter = require("../../responses/responses");
 
 const UserController = {
   getUser: (req, res, next) => {
+    console.log(req.user);
     res.json(req.user);
   },
 
@@ -16,29 +18,25 @@ const UserController = {
     try {
       const captcha = await refCaptchaServices.get(req.body.kode);
       if (!captcha || captcha.jawaban !== req.body.jawaban) {
-        return res.status(401).send({
-          message: "captcha salah",
-        });
+        return responseFormatter.badRequest(res, null, "captcha salah");
       }
       const user = await UserService.getUserByEmail(req.body.email);
 
       if (!user) {
-        res.status(404).send({
-          message: "email tidak terdaftar",
-        });
+        return responseFormatter.badRequest(res, null, "email tidak terdaftar");
       }
 
       const match = await bcrypt.compare(req.body.password, user.password);
 
       if (!match) {
-        res.status(404).send({
-          message: "password salah",
-        });
+        return responseFormatter.badRequest(res, null, "password salah");
       }
       if (!user.isVerified) {
-        res.status(404).send({
-          message: "email belum di verifikasi. silakan cek email anda",
-        });
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "email belum di verifikasi. silakan cek email anda"
+        );
       }
 
       const tokenJWT = jwt.sign(
@@ -57,9 +55,9 @@ const UserController = {
         verify: user.isVerified,
         token: tokenJWT,
       };
-      return res.status(200).json(data);
+      return responseFormatter.success(res, data, "berhasil login");
     } catch (error) {
-      res.status(500).send(error.message);
+      return responseFormatter.error(res, null, "internal server error");
     }
   },
 
@@ -70,18 +68,14 @@ const UserController = {
         process.env.SECRET_DAFTAR,
         function (err, decoded) {
           if (err) {
-            return res.status(400).send({
-              message: "token tidak valid",
-            });
+            return responseFormatter.badRequest(res, null, "token tidak valid");
           }
         }
       );
       req.body.password = bcrypt.hashSync(req.body.password, saltRounds);
-      const cekUser = await UserService.getUserByEmail(req.body.email);
-      if (cekUser) {
-        return res.status(409).send({
-          message: "email sudah ada",
-        });
+      const cekEmail = await UserService.getUserByEmail(req.body.email);
+      if (cekEmail) {
+        return responseFormatter.badRequest(res, null, "email sudah terdaftar");
       }
       const input = await UserService.createUser(req.body);
 
@@ -137,13 +131,7 @@ const UserController = {
         mailOptions,
       });
     } catch (error) {
-      console.log(erroe.message);
-      const resGagal = {
-        message: "gagal membuat akun",
-      };
-
-      console.log(error.message);
-      return res.status(500).send(resGagal);
+      return responseFormatter.error(res, null, "gagal membuat akun");
     }
   },
   verify: async (req, res, next) => {
@@ -154,29 +142,35 @@ const UserController = {
         process.env.SECRET_VERIFIKASI,
         function (err, decoded) {
           if (err) {
-            return res.status(400).send("token email tidak valid");
+            return responseFormatter.badRequest(
+              res,
+              null,
+              "token email tidak valid"
+            );
           }
           id = decoded.data;
         }
       );
       const newUser = await UserService.getUserById(id);
       if (!newUser) {
-        return res.status(400).send({
-          message: "email tidak ada.",
-        });
+        return responseFormatter.badRequest(res, null, "email tidak ada");
       }
       if (newUser.isVerified) {
-        return res.status(409).send({
-          message: "email sudah di verifikasi. silakan login.",
-        });
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "email sudah di verifikasi. silakan login"
+        );
       }
       const updateUserVerified = await UserService.updateVerified(id);
-      const resBerhasil = {
-        message: "email berhasil di verifikasi",
-      };
-      return res.status(200).send(resBerhasil);
+
+      return responseFormatter.success(
+        res,
+        null,
+        "email berhasil di verifikasi"
+      );
     } catch (error) {
-      return res.status(500).send(error.message);
+      return responseFormatter.error(res, null, "internal server error");
     }
   },
   token_daftar: async (req, res, next) => {
@@ -187,20 +181,19 @@ const UserController = {
       process.env.SECRET_DAFTAR,
       { expiresIn: "5m" }
     );
-    return res.status(200).send({
-      tokenJWT_daftar,
-    });
+    return responseFormatter.success(
+      res,
+      (data = { tokenJWT_daftar }),
+      "berhasil mendapat token daftar"
+    );
   },
   ubahPw: async (req, res, next) => {
     try {
       const { id } = req.params;
       const user = await UserService.cekPwLamaById(id);
-      // console.log(user);
-      // return res.send(user);
       const match = await bcrypt.compare(req.body.password_lama, user.password);
       console.log(match);
 
-      // return res.send(match);
       if (req.body.password_baru == req.body.confirm_password) {
         if (match) {
           const password_baru = await bcrypt.hashSync(
@@ -208,22 +201,23 @@ const UserController = {
             saltRounds
           );
           const updatePw = await UserService.updatePw(id, password_baru);
-
-          res.status(200).send({
-            message: "berhasil mengubah password",
-          });
+          return responseFormatter.success(
+            res,
+            null,
+            "berhasil mengubah password"
+          );
         } else {
-          res.status(400).send({
-            message: "password anda salah",
-          });
+          return responseFormatter.badRequest(res, null, "password anda salah");
         }
       } else {
-        res.status(400).send({
-          message: "confirm password tidak sama dengan password baru",
-        });
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "confirm password tidak sama dengan password baru"
+        );
       }
     } catch (error) {
-      console.log(error);
+      return responseFormatter.error(res, null, "internal server error");
     }
   },
 };

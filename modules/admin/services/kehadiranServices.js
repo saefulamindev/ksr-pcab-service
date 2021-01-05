@@ -3,8 +3,13 @@ const db = require("../../../config/database");
 const kehadiranServices = {
   getAllData: async (req) => {
     const hasil = await db("tb_materi").select("id", "tanggal", "judul_materi");
+    // .first();
 
     return hasil;
+  },
+  cek: (id_materi) => {
+    const data = db("tb_materi").select("*").where({ id: id_materi }).first();
+    return data;
   },
   getCountById: async (id_materi) => {
     const data = await db("tb_kehadiran").count({ jumlah: "id" }).where({
@@ -30,7 +35,7 @@ const kehadiranServices = {
       .leftJoin("tb_peserta", "tb_kehadiran.id_user", "tb_peserta.id_user")
       .leftJoin("tb_materi", "tb_materi.id", "tb_kehadiran.id_materi")
       .where({
-        id_materi: id_materi,
+        id_materi,
       });
     return data;
   },
@@ -91,6 +96,16 @@ const kehadiranServices = {
     return data;
   },
 
+  cek: async (id_user) => {
+    const data = await db
+      .select("*")
+      .from("tb_kehadiran")
+      .leftJoin("tb_peserta", "tb_kehadiran.id_user", "tb_peserta.id_user")
+      .leftJoin("tb_materi", "tb_materi.id", "tb_kehadiran.id_materi")
+      .where("tb_kehadiran.id_user", id_user)
+      .first();
+    return data;
+  },
   getDetailUserById: async (id_user) => {
     const data = await db
       .select(
@@ -109,12 +124,8 @@ const kehadiranServices = {
       .where("tb_kehadiran.id_user", id_user);
     return data;
   },
-  updateHadirByUserMateri: async (req) => {
-    const { id_user, id_materi } = req.params;
-    const { presensi } = req.body;
-    console.log(id_user, id_materi, presensi);
-
-    const hasil = await db("tb_kehadiran")
+  updateHadirByUserMateri: async (id_user, id_materi, presensi) => {
+    const data = await db("tb_kehadiran")
       .update({
         presensi: presensi,
       })
@@ -122,7 +133,7 @@ const kehadiranServices = {
         id_user,
         id_materi,
       });
-    return hasil;
+    return data;
   },
   getHadirByUser: async (data) => {
     const { id_user, id_materi } = data.params;

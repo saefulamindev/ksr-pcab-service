@@ -8,6 +8,10 @@ const adminServices = {
       .first();
     return hasil;
   },
+  cek: (id) => {
+    const data = db("tb_users").select("*").where({ id }).first();
+    return data;
+  },
   cekTahap: async (tahap) => {
     const hasil = await db("tb_users").select("tahap").where({ tahap: tahap });
     return hasil;

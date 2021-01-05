@@ -25,7 +25,12 @@ const peraturanController = {
         200
       );
     } catch (error) {
-      return responseFormatter.error(res, null, "internal server error", 500);
+      return responseFormatter.error(
+        res,
+        null,
+        "gagal menambahkan peraturan",
+        500
+      );
     }
   },
   update: async (req, res, next) => {

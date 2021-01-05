@@ -1,4 +1,3 @@
-const { random } = require("./refCaptchaServices");
 const refCaptchaServices = require("./refCaptchaServices");
 const responseFormatter = require("../../responses/responses");
 const refCaptchaController = {
@@ -11,7 +10,12 @@ const refCaptchaController = {
         "berhasil mendapatkan captcha"
       );
     } catch (error) {
-      return responseFormatter.error(res, null, "gagal mendapat captcha");
+      return responseFormatter.error(
+        res,
+        null,
+        "gagal mendapatkan captcha",
+        500
+      );
     }
   },
 };

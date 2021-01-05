@@ -31,6 +31,15 @@ const adminController = {
     try {
       const { id } = req.params;
       const { tahap } = req.body;
+      const cek = await adminServices.cek(id);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
       const result = await adminServices.updateTahap(id, tahap);
       if (result) {
         return responseFormatter.success(

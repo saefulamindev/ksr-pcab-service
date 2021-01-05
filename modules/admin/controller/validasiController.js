@@ -14,6 +14,15 @@ const validasiController = {
     try {
       const { id_user } = req.params;
       const { validasi_dokumen } = req.body;
+      const cek = await validasiServices.cekId(id_user);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
       const result = await validasiServices.updateDataDok(
         id_user,
         validasi_dokumen
@@ -42,6 +51,15 @@ const validasiController = {
   getById: async (req, res, next) => {
     try {
       const { id_user } = req.params;
+      const cek = await validasiServices.cektransaksi(id_user);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
       const data = await validasiServices.getTransaksiById(id_user);
       return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {

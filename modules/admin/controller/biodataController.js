@@ -20,9 +20,18 @@ const biodataController = {
   },
 
   getById: async (req, res, next) => {
-    console.log(req.params);
+    // console.log(req.params);
     try {
       const { id_user } = req.params;
+      const cek = await biodataServices.cek(id_user);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
       const result = await biodataServices.detail(id_user);
       if (result) {
         return responseFormatter.success(

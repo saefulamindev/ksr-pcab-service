@@ -15,6 +15,10 @@ const biodataServices = {
 
     return hasil;
   },
+  cek: (id_user) => {
+    const data = db("tb_peserta").select("*").where({ id_user }).first();
+    return data;
+  },
 
   detail: async (id_user) => {
     const hasil = await db("tb_users")

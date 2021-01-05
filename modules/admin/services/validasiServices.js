@@ -24,6 +24,10 @@ const validasiServices = {
       });
     return hasil;
   },
+  cekId: (id_user) => {
+    const data = db("tb_peserta").select("*").where({ id_user }).first();
+    return data;
+  },
   updateDataBayar: async (id_user, jenis_bayar, nominal, status) => {
     const hasil = await db("tb_pembayaran")
       .update({
@@ -69,6 +73,15 @@ const validasiServices = {
       .where({
         jenis_bayar: jenis_bayar,
         id_user: id_user,
+      })
+      .first();
+    return result;
+  },
+  cektransaksi: async (id_user) => {
+    const result = await db("log_transaksi")
+      .select("*")
+      .where({
+        id_user,
       })
       .first();
     return result;

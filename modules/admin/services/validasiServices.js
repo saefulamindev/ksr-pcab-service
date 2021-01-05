@@ -14,15 +14,14 @@ const validasiServices = {
     return data;
   },
 
-  updateDataDok: async (req) => {
-    const id_user = req.params.id_user;
-    const validasi_dokumen = req.body.validasi_dokumen;
-
+  updateDataDok: async (id_user, validasi_dokumen) => {
     const hasil = await db("tb_peserta")
       .update({
         validasi_dokumen: validasi_dokumen,
       })
-      .where("id", id_user);
+      .where({
+        id_user,
+      });
     return hasil;
   },
   updateDataBayar: async (id_user, jenis_bayar, nominal, status) => {

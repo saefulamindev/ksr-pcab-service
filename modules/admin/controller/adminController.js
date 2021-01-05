@@ -22,7 +22,12 @@ const adminController = {
         return responseFormatter.success(res, data, "data ditemukan", 200);
       }
     } catch (error) {
-      return responseFormatter.error(res, (data = null), "server error", 500);
+      return responseFormatter.error(
+        res,
+        (data = null),
+        "internal server error",
+        500
+      );
     }
   },
   updateTahap: async (req, res, next) => {
@@ -33,13 +38,18 @@ const adminController = {
       if (result) {
         return responseFormatter.success(
           res,
-          (data = { tahap }),
+          (data = { id, tahap }),
           "berhasil mengubah data",
           200
         );
       }
     } catch (error) {
-      return res.status(500).send(error.message);
+      return responseFormatter.error(
+        res,
+        (data = null),
+        "internal server error",
+        500
+      );
     }
   },
 };

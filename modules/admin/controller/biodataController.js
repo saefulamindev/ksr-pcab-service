@@ -7,10 +7,15 @@ const biodataController = {
       const result = await biodataServices.get(req);
 
       if (result) {
-        return res.status(200).send(result);
+        return responseFormatter.success(
+          res,
+          (data = result),
+          "data berhasil ditemukan",
+          200
+        );
       }
     } catch (error) {
-      return res.status(500).send(error);
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
 
@@ -20,10 +25,15 @@ const biodataController = {
       const { id_user } = req.params;
       const result = await biodataServices.detail(id_user);
       if (result) {
-        return res.status(200).send(result);
+        return responseFormatter.success(
+          res,
+          (data = result),
+          "data berhasil ditemukan",
+          200
+        );
       }
     } catch (error) {
-      return res.status(500).send(error);
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
 };

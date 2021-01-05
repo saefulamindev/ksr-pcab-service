@@ -17,16 +17,17 @@ const nilaiServices = {
 
     return hasil;
   },
-  updateFisikNilai: async (req) => {
-    const id_user = req.params.id_user;
-    const nilai_fisik = req.body.nilai_fisik;
-
+  updateFisikNilai: async (id_user, nilai_fisik) => {
     const hasil = await db("tb_peserta")
       .update({
         nilai_fisik: nilai_fisik,
       })
-      .where("id", id_user);
+      .where({ id_user });
     return hasil;
+  },
+  cekFisik: (id_user) => {
+    const data = db("tb_peserta").select("*").where({ id_user }).first();
+    return data;
   },
   //================================= Nilai Afektif ============================
   getAfektifNilai: async (all) => {
@@ -47,37 +48,31 @@ const nilaiServices = {
     return data;
   },
   getAfekitfNilaiByIdUser: (id_user) => {
-    const data = db("tb_afektif").where("id_user", id_user).first();
+    const data = db("tb_afektif").where({ id_user }).first();
     return data;
   },
-  createAfektifNilai: (input) => {
+  createAfektifNilai: (id_user, tg_jawab, disiplin, kerjasama) => {
     const data = db("tb_afektif").insert({
-      id_user: input.id_user,
-      tg_jawab: input.tg_jawab,
-      disiplin: input.disiplin,
-      kerjasama: input.kerjasama,
+      id_user: id_user,
+      tg_jawab: tg_jawab,
+      disiplin: disiplin,
+      kerjasama: kerjasama,
     });
 
     return data;
   },
-  updateAfektifNilai: async (req) => {
-    const id_user = req.params.id_user;
-    const tg_jawab = req.body.tg_jawab;
-    const disiplin = req.body.disiplin;
-    const kerjasama = req.body.kerjasama;
-
+  updateAfektifNilai: async (id_user, tg_jawab, disiplin, kerjasama) => {
     const hasil = await db("tb_afektif")
       .update({
         tg_jawab: tg_jawab,
         disiplin: disiplin,
         kerjasama: kerjasama,
       })
-      .where("id_user", id_user);
+      .where({ id_user });
     return hasil;
   },
-  deleteAfektifNilai: async (req) => {
-    const id_user = req.params.id_user;
-    const hasil = await db("tb_afektif").delete().where("id_user", id_user);
+  deleteAfektifNilai: async (id_user) => {
+    const hasil = await db("tb_afektif").delete().where({ id_user });
     return hasil;
   },
   getEssayByJenis: async (jenis_test, id_user) => {
@@ -104,6 +99,10 @@ const nilaiServices = {
         jenis_tes,
         "tb_peserta.id_user": id_user,
       });
+    return data;
+  },
+  cek: (id) => {
+    const data = db("tb_jawaban_essay").select("*").where({ id }).first();
     return data;
   },
   getEssayById: (id) => {
@@ -145,6 +144,10 @@ const nilaiServices = {
       .first();
     return data;
   },
+  cekNilaiTotal: (id_user) => {
+    const data = db("tb_jawaban_pg").select("*").where({ id_user }).first();
+    return data;
+  },
   // ==============================Nilai Akhir=============================
   getuser: (id_user) => {
     const data = db
@@ -154,9 +157,15 @@ const nilaiServices = {
     return data;
   },
   getNilai: (req) => {
-    const data = db
-      .select("id", "id_user", "jenis_tes", "nilai")
-      .from("tb_penilaian");
+    const data = db("tb_penilaian")
+      .select(
+        "tb_penilaian.id",
+        "tb_peserta.nama_lengkap",
+        // "tb_penilaian.id_user",
+        "tb_penilaian.jenis_tes",
+        "tb_penilaian.nilai"
+      )
+      .rightJoin("tb_peserta", "tb_penilaian.id_user", "tb_peserta.id_user");
     return data;
   },
   getNilaiById: (id) => {
@@ -190,6 +199,16 @@ const nilaiServices = {
       .where("jenis_tes", jenis_tes);
     return data;
   },
+
+  cekNilaiByTes: async (jenis_tes) => {
+    const data = await db("tb_penilaian")
+      .select("*")
+      .where({
+        jenis_tes,
+      })
+      .first();
+    return data;
+  },
   inputNilai: (id_user, jenis_tes, nilai) => {
     const data = db("tb_penilaian").insert({
       id_user: id_user,
@@ -209,11 +228,27 @@ const nilaiServices = {
       .first();
     return data;
   },
-  getNilaiByUser: async (id_user) => {
+  cekNilaiUser: async (id_user) => {
     const data = await db("tb_penilaian")
-      .select("id", "id_user", "jenis_tes", "nilai")
+      .select("*")
       .where({
         id_user,
+      })
+      .first();
+    return data;
+  },
+  getNilaiByUser: async (id_user) => {
+    const data = db("tb_penilaian")
+      .select(
+        "tb_penilaian.id",
+        "tb_peserta.nama_lengkap",
+        // "tb_penilaian.id_user",
+        "tb_penilaian.jenis_tes",
+        "tb_penilaian.nilai"
+      )
+      .leftJoin("tb_peserta", "tb_penilaian.id_user", "tb_peserta.id_user")
+      .where({
+        "tb_penilaian.id_user": id_user,
       });
     return data;
   },

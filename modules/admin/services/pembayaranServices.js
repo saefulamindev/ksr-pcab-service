@@ -78,17 +78,31 @@ const pembayaranServices = {
       .from("tb_pembayaran")
       .leftJoin("tb_peserta", "tb_pembayaran.id_user", "tb_peserta.id_user")
       .where({
-        jenis_bayar: jenis_bayar,
+        jenis_bayar,
       });
     return result;
   },
-  getSaldoByJenisBayar: async (data) => {
+  getSaldoByJenisBayar: async (jenis_bayar) => {
     const result = await db("log_transaksi").sum({ saldo: "nominal" }).where({
-      jenis_bayar: data,
+      jenis_bayar,
       valid: true,
     });
     return result;
   },
+  cek: async (jenis_bayar) => {
+    const result = await db("log_transaksi")
+      .select("*")
+      .where({ jenis_bayar })
+      .first();
+    return result;
+  },
+  //   cekdataTagihan: async (jenis_bayar, id_user) => {
+  //     const result = await db("log_transaksi")
+  //       .select("*")
+  //       .where({ jenis_bayar, id_user })
+  //       .first();
+  //     return result;
+  //   },
 };
 
 module.exports = pembayaranServices;

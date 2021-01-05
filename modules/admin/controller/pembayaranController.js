@@ -5,45 +5,64 @@ const pembayaranController = {
   get: async (req, res, next) => {
     try {
       const data = await pembayaranServices.getBayar(req);
-      return res.status(200).send(data);
+      return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
-      return res.status(500).send(error);
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
   getByJenisBayar: async (req, res, next) => {
     try {
-      const data = await pembayaranServices.getByJenisBayar(
-        req.params.jenis_bayar
-      );
-      return res.status(200).send(data);
+      const { jenis_bayar } = req.params;
+      const data = await pembayaranServices.getByJenisBayar(jenis_bayar);
+      return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
-      return res.status(500).send(error);
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
   getSaldo: async (req, res, next) => {
     try {
-      const data = await pembayaranServices.getSaldoByJenisBayar(
-        req.params.jenis_bayar
-      );
-      return res.status(200).send(data);
+      const { jenis_bayar } = req.params;
+      const cek = await pembayaranServices.cek(jenis_bayar);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
+      const data = await pembayaranServices.getSaldoByJenisBayar(jenis_bayar);
+      return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
-      return res.status(500).send(error);
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
   getTagihan: async (req, res, next) => {
     try {
       const { jenis_bayar, id_user } = req.params;
-
+      const cek = await pembayaranServices.cek(jenis_bayar);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
       const cekNominal = await pembayaranServices.cekNominalByJenisBayar(
         jenis_bayar,
         id_user
       );
       const cekTagihan = await pembayaranServices.cekTagihan(jenis_bayar);
       const Tagihan = cekTagihan.nominal - cekNominal.nominal;
-
-      return res.status(200).send({ Tagihan });
+      return responseFormatter.success(
+        res,
+        (data = { Tagihan }),
+        "data ditemukan",
+        200
+      );
     } catch (error) {
-      return res.status(500).send(error);
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
   tambahTransaksi: async (req, res, next) => {

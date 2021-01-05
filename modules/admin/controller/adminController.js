@@ -8,7 +8,7 @@ const adminController = {
       if (tahap < 0 || tahap > 4) {
         return responseFormatter.badRequest(
           res,
-          tahap,
+          null,
           "data tidak ditemukan",
           404
         );

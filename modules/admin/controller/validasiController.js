@@ -70,11 +70,11 @@ const validasiController = {
           data.nominal,
           status
         );
-        return responseFormatter.success(
-          (res, (data = { id_user, jenis_bayar })),
-          "berhasil menambahkan data pembayaran baru",
-          200
-        );
+        // return responseFormatter.success(
+        //   (res, (data = { id_user, jenis_bayar })),
+        //   "berhasil menambahkan data pembayaran baru",
+        //   200
+        // );
         return res.status(200).send({
           message: "berhasil menambah data pembayaran baru",
           id_user,
@@ -97,11 +97,11 @@ const validasiController = {
           nominal_now,
           status
         );
-        return responseFormatter.success(
-          (res, (data = update)),
-          "berhasil menambahkan data pembayaran baru",
-          200
-        );
+        // return responseFormatter.success(
+        //   (res, (data = update)),
+        //   "berhasil menambahkan data pembayaran baru",
+        //   200
+        // );
         return res.status(200).send({
           message: "berhasil menambah data pembayaran baru",
           id_user,

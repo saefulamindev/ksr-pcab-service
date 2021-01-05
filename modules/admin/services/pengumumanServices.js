@@ -12,10 +12,10 @@ const pengumumanServices = {
     const data = db("tb_pengumuman").select("*").where({ id }).first();
     return data;
   },
-  inputPengumuman: (input) => {
+  inputPengumuman: (judul, deskripsi) => {
     const data = db("tb_pengumuman").insert({
-      judul: input.judul,
-      deskripsi: input.deskripsi,
+      judul: judul,
+      deskripsi: deskripsi,
     });
     return data;
   },

@@ -51,6 +51,15 @@ const validasiController = {
   updateTransaksi: async (req, res, next) => {
     const { id } = req.params;
     const { valid } = req.body;
+    const ceklog = await validasiServices.ceklog(id);
+    if (!ceklog) {
+      return responseFormatter.badRequest(
+        res,
+        null,
+        "data tidak ditemukan",
+        404
+      );
+    }
     const data = await validasiServices.getDataTransaksi(id);
     const id_user = data.id_user;
     const jenis_bayar = data.jenis_bayar;
@@ -70,17 +79,19 @@ const validasiController = {
           data.nominal,
           status
         );
-        // return responseFormatter.success(
-        //   (res, (data = { id_user, jenis_bayar })),
-        //   "berhasil menambahkan data pembayaran baru",
-        //   200
-        // );
-        return res.status(200).send({
-          message: "berhasil menambah data pembayaran baru",
-          id_user,
-          jenis_bayar,
-          // nominal,
-        });
+        const newBayar = await validasiServices.getBayarById(input[0]);
+
+        const result = {
+          valid,
+          id_user: newBayar.id_user,
+          jenis_bayar: newBayar.jenis_bayar,
+        };
+        return responseFormatter.success(
+          res,
+          result,
+          "berhasil menambahkan data pembayaran baru",
+          200
+        );
       } else {
         const cek_tagihan = await validasiServices.cek_tagihan(jenis_bayar);
         const nominal_now = cek.nominal + data.nominal;
@@ -97,26 +108,18 @@ const validasiController = {
           nominal_now,
           status
         );
-        // return responseFormatter.success(
-        //   (res, (data = update)),
-        //   "berhasil menambahkan data pembayaran baru",
-        //   200
-        // );
-        return res.status(200).send({
-          message: "berhasil menambah data pembayaran baru",
-          id_user,
-          jenis_bayar,
-          // nominal,
-          status,
-        });
+        return responseFormatter.success(
+          res,
+          null,
+          "berhasil update pembayaran",
+          200
+        );
       }
     } else {
       const update_valid = await validasiServices.update_valid(id, valid);
       const cek = await validasiServices.cek(id_user, jenis_bayar);
 
-      return res.send({
-        message: "transaksi tidak valid",
-      });
+      return responseFormatter.success(res, null, "transaksi tidak valid");
     }
   },
 };

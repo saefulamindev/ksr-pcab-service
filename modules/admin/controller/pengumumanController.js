@@ -1,30 +1,40 @@
 const pengumumanServices = require("../services/pengumumanServices");
+const responseFormatter = require("../../../responses/responses");
 
 const pengumumanController = {
   get: async (req, res, next) => {
     try {
       const data = await pengumumanServices.get(req);
-      return res.status(200).send(data);
+      return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
-      return res.status(500).send(error);
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
   create: async (req, res, next) => {
     try {
-      const input = await pengumumanServices.inputPengumuman(req.body);
+      const { judul, deskripsi } = req.body;
+      const input = await pengumumanServices.inputPengumuman(judul, deskripsi);
 
       const newInput = await pengumumanServices.getPengumumanById(input[0]);
-
-      return res.status(201).send({
-        message: "berhasil menambah pengumuman",
+      data = {
         id: newInput.id,
         judul: newInput.judul,
         deskripsi: newInput.deskripsi,
-      });
+      };
+
+      return responseFormatter.success(
+        res,
+        data,
+        "berhasil menambahkan pengumuman",
+        200
+      );
     } catch (error) {
-      return res.status(500).send({
-        message: "gagal menambah pengumuman",
-      });
+      return responseFormatter.error(
+        res,
+        null,
+        "gagal menambah pengumuman",
+        500
+      );
     }
   },
 
@@ -34,9 +44,12 @@ const pengumumanController = {
       const { judul, deskripsi } = req.body;
       const cek = await pengumumanServices.cek(id);
       if (!cek) {
-        res.status(404).send({
-          message: "data tidak ditemukan",
-        });
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
       }
       const result = await pengumumanServices.updateData(id, judul, deskripsi);
 

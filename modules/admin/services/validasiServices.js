@@ -90,6 +90,10 @@ const validasiServices = {
       .first();
     return data;
   },
+  ceklog: (id) => {
+    const data = db("log_transaksi").select("*").where({ id }).first();
+    return data;
+  },
   tambahPembayaran: async (tambah) => {
     const data = db("tb_pembayaran").insert({
       id_user: tambah.id_user,
@@ -105,6 +109,10 @@ const validasiServices = {
       nominal,
       status,
     });
+    return data;
+  },
+  getBayarById: (id) => {
+    const data = db("tb_pembayaran").select("*").where({ id }).first();
     return data;
   },
   cekTagihanByJenisBayar: async (jenis_bayar) => {

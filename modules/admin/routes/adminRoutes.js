@@ -10,6 +10,7 @@ router.get("/", reqAuth, function (req, res, next) {
 });
 
 router.get("/tahap/:tahap", reqAuth, adminController.countUser);
+
 router.post("/tahap/edit/:id", reqAuth, adminController.updateTahap);
 
 module.exports = router;

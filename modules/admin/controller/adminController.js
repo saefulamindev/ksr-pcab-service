@@ -5,17 +5,14 @@ const adminController = {
   countUser: async (req, res, next) => {
     try {
       const { tahap } = req.params;
-      // const cekTahap = await adminServices.cekTahap(tahap);
-      // console.log(cekTahap);
-      // if (!cekTahap) {
-      //   return responseFormatter.badRequest(
-      //     res,
-      //     cekTahap,
-      //     "data tidak ditemukan",
-      //     404
-      //   );
-      // }
-
+      if (tahap < 0 || tahap > 4) {
+        return responseFormatter.badRequest(
+          res,
+          tahap,
+          "data tidak ditemukan",
+          404
+        );
+      }
       const data = await adminServices.countUserByTahap(tahap);
 
       if (data) {

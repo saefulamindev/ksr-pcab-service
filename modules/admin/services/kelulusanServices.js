@@ -17,17 +17,19 @@ const kelulusanServices = {
 
     return hasil;
   },
-  updateData: async (req) => {
-    const id_user = req.params.id_user;
-    const nilai_akhir = req.body.nilai_akhir;
-    const status_kelulusan = req.body.status_kelulusan;
-
+  cek: (id_user) => {
+    const data = db("tb_peserta")
+      .select("status_kelulusan")
+      .where({ id_user })
+      .first();
+    return data;
+  },
+  updateData: async (id_user, status_kelulusan) => {
     const hasil = await db("tb_peserta")
       .update({
-        nilai_akhir: nilai_akhir,
         status_kelulusan: status_kelulusan,
       })
-      .where("id", id_user);
+      .where({ id_user });
     return hasil;
   },
 };

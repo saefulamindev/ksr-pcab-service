@@ -2,70 +2,28 @@ const express = require("express");
 const router = express.Router();
 const soalController = require("../controller/soalController");
 const passport = require("passport");
+const { reqAuth } = require("../../../middleware/reqAuth");
 
 /* GET users listing. */
-router.get(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  function (req, res, next) {
-    res.send("Halaman soal");
-  }
-);
+router.get("/", reqAuth, function (req, res, next) {
+  res.send("Halaman soal");
+});
 
 // soal PG
-router.get(
-  "/pg/all",
-  passport.authenticate("jwt", { session: false }),
-  soalController.getPG
-);
-router.post(
-  "/pg/tambah",
-  passport.authenticate("jwt", { session: false }),
-  soalController.createPG
-);
-router.post(
-  "/pg/edit/:id",
-  passport.authenticate("jwt", { session: false }),
-  soalController.updatePG
-);
-router.post(
-  "/pg/hapus/:id",
-  passport.authenticate("jwt", { session: false }),
-  soalController.deletePG
-);
+router.get("/pg/all", reqAuth, soalController.getPG);
+router.post("/pg/tambah", reqAuth, soalController.createPG);
+router.post("/pg/edit/:id", reqAuth, soalController.updatePG);
+router.post("/pg/hapus/:id", reqAuth, soalController.deletePG);
 
 // soal essay
-router.get(
-  "/essay/all",
-  passport.authenticate("jwt", { session: false }),
-  soalController.getEssay
-);
-router.post(
-  "/essay/tambah",
-  passport.authenticate("jwt", { session: false }),
-  soalController.createEssay
-);
-router.post(
-  "/essay/edit/:id",
-  passport.authenticate("jwt", { session: false }),
-  soalController.updateEssay
-);
-router.post(
-  "/essay/hapus/:id",
-  passport.authenticate("jwt", { session: false }),
-  soalController.deleteEssay
-);
+router.get("/essay/all", reqAuth, soalController.getEssay);
+router.post("/essay/tambah", reqAuth, soalController.createEssay);
+router.post("/essay/edit/:id", reqAuth, soalController.updateEssay);
+router.post("/essay/hapus/:id", reqAuth, soalController.deleteEssay);
+
 // kirim jawaban pg
-router.post(
-  "/kirim-pg/:id_user",
-  passport.authenticate("jwt", { session: false }),
-  soalController.kirimJawaban
-);
+router.post("/kirim-pg/:id_user", reqAuth, soalController.kirimJawaban);
 // kirim jawaban essay
-router.post(
-  "/kirim-essay/:id_user",
-  passport.authenticate("jwt", { session: false }),
-  soalController.kirimEssay
-);
+router.post("/kirim-essay/:id_user", reqAuth, soalController.kirimEssay);
 
 module.exports = router;

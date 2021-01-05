@@ -32,15 +32,15 @@ const soalServices = {
       .first();
     return data;
   },
-  createPGsoal: (input) => {
+  createPGsoal: (text_soal, opsi_1, opsi_2, opsi_3, opsi_4, kunci, skor) => {
     const data = db("tb_soal_pg").insert({
-      text_soal: input.text_soal,
-      opsi_1: input.opsi_1,
-      opsi_2: input.opsi_2,
-      opsi_3: input.opsi_3,
-      opsi_4: input.opsi_4,
-      kunci: input.kunci,
-      skor: input.skor,
+      text_soal: text_soal,
+      opsi_1: opsi_1,
+      opsi_2: opsi_2,
+      opsi_3: opsi_3,
+      opsi_4: opsi_4,
+      kunci: kunci,
+      skor: skor,
     });
 
     return data;
@@ -57,7 +57,6 @@ const soalServices = {
   ) => {
     const hasil = await db("tb_soal_pg")
       .update({
-        id: id,
         text_soal: text_soal,
         opsi_1: opsi_1,
         opsi_2: opsi_2,
@@ -77,6 +76,10 @@ const soalServices = {
     });
     return hasil;
   },
+  cekpg: (id) => {
+    const data = db("tb_soal_pg").select("*").where({ id }).first();
+    return data;
+  },
 
   //   Soal Essay
   getEssaySoal: async (all) => {
@@ -87,12 +90,11 @@ const soalServices = {
     const data = db("tb_soal_essay").where("id", id).first();
     return data;
   },
-  createEssaySoal: (input) => {
+  createEssaySoal: (text_soal, skor) => {
     const data = db("tb_soal_essay").insert({
-      text_soal: input.text_soal,
-      skor: input.skor,
+      text_soal: text_soal,
+      skor: skor,
     });
-
     return data;
   },
   updateEssaySoal: async (id, text_soal, skor) => {
@@ -111,6 +113,10 @@ const soalServices = {
       id,
     });
     return hasil;
+  },
+  cekessay: (id) => {
+    const data = db("tb_soal_essay").select("*").where({ id }).first();
+    return data;
   },
   // kirim jawaban pg
   kirimJawabanPG: (id_user, jenis_tes, id_soal_pg, jawaban_pg, skor) => {

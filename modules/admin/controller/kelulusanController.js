@@ -4,26 +4,35 @@ const responseFormatter = require("../../../responses/responses");
 const kelulusanController = {
   get: async (req, res, next) => {
     try {
-      const result = await kelulusanServices.get(req);
+      const data = await kelulusanServices.get(req);
 
-      if (result) {
-        return res.status(200).send(result);
+      if (data) {
+        return responseFormatter.success(res, data, "data ditemukan", 200);
       }
     } catch (error) {
-      return res.status(500).send(error);
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
   update: async (req, res, next) => {
     try {
-      const result = await kelulusanServices.updateData(req);
+      const { id_user } = req.params;
+      const { status_kelulusan } = req.body;
+      const cek = await kelulusanServices.cek(id_user);
+      if (!cek) {
+        return responseFormatter.badRequest(res, null, "data tidak ditemukan");
+      }
+      const result = await kelulusanServices.updateData(
+        id_user,
+        status_kelulusan
+      );
 
       if (result) {
-        return res.status(200).json({
-          message: "berhasil update data",
-          id_user: req.params.id_user,
-          nilai_akhir: req.body.nilai_akhir,
-          status_kelulusan: req.body.status_kelulusan,
-        });
+        return responseFormatter.success(
+          res,
+          (data = { id_user, status_kelulusan }),
+          "berhasil update data",
+          200
+        );
       }
     } catch (error) {
       return res.status(500).send(error);

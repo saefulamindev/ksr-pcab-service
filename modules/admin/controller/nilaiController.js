@@ -38,6 +38,15 @@ const nilaiController = {
   getAfektif: async (req, res, next) => {
     try {
       const data = await nilaiServices.getAfektifNilai(req);
+      const cek = await nilaiServices.cekAllAfektif(req);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
       return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
       return responseFormatter.error(res, null, "internal server error", 500);

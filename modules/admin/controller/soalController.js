@@ -5,6 +5,15 @@ const soalController = {
   getPG: async (req, res, next) => {
     try {
       const data = await soalServices.getPGsoal(req);
+      const cek = await soalServices.cekAllPG(req);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
       return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
       return responseFormatter.error(res, null, "internal server error", 500);
@@ -134,6 +143,15 @@ const soalController = {
   getEssay: async (req, res, next) => {
     try {
       const data = await soalServices.getEssaySoal(req);
+      const cek = await soalServices.cekAllEssay(req);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
       return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
       return responseFormatter.error(res, null, "internal server error", 500);

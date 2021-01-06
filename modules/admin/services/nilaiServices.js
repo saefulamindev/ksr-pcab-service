@@ -43,6 +43,10 @@ const nilaiServices = {
       .rightJoin("tb_afektif", "tb_peserta.id_user", "tb_afektif.id_user");
     return data;
   },
+  cekAllAfektif: (req) => {
+    const data = db("tb_afektif").select("*").first();
+    return data;
+  },
   getAfekitfNilaiById: (id) => {
     const data = db("tb_afektif").where("id", id).first();
     return data;

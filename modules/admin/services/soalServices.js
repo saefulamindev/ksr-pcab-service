@@ -1,6 +1,10 @@
 const db = require("../../../config/database");
 
 const soalServices = {
+  cekAllPG: (req) => {
+    const data = db("tb_soal_pg").select("*").first();
+    return data;
+  },
   getPGsoal: async (all) => {
     const data = await db("tb_soal_pg").select(
       "id",
@@ -113,6 +117,10 @@ const soalServices = {
       id,
     });
     return hasil;
+  },
+  cekAllEssay: (req) => {
+    const data = db("tb_soal_essay").select("*").first();
+    return data;
   },
   cekessay: (id) => {
     const data = db("tb_soal_essay").select("*").where({ id }).first();

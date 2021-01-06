@@ -6,6 +6,10 @@ const materiServices = {
     const data = db("tb_materi").select("*").where({ id }).first();
     return data;
   },
+  cekAll: (req) => {
+    const data = db("tb_materi").select("*").first();
+    return data;
+  },
   getMateri: async (req) => {
     const data = await db("tb_materi").select(
       "id",

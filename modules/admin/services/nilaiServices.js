@@ -105,6 +105,13 @@ const nilaiServices = {
     const data = db("tb_jawaban_essay").select("*").where({ id }).first();
     return data;
   },
+  cekEssay: (jenis_tes, id_user) => {
+    const data = db("tb_jawaban_essay")
+      .select("*")
+      .where({ jenis_tes, id_user })
+      .first();
+    return data;
+  },
   getEssayById: (id) => {
     const data = db("tb_jawaban_essay")
       .select("id", "jenis_tes", "id_soal_essay", "jawaban_essay", "skor")
@@ -144,8 +151,8 @@ const nilaiServices = {
       .first();
     return data;
   },
-  cekNilaiTotal: (id_user) => {
-    const data = db("tb_jawaban_pg").select("*").where({ id_user }).first();
+  cekIdUser: (id_user) => {
+    const data = db("tb_peserta").select("*").where({ id_user }).first();
     return data;
   },
   // ==============================Nilai Akhir=============================
@@ -224,6 +231,15 @@ const nilaiServices = {
       .where({
         id_user,
         jenis_tes,
+      })
+      .first();
+    return data;
+  },
+  cekUser: async (id_user) => {
+    const data = await db("tb_peserta")
+      .select("*")
+      .where({
+        id_user,
       })
       .first();
     return data;

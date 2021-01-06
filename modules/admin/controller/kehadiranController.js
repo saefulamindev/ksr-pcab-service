@@ -39,7 +39,15 @@ const kehadiranController = {
     try {
       const { id_user, id_materi } = req.params;
       const { presensi } = req.body;
-
+      const cek = await kehadiranServices.cekUpdateById(id_materi, id_user);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
       const result = await kehadiranServices.updateHadirByMatUser(
         id_user,
         id_materi,
@@ -89,6 +97,10 @@ const kehadiranController = {
     try {
       const { id_user, id_materi } = req.params;
       const { presensi } = req.body;
+      const cek = await kehadiranServices.cek(id_user, id_materi);
+      if (!cek) {
+        return responseFormatter.badRequest(res, null, "data tidak ditemukan");
+      }
       const result = await kehadiranServices.updateHadirByUserMateri(
         id_user,
         id_materi,

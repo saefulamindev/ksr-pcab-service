@@ -13,6 +13,15 @@ const pembayaranController = {
   getByJenisBayar: async (req, res, next) => {
     try {
       const { jenis_bayar } = req.params;
+      const cek = await pembayaranServices.cekByJenis(jenis_bayar);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
       const data = await pembayaranServices.getByJenisBayar(jenis_bayar);
       return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
@@ -22,7 +31,7 @@ const pembayaranController = {
   getSaldo: async (req, res, next) => {
     try {
       const { jenis_bayar } = req.params;
-      const cek = await pembayaranServices.cek(jenis_bayar);
+      const cek = await pembayaranServices.cekSaldo(jenis_bayar);
       if (!cek) {
         return responseFormatter.badRequest(
           res,
@@ -40,7 +49,7 @@ const pembayaranController = {
   getTagihan: async (req, res, next) => {
     try {
       const { jenis_bayar, id_user } = req.params;
-      const cek = await pembayaranServices.cek(jenis_bayar);
+      const cek = await pembayaranServices.cek(id_user);
       if (!cek) {
         return responseFormatter.badRequest(
           res,

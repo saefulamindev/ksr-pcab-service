@@ -52,6 +52,20 @@ const kehadiranServices = {
       });
     return hasil;
   },
+  cekUpdateById: (id_materi, id_user) => {
+    const data = db("tb_kehadiran")
+      .select("*")
+      .where({ id_materi, id_user })
+      .first();
+    return data;
+  },
+  cekUpdateByMateri: (id_user, id_materi) => {
+    const data = db("tb_kehadiran")
+      .select("*")
+      .where({ id_user, id_materi })
+      .first();
+    return data;
+  },
   getHadirByMateri: async (id_user, id_materi) => {
     const hasil = await db
       .select(

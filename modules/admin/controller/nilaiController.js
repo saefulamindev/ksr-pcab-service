@@ -133,6 +133,10 @@ const nilaiController = {
   getEssay: async (req, res, next) => {
     try {
       const { jenis_tes, id_user } = req.params;
+      const cek = await nilaiServices.cekEssay(jenis_tes, id_user);
+      if (!cek) {
+        return responseFormatter.badRequest(res, null, "data tidak ditemukan");
+      }
       const data = await nilaiServices.getEssayByTes(jenis_tes, id_user);
       return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
@@ -179,7 +183,7 @@ const nilaiController = {
     try {
       const { id_user } = req.params;
       const { jenis_tes } = req.body;
-      const cek = await nilaiServices.cekNilaiTotal(id_user);
+      const cek = await nilaiServices.cekIdUser(id_user);
       if (!cek) {
         return responseFormatter.badRequest(res, null, "data tidak ditemukan");
       }
@@ -238,6 +242,10 @@ const nilaiController = {
   getNilaiAkhirById: async (req, res, next) => {
     try {
       const { id_user } = req.params;
+      const cekUser = await nilaiServices.cekUser(id_user);
+      if (!cekUser) {
+        return responseFormatter.badRequest(res, null, "data tidak ditemukan");
+      }
       const cek = await nilaiServices.cekNilaiUser(id_user);
       if (!cek) {
         return responseFormatter.badRequest(res, null, "data tidak ditemukan");
@@ -281,7 +289,12 @@ const nilaiController = {
         jenis_tes: newNilai.jenis_tes,
         nilai: newNilai.nilai,
       };
-      return responseFormatter.success(res, data, "data ditemukan", 200);
+      return responseFormatter.success(
+        res,
+        data,
+        "berhasil menambahkan nilai",
+        200
+      );
     } catch (error) {
       return responseFormatter.error(res, null, "internal server error", 500);
     }

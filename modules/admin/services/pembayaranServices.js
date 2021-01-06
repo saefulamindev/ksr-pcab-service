@@ -89,8 +89,22 @@ const pembayaranServices = {
     });
     return result;
   },
-  cek: async (jenis_bayar) => {
+  cek: async (id_user) => {
+    const result = await db("tb_peserta")
+      .select("*")
+      .where({ id_user })
+      .first();
+    return result;
+  },
+  cekSaldo: async (jenis_bayar) => {
     const result = await db("log_transaksi")
+      .select("*")
+      .where({ jenis_bayar })
+      .first();
+    return result;
+  },
+  cekByJenis: async (jenis_bayar) => {
+    const result = await db("tb_pembayaran")
       .select("*")
       .where({ jenis_bayar })
       .first();

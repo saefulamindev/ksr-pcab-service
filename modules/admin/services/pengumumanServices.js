@@ -4,8 +4,8 @@ const pengumumanServices = {
     const data = await db("tb_pengumuman").select("id", "judul", "deskripsi");
     return data;
   },
-  cek: (id) => {
-    const data = db("tb_pengumuman").select("*").where({ id }).first();
+  cekAll: (req) => {
+    const data = db("tb_pengumuman").select("*").first();
     return data;
   },
   getPengumumanById: (id) => {

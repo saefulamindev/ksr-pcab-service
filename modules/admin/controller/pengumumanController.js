@@ -5,6 +5,15 @@ const pengumumanController = {
   get: async (req, res, next) => {
     try {
       const data = await pengumumanServices.get(req);
+      const cek = await pengumumanServices.cekAll(req);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
       return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
       return responseFormatter.error(res, null, "internal server error", 500);
@@ -14,7 +23,6 @@ const pengumumanController = {
     try {
       const { judul, deskripsi } = req.body;
       const input = await pengumumanServices.inputPengumuman(judul, deskripsi);
-
       const newInput = await pengumumanServices.getPengumumanById(input[0]);
       data = {
         id: newInput.id,

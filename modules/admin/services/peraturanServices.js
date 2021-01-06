@@ -4,6 +4,10 @@ const peraturanServices = {
     const data = await db("tb_peraturan").select("id", "judul", "deskripsi");
     return data;
   },
+  cekAll: (req) => {
+    const data = db("tb_peraturan").select("*").first();
+    return data;
+  },
   cek: (id) => {
     const data = db("tb_peraturan").select("*").where({ id }).first();
     return data;

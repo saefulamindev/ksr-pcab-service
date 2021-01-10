@@ -1,10 +1,12 @@
 const express = require("express");
-const pengumumanController = require("../controller/pengumumanController");
 const router = express.Router();
+const materiController = require("../controller/materiController");
 const passport = require("passport");
 const { reqAuth } = require("../../../middleware/reqAuth");
 
 /* GET users listing. */
-router.get("/", reqAuth, pengumumanController.get);
+router.get("/all", reqAuth, materiController.get);
+
+router.get("/:id", reqAuth, materiController.getById);
 
 module.exports = router;

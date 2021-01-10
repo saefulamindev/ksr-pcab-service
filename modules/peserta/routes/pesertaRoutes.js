@@ -2,6 +2,7 @@ const express = require("express");
 const pesertaController = require("../controller/pesertaController");
 const router = express.Router();
 const passport = require("passport");
+const { reqAuth } = require("../../../middleware/reqAuth");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {

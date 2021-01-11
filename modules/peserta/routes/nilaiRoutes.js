@@ -18,11 +18,9 @@ router.get("/essay/:jenis_tes/:id_user", reqAuth, nilaiController.getEssay);
 router.get("/essay/:id", reqAuth, nilaiController.getEssayById);
 
 // Nilai total
-router.get("/total/:id_user", reqAuth, nilaiController.getNilaiTotal);
+router.get("/kognitif/:id_user", reqAuth, nilaiController.getNilaiById);
 
 // Nilai Akhir
-router.get("/:id_user/all", reqAuth, nilaiController.getNilaiById);
-router.get("/jenis_tes/:jenis_tes", reqAuth, nilaiController.getNilaiByTes);
 router.get("/nilai_akhir/:id_user", reqAuth, nilaiController.getNilaiAkhirById);
 
 module.exports = router;

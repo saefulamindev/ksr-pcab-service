@@ -51,7 +51,6 @@ const nilaiServices = {
     return data;
   },
 
-  //======================error disini================
   getAfektifNilaiByIdUser: async (id_user) => {
     const data = await db
       .select(
@@ -63,7 +62,7 @@ const nilaiServices = {
       )
       .from("tb_peserta")
       .rightJoin("tb_afektif", "tb_peserta.id_user", "tb_afektif.id_user")
-      .where(id_user);
+      .where({ "tb_afektif.id_user": id_user });
     return data;
   },
   cekAllAfektif: (req) => {
@@ -72,13 +71,6 @@ const nilaiServices = {
   },
 
   // Nilai Essay
-  getEssayByJenis: async (jenis_test, id_user) => {
-    const result = await db("tb_jawaban_essay")
-      .select("id", "jenis_test", "id_user", "jawaban_essay", "skor")
-      .where("jenis_test", jenis_test)
-      .where("id_user", id_user);
-    return result;
-  },
   getEssayByTes: (jenis_tes, id_user) => {
     const data = db("tb_jawaban_essay")
       .select(
@@ -114,32 +106,6 @@ const nilaiServices = {
       .where({
         id,
       });
-    return data;
-  },
-
-  // Nilai Total
-  jmlNilaiPG: (id_user, jenis_tes) => {
-    const data = db("tb_jawaban_pg")
-      .sum({ pg: "skor" })
-      .where({
-        id_user,
-        jenis_tes,
-      })
-      .first();
-    return data;
-  },
-  jmlNilaiEssay: (id_user, jenis_tes) => {
-    const data = db("tb_jawaban_essay")
-      .sum({ essay: "skor" })
-      .where({
-        id_user,
-        jenis_tes,
-      })
-      .first();
-    return data;
-  },
-  cekIdUser: (id_user) => {
-    const data = db("tb_peserta").select("*").where({ id_user }).first();
     return data;
   },
 
@@ -226,17 +192,6 @@ const nilaiServices = {
       })
       .first();
     return data;
-  },
-  updateNA: async (id_user, nilai_akhir, status) => {
-    const hasil = await db("tb_peserta")
-      .update({
-        nilai_akhir: nilai_akhir,
-        status_kelulusan: status,
-      })
-      .where({
-        id_user,
-      });
-    return hasil;
   },
 };
 

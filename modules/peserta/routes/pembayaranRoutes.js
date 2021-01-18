@@ -8,7 +8,6 @@ const multer = require("multer");
 /* GET users listing. */
 router.get("/all", reqAuth, pembayaranController.get);
 router.get("/:id_user", reqAuth, pembayaranController.getByIdUser);
-
 router.get("/:jenis_bayar/all", reqAuth, pembayaranController.getByJenisBayar);
 // router.get(
 //   "/:jenis_bayar/:id_user",
@@ -16,10 +15,6 @@ router.get("/:jenis_bayar/all", reqAuth, pembayaranController.getByJenisBayar);
 //   pembayaranController.getByJenisBayarIdUser
 // );
 
-router.get(
-  "/tagihan/:id_user/:jenis_bayar",
-  reqAuth,
-  pembayaranController.getTagihan
-);
+router.get("/tagihan/:id_user", reqAuth, pembayaranController.getTagihan);
 
 module.exports = router;

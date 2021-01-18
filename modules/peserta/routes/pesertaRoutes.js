@@ -3,6 +3,7 @@ const pesertaController = require("../controller/pesertaController");
 const router = express.Router();
 const passport = require("passport");
 const { reqAuth } = require("../../../middleware/reqAuth");
+const { uploadFile } = require("../../../middleware/upload");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -10,7 +11,8 @@ router.get("/", function (req, res, next) {
 });
 router.post(
   "/isi-form/",
-  // passport.authenticate("jwt", { session: false }),
+  reqAuth,
+  uploadFile.single("file_foto"),
   pesertaController.isiForm
 );
 

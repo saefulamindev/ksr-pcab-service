@@ -22,9 +22,6 @@ const pesertaServices = {
     alamat_orangtua,
     nohp_orangtua,
     nohp_orangdekat,
-    file_form_pendaftaran,
-    file_persetujuan,
-    file_komitmen,
     file_foto
   ) => {
     const data = await db("tb_peserta")
@@ -49,9 +46,6 @@ const pesertaServices = {
         alamat_orangtua: alamat_orangtua,
         nohp_orangtua: nohp_orangtua,
         nohp_orangdekat: nohp_orangdekat,
-        file_form_pendaftaran: file_form_pendaftaran,
-        file_persetujuan: file_persetujuan,
-        file_komitmen: file_komitmen,
         file_foto: file_foto,
       })
       .where({
@@ -64,6 +58,15 @@ const pesertaServices = {
       .select("*")
       .where({
         id,
+      })
+      .first();
+    return hasil;
+  },
+  getPesertaByIdUser: (id_user) => {
+    const hasil = db("tb_peserta")
+      .select("*")
+      .where({
+        id_user,
       })
       .first();
     return hasil;

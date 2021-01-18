@@ -40,7 +40,8 @@ const pembayaranController = {
   },
   getTagihan: async (req, res, next) => {
     try {
-      const { jenis_bayar, id_user } = req.params;
+      const { id_user } = req.params;
+      const { jenis_bayar } = req.body;
       const cek = await pembayaranServices.cek(id_user);
       if (!cek) {
         return responseFormatter.badRequest(

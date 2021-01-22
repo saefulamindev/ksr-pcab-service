@@ -1,7 +1,7 @@
 const db = require("../../../config/database");
 
 const pesertaServices = {
-  isiForm: (
+  isiForm: async (
     id_user,
     tahun_daftar,
     noreg,
@@ -24,7 +24,7 @@ const pesertaServices = {
     nohp_orangdekat,
     file_foto
   ) => {
-    const data = db("tb_peserta")
+    const hasil = await db("tb_peserta")
       .insert({
         id_user: id_user,
         tahun_daftar: tahun_daftar,
@@ -51,7 +51,8 @@ const pesertaServices = {
       .where({
         id_user,
       });
-    return data;
+    // .debug();
+    return hasil;
   },
   getPesertaById: (id) => {
     const hasil = db("tb_peserta")

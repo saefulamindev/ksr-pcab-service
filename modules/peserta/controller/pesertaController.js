@@ -8,6 +8,7 @@ const pesertaController = {
       if (!req.file) {
         return responseFormatter.error(res, null, "foto harus diupload", 422);
       }
+
       const {
         id_user,
         tahun_daftar,
@@ -30,7 +31,9 @@ const pesertaController = {
         nohp_orangtua,
         nohp_orangdekat,
       } = req.body;
+      // console.log(req.body);
       const file_foto = req.file.path;
+      // console.log(req.file);
 
       if (!req.body) {
         return responseFormatter.error(
@@ -41,7 +44,7 @@ const pesertaController = {
         );
       }
 
-      const data = await pesertaServices.isiForm(
+      const biodata = await pesertaServices.isiForm(
         id_user,
         tahun_daftar,
         noreg,
@@ -64,6 +67,7 @@ const pesertaController = {
         nohp_orangdekat,
         file_foto
       );
+      // console.log(biodata);
 
       const newInput = await pesertaServices.getPesertaByIdUser(id_user);
       return responseFormatter.success(

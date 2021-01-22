@@ -11,9 +11,10 @@ router.get("/", function (req, res, next) {
 });
 
 router.post(
-  "/buktiBayarPendaftaran",
+  "/buktiBayar",
   reqAuth,
-  uploadController.uploadBuktiBayarPendaftaran
+  uploadFile.single("bukti_bayar"),
+  uploadController.uploadBuktiBayar
 );
 
 router.post(

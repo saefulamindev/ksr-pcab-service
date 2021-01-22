@@ -5,6 +5,9 @@ const { InternalServerError } = require("http-errors");
 const pesertaController = {
   isiForm: async (req, res, next) => {
     try {
+      if (!req.file) {
+        return responseFormatter.error(res, null, "foto harus diupload", 422);
+      }
       const {
         id_user,
         tahun_daftar,
@@ -29,10 +32,7 @@ const pesertaController = {
       } = req.body;
       const file_foto = req.file.path;
 
-      if (!req.file) {
-        return responseFormatter.error(res, null, "foto harus diupload", 422);
-      }
-      if (!data) {
+      if (!req.body) {
         return responseFormatter.error(
           res,
           null,
@@ -64,7 +64,6 @@ const pesertaController = {
         nohp_orangdekat,
         file_foto
       );
-      console.log();
 
       const newInput = await pesertaServices.getPesertaByIdUser(id_user);
       return responseFormatter.success(
@@ -90,7 +89,7 @@ const pesertaController = {
           alamat_orangtua: newInput.alamat_orangtua,
           nohp_orangtua: newInput.nohp_orangtua,
           nohp_orangdekat: newInput.nohp_orangdekat,
-          file_foto: newInput.file_foto,
+          file_foto: file_foto,
         }),
         "Berhasil mengisi form",
         200

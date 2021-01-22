@@ -8,14 +8,13 @@ const pembayaranServices = {
     return data;
   },
 
-  tambahTransaksiBayar: (input) => {
-    const data = db("log_transaksi").insert({
-      id_user: input.id_user,
-      nominal: input.nominal,
-      jenis_bayar: input.jenis_bayar,
-      bukti_bayar: req.file.path,
+  tambahTransaksiBayar: async (id_user, nominal, jenis_bayar, bukti_bayar) => {
+    const data = await db("log_transaksi").insert({
+      id_user: id_user,
+      nominal: nominal,
+      jenis_bayar: jenis_bayar,
+      bukti_bayar: bukti_bayar,
     });
-
     return data;
   },
 
@@ -25,6 +24,7 @@ const pembayaranServices = {
       .where({
         jenis_bayar: jenis_bayar,
         "log_transaksi.id_user": id_user,
+        valid: true,
       })
       .first();
     return result;

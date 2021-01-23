@@ -104,7 +104,7 @@ const UserController = {
       const url = req.headers.host + "/users/verify?token_email=" + token_email;
 
       const mailOptions = {
-        from: "no-reply.pcab@ksrpmiunitunj.org", // Sender address
+        from: "unj.ksrpmi@gmail.com", // Sender address
         to: newUser.email, // List of recipients
         subject: "Verifikasi Akun Email PCAB 2020", // Subject line
         html:

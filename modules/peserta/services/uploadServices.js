@@ -58,6 +58,16 @@ const uploadServices = {
       });
     return updateHasil;
   },
+  updateFileFoto: async (id_user, file_foto) => {
+    const updateHasil = await db("tb_peserta")
+      .update({
+        file_foto: file_foto,
+      })
+      .where({
+        id_user,
+      });
+    return updateHasil;
+  },
 };
 
 module.exports = uploadServices;

@@ -39,6 +39,13 @@ router.post(
 );
 
 router.post(
+  "/fileFoto/:id_user",
+  reqAuth,
+  uploadFile.single("file_foto"),
+  uploadController.uploadFileFoto
+);
+
+router.post(
   "/berkasPendaftaran/:id_user",
   reqAuth,
   uploadFile.fields([

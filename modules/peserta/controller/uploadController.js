@@ -152,6 +152,33 @@ const uploadController = {
     }
   },
 
+  uploadFileFoto: async (req, res, next) => {
+    try {
+      if (!req.file) {
+        return responseFormatter.error(res, null, "file harus diupload", 422);
+      }
+      const { id_user } = req.params;
+      const file_foto = req.file.path;
+      // console.log(req.file.path);
+      const cek = await uploadServices.getDokumenPendaftaranByIdUser(id_user);
+      if (!cek) {
+        return responseFormatter.badRequest(res, null, "data tidak ditemukan");
+      }
+
+      const result = await uploadServices.updateFileFoto(id_user, file_foto);
+      if (result) {
+        return responseFormatter.success(
+          res,
+          (data = { id_user, file_foto }),
+          "berhasil upload",
+          200
+        );
+      }
+    } catch (error) {
+      return responseFormatter.error(res, null, "internal server error", 500);
+    }
+  },
+
   // ERROR DISINI
   uploadBerkasPendaftaran: async (req, res, next) => {
     try {

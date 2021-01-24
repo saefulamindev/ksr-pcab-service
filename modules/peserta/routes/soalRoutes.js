@@ -7,6 +7,7 @@ const { reqAuth } = require("../../../middleware/reqAuth");
 /* GET users listing. */
 // soal PG
 router.get("/pg/all", reqAuth, soalController.getPG);
+
 router.get("/pg/:id", reqAuth, soalController.getPGById);
 
 // soal essay

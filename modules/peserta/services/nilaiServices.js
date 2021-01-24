@@ -65,8 +65,8 @@ const nilaiServices = {
       .where({ "tb_afektif.id_user": id_user });
     return data;
   },
-  cekAllAfektif: (req) => {
-    const data = db("tb_afektif").select("*").first();
+  cekAllAfektif: (id_user) => {
+    const data = db("tb_afektif").select("*").where({ id_user }).first();
     return data;
   },
 

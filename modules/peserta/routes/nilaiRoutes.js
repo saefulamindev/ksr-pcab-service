@@ -21,6 +21,6 @@ router.get("/essay/:id", reqAuth, nilaiController.getEssayById);
 router.get("/kognitif/:id_user", reqAuth, nilaiController.getNilaiById);
 
 // Nilai Akhir
-router.get("/nilai_akhir/:id_user", reqAuth, nilaiController.getNilaiAkhirById);
+router.get("/nilai-akhir/:id_user", reqAuth, nilaiController.getNilaiAkhirById);
 
 module.exports = router;

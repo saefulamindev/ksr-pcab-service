@@ -31,9 +31,7 @@ const pesertaController = {
         nohp_orangtua,
         nohp_orangdekat,
       } = req.body;
-      // console.log(req.body);
       const file_foto = req.file.path;
-      // console.log(req.file);
 
       if (!req.body) {
         return responseFormatter.error(
@@ -67,7 +65,6 @@ const pesertaController = {
         nohp_orangdekat,
         file_foto
       );
-      // console.log(biodata);
 
       const newInput = await pesertaServices.getPesertaByIdUser(id_user);
       return responseFormatter.success(

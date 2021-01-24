@@ -85,7 +85,6 @@ const soalController = {
       const cocok = jawaban_pg == parseInt(cekKunci.kunci);
       console.log(cocok);
       const skor = cocok ? 8 : 0;
-      // return res.send(cekKunci);
       const input = await soalServices.kirimJawabanPG(
         id_user,
         jenis_tes,
@@ -94,16 +93,19 @@ const soalController = {
         skor
       );
       const newInput = await soalServices.getJawabanPGById(input[0]);
-
-      return res.status(201).send({
-        message: "berhasil mengirim jawaban pg",
-        id: newInput.id,
-        id_user: newInput.id_user,
-        jenis_tes: newInput.jenis_tes,
-        id_soal_pg: newInput.id_soal_pg,
-      });
+      return responseFormatter.success(
+        res,
+        (data = {
+          id: newInput.id,
+          id_user: newInput.id_user,
+          jenis_tes: newInput.jenis_tes,
+          id_soal_pg: newInput.id_soal_pg,
+        }),
+        "berhasil mengirim jawaban pg",
+        201
+      );
     } catch (error) {
-      return res.status(500).send(error.message);
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
 
@@ -119,17 +121,20 @@ const soalController = {
         jawaban_essay
       );
       const newInput = await soalServices.getJawabanEssayById(input[0]);
-
-      return res.status(201).send({
-        message: "berhasil mengirim jawaban essay",
-        id: newInput.id,
-        id_user: newInput.id_user,
-        jenis_tes: newInput.jenis_tes,
-        id_soal_essay: newInput.id_soal_essay,
-        jawaban_essay: newInput.jawaban_essay,
-      });
+      return responseFormatter.success(
+        res,
+        (data = {
+          id: newInput.id,
+          id_user: newInput.id_user,
+          jenis_tes: newInput.jenis_tes,
+          id_soal_essay: newInput.id_soal_essay,
+          jawaban_essay: newInput.jawaban_essay,
+        }),
+        "berhasil mengirim jawaban essay",
+        201
+      );
     } catch (error) {
-      return res.status(500).send(error.message);
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
 };

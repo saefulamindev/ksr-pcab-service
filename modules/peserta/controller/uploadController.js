@@ -45,20 +45,9 @@ const uploadController = {
         "berhasil mengupload pembayaran",
         201
       );
-      // return res.status(201).send({
-      //   message: "berhasil mengupload pembayaran",
-      //   id: newInput.id,
-      //   id_user: req.body.id_user,
-      //   nominal: newInput.nominal,
-      //   jenis_bayar: newInput.jenis_bayar,
-      //   bukti_bayar: newInput.bukti_bayar,
-      // });
     } catch (error) {
       console.log(error);
       return responseFormatter.error(res, null, "internal server error", 500);
-      // return res.status(500).send({
-      //   message: "gagal menambah pembayaran",
-      // });
     }
   },
 
@@ -69,7 +58,6 @@ const uploadController = {
       }
       const { id_user } = req.params;
       const file_form_pendaftaran = req.file.path;
-      // console.log(req.file.path);
 
       const cek = await uploadServices.getDokumenPendaftaranByIdUser(id_user);
       if (!cek) {
@@ -100,7 +88,6 @@ const uploadController = {
       }
       const { id_user } = req.params;
       const file_persetujuan = req.file.path;
-      // console.log(req.file.path);
       const cek = await uploadServices.getDokumenPendaftaranByIdUser(id_user);
       if (!cek) {
         return responseFormatter.badRequest(res, null, "data tidak ditemukan");
@@ -129,7 +116,6 @@ const uploadController = {
       }
       const { id_user } = req.params;
       const file_komitmen = req.file.path;
-      // console.log(req.file.path);
       const cek = await uploadServices.getDokumenPendaftaranByIdUser(id_user);
       if (!cek) {
         return responseFormatter.badRequest(res, null, "data tidak ditemukan");

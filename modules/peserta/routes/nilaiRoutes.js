@@ -7,7 +7,7 @@ const { reqAuth } = require("../../../middleware/reqAuth");
 /* GET users listing. */
 // Nilai Fisik
 router.get("/fisik", reqAuth, nilaiController.getFisik);
-router.get("/fisik/:id", reqAuth, nilaiController.getFisikById);
+router.get("/fisik/:id_user", reqAuth, nilaiController.getFisikById);
 
 // Nilai Afektif
 router.get("/afektif/all", reqAuth, nilaiController.getAfektif);

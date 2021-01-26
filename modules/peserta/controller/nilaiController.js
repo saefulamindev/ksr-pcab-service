@@ -13,11 +13,15 @@ const nilaiController = {
   },
   getFisikById: async (req, res, next) => {
     try {
-      const { id } = req.params;
-      const data = await nilaiServices.getFisikById(id);
+      const { id_user } = req.params;
+      const cek = await nilaiServices.cekFisik(id_user);
+      if (!cek) {
+        return responseFormatter.badRequest(res, null, "data tidak ditemukan");
+      }
+      const data = await nilaiServices.getFisikById(id_user);
       return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
-      return responseFormatter.error(res, null, "data tidak ditemukan", 500);
+      return responseFormatter.error(res, null, "internal server error", 500);
     }
   },
 

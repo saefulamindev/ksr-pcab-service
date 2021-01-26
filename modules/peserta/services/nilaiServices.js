@@ -19,21 +19,19 @@ const nilaiServices = {
     return hasil;
   },
 
-  getFisikById: async (id) => {
-    const hasil = await db("tb_users")
-      .select(
-        "tb_peserta.id_user",
-        "tb_peserta.nama_lengkap",
-        "tb_peserta.nilai_fisik"
-      )
-      .join("tb_peserta", "tb_users.id", "=", "tb_peserta.id_user")
+  getFisikById: async (id_user) => {
+    const hasil = await db("tb_peserta")
+      .select("id_user", "nama_lengkap", "nilai_fisik")
       .where({
-        role: "user",
-        tahap: "4",
-        "tb_peserta.id_user": id,
+        id_user,
       });
 
     return hasil;
+  },
+
+  cekFisik: (id_user) => {
+    const data = db("tb_peserta").select("*").where({ id_user }).first();
+    return data;
   },
 
   // Nilai Afektif

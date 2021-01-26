@@ -23,7 +23,7 @@ const materiController = {
     try {
       const { id } = req.params;
       const data = await materiServices.getMateriById(id);
-      const cek = await materiServices.cekAll(id);
+      const cek = await materiServices.cek(id);
       if (!cek) {
         return responseFormatter.badRequest(
           res,

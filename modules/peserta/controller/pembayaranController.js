@@ -63,7 +63,7 @@ const pembayaranController = {
       const Tagihan = cekTagihan.nominal - cekNominal.nominal;
       return responseFormatter.success(
         res,
-        (data = { Tagihan }),
+        (data = { "jenis tagihan": jenis_bayar, Tagihan }),
         "data ditemukan",
         200
       );

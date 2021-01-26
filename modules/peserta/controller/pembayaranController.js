@@ -14,6 +14,10 @@ const pembayaranController = {
     try {
       const { id_user } = req.params;
       const data = await pembayaranServices.getBayarByIdUser(id_user);
+      const cekUser = await pembayaranServices.cek(id_user);
+      if (!cekUser) {
+        return responseFormatter.badRequest(res, null, "data tidak ditemukan");
+      }
       return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
       return responseFormatter.error(res, null, "internal server error", 500);

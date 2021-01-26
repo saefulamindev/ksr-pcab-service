@@ -5,6 +5,10 @@ const soalServices = {
     const data = db("tb_soal_pg").select("*").first();
     return data;
   },
+  cekPG: (req) => {
+    const data = db("tb_soal_pg").select("*").where({ id }).first();
+    return data;
+  },
   getPGsoal: async (all) => {
     const data = await db("tb_soal_pg").select(
       "id",
@@ -61,7 +65,7 @@ const soalServices = {
     const data = db("tb_soal_essay").select("*").first();
     return data;
   },
-  cekessay: (id) => {
+  cekEssay: (id) => {
     const data = db("tb_soal_essay").select("*").where({ id }).first();
     return data;
   },

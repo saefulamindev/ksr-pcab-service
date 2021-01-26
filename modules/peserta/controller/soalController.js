@@ -23,7 +23,7 @@ const soalController = {
     try {
       const { id } = req.params;
       const data = await soalServices.getPGsoalById(id);
-      const cek = await soalServices.cekAllPG(id);
+      const cek = await soalServices.cekPG(id);
       if (!cek) {
         return responseFormatter.badRequest(
           res,
@@ -60,7 +60,7 @@ const soalController = {
     try {
       const { id } = req.params;
       const data = await soalServices.getEssaySoalById(id);
-      const cek = await soalServices.cekAllEssay(id);
+      const cek = await soalServices.cekEssay(id);
       if (!cek) {
         return responseFormatter.badRequest(
           res,

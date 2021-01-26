@@ -19,7 +19,10 @@ const kelulusanController = {
     try {
       const { id_user } = req.params;
       const data = await kelulusanServices.getByIdUser(id_user);
-
+      const cekKelulusan = await kelulusanServices.cek(id_user);
+      if (!cekKelulusan) {
+        return responseFormatter.error(res, null, "data tidak ditemukan");
+      }
       if (data) {
         return responseFormatter.success(res, data, "data ditemukan", 200);
       }

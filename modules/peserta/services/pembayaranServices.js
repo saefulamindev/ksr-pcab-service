@@ -96,6 +96,13 @@ const pembayaranServices = {
       .first();
     return result;
   },
+  cekPembayaran: async (id_user) => {
+    const result = await db("tb_pembayaran")
+      .select("*")
+      .where({ id_user })
+      .first();
+    return result;
+  },
 };
 
 module.exports = pembayaranServices;

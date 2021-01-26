@@ -5,7 +5,7 @@ const soalServices = {
     const data = db("tb_soal_pg").select("*").first();
     return data;
   },
-  cekPG: (req) => {
+  cekPG: (id) => {
     const data = db("tb_soal_pg").select("*").where({ id }).first();
     return data;
   },

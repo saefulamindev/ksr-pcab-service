@@ -18,6 +18,10 @@ const profilServices = {
       });
     return hasil;
   },
+  cekProfil: (id_user) => {
+    const data = db("tb_peserta").select("*").where({ id_user }).first();
+    return data;
+  },
 };
 
 module.exports = profilServices;

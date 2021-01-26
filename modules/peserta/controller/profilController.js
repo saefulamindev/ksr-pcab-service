@@ -18,6 +18,15 @@ const profilController = {
     try {
       const { id_user } = req.params;
       const data = await profilServices.getProfilById(id_user);
+      const cek = await profilServices.cekProfil(id_user);
+      if (!cek) {
+        return responseFormatter.badRequest(
+          res,
+          null,
+          "data tidak ditemukan",
+          404
+        );
+      }
       return responseFormatter.success(res, data, "data ditemukan", 200);
     } catch (error) {
       return responseFormatter.error(res, null, "data tidak ditemukan", 500);

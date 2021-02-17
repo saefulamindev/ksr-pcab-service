@@ -50,7 +50,7 @@ const pengumumanController = {
     try {
       const { id } = req.params;
       const { judul, deskripsi } = req.body;
-      const cek = await pengumumanServices.cek(id);
+      const cek = await pengumumanServices.cekAll(id);
       if (!cek) {
         return responseFormatter.badRequest(
           res,

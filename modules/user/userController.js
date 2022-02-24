@@ -47,6 +47,12 @@ const UserController = {
         { expiresIn: "1h" }
       );
 
+      const insertToken = await UserService.storeToken(user.id, tokenJWT);
+
+      if (!insertToken) {
+        return responseFormatter.badRequest(res, null, "gagal simpan token");
+      }
+
       const data = {
         id: user.id,
         email: user.email,

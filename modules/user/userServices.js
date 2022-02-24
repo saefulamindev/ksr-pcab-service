@@ -28,6 +28,19 @@ const UserService = {
     const user = db("tb_users").where("id", id).first();
     return user;
   },
+  storeToken: (id_user, token) => {
+    let now = new Date();
+    now.setHours(now.getHours() + 1);
+
+    const insert = db("tb_user_token").insert({
+      id_user: id_user,
+      access_token: token,
+      expires_on: now,
+      created_at: new Date()
+    });
+
+    return insert;
+  }
 };
 
 module.exports = UserService;
